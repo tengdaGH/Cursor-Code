@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOEFL Build a Sentence Practice</title>
+  <style>
+    :root {
+      --ets-blue: #0066b3;
+      --ets-blue-dark: #004c87;
+      --ets-blue-light: #e6f2fa;
+      --bg: #f0f2f5;
+      --card: #ffffff;
+      --border: #d1d5db;
+      --text: #1a1a1a;
+      --muted: #6b7280;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --header-height: 48px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 24px;
+    }
+    .header {
+      height: var(--header-height);
+      background: var(--ets-blue);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    }
+    .header-timer { font-variant-numeric: tabular-nums; margin-left: 12px; }
+    .main { max-width: 720px; margin: 0 auto; padding: 20px 16px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    .card h2 { font-size: 20px; margin-bottom: 20px; color: var(--ets-blue-dark); }
+    .progress-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0;
+      margin-bottom: 24px;
+      padding: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      width: 100%;
+    }
+    .progress-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: all .3s;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .progress-dot:hover { transform: scale(1.2); box-shadow: 0 0 0 2px var(--ets-blue-light); }
+    .progress-dot.active { background: var(--ets-blue); transform: scale(1.2); }
+    .progress-dot.completed { background: var(--success); }
+    .progress-connector { height: 2px; background: var(--border); flex: 1; min-width: 4px; }
+    .progress-connector.completed { background: var(--success); }
+    .question-context { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+    .question-instruction { font-size: 16px; margin-bottom: 20px; font-weight: 500; }
+    .word-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      min-height: 48px;
+      padding: 8px;
+      border-radius: 6px;
+      transition: background .2s, border-color .2s;
+    }
+    .word-bank.drag-over { background: var(--ets-blue-light); border: 1px dashed var(--ets-blue); }
+    .fragment {
+      display: inline-block;
+      padding: 12px 18px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 15px;
+      cursor: grab;
+      transition: all .2s ease;
+      user-select: none;
+      -webkit-user-drag: element;
+      touch-action: none;
+    }
+    .fragment:hover:not(.in-answer) { border-color: var(--ets-blue); background: var(--ets-blue-light); }
+    .fragment:active { cursor: grabbing; }
+    .fragment.dragging { position: absolute; left: -9999px; visibility: hidden; }
+    .answer-area {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px 12px;
+      min-height: 56px;
+      padding: 16px;
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      margin-bottom: 20px;
+      transition: border-color .2s, background .2s;
+    }
+    .answer-area.drag-over { background: var(--ets-blue-light); border-color: var(--ets-blue); }
+    .answer-area .placeholder { color: var(--muted); font-style: italic; }
+    .answer-area.correct { border-color: var(--success); background: #ecfdf5; }
+    .answer-area.incorrect { border-color: var(--error); background: #fef2f2; }
+    .drop-spacer {
+      display: inline-block;
+      height: 44px;
+      border-radius: 6px;
+      background: rgba(0,102,179,.08);
+      border: 2px dashed rgba(0,102,179,.25);
+      pointer-events: none;
+      transition: width .15s ease-out;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .feedback { font-size: 15px; margin-bottom: 16px; min-height: 24px; }
+    .feedback.correct { color: var(--success); font-weight: 500; }
+    .feedback.incorrect { color: var(--error); font-weight: 500; }
+    .action-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--ets-blue);
+      color: #fff;
+      transition: all .2s;
+    }
+    .btn:hover:not(:disabled) { background: var(--ets-blue-dark); }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-secondary { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover:not(:disabled) { background: #f3f4f6; border-color: var(--ets-blue); color: var(--ets-blue); }
+    .result-screen { display: none; }
+    .result-screen.visible { display: block; }
+    .practice-screen.hidden { display: none !important; }
+    .result-score { font-size: 28px; font-weight: 700; color: var(--ets-blue-dark); margin-bottom: 8px; }
+    .result-time { font-size: 16px; color: var(--muted); margin-bottom: 24px; }
+    .result-review { margin-bottom: 24px; }
+    .result-item { padding: 12px; border-radius: 6px; margin-bottom: 8px; border: 1px solid var(--border); }
+    .result-item.correct { background: #ecfdf5; border-color: var(--success); }
+    .result-item.incorrect { background: #fef2f2; border-color: var(--error); }
+    .hidden { display: none !important; }
+    .text-center { text-align: center; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="title">Build a Sentence Practice</div>
+    <div class="header-right">
+      <span id="headerProgress">Question 1 / 20</span>
+      <span class="header-timer" id="headerTimer">00:00</span>
+    </div>
+  </header>
+  <main class="main">
+    <div class="practice-screen" id="practiceScreen">
+      <div class="card">
+        <h2>Build a Sentence</h2>
+        <div class="progress-bar" id="progressBar"></div>
+        <div class="question-context" id="questionContext"></div>
+        <div class="question-instruction">Question <span id="questionNum">1</span>: Arrange the words to form a correct sentence.</div>
+        <div class="section-title" style="font-size: 14px; font-weight: 600; color: var(--muted); margin-bottom: 8px;">Word Bank</div>
+        <div class="word-bank" id="wordBank" role="list" aria-label="Available words to arrange"></div>
+        <div class="section-title" style="font-size: 14px; font-weight: 600; color: var(--muted); margin-bottom: 8px;">Your Answer</div>
+        <div class="answer-area" id="answerArea" role="list" aria-label="Your sentence arrangement">
+          <span class="placeholder">Drag words here</span>
+        </div>
+        <div class="feedback" id="feedback"></div>
+        <div class="action-buttons">
+          <button class="btn" id="checkBtn" onclick="checkAnswer()">Check</button>
+          <button class="btn btn-secondary" id="resetBtn" onclick="resetQuestion()">Reset</button>
+          <button class="btn" id="nextBtn" onclick="nextQuestion()" style="display: none;">Next</button>
+          <button class="btn btn-secondary" id="showAnswerBtn" onclick="showAnswer()" style="display: none;">Show Answer</button>
+        </div>
+      </div>
+    </div>
+    <div class="result-screen" id="resultScreen">
+      <div class="card">
+        <h2>Practice Complete</h2>
+        <div class="result-score text-center" id="resultScore">0 / 20</div>
+        <div class="result-time text-center" id="resultTime">Time: 00:00</div>
+        <div class="result-review">
+          <div class="section-title" style="font-size: 14px; font-weight: 600; color: var(--muted); margin-bottom: 12px;">Review</div>
+          <div id="resultReview"></div>
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-secondary" id="retryMistakesBtn" onclick="retryMistakes()">Retry Mistakes</button>
+          <button class="btn" id="newPracticeBtn" onclick="newPractice()">New Practice</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script>
+    const questions = [
+      { id: 1, context: "", fragments: ["the", "students", "study", "in", "the", "library"], endPunctuation: "." },
+      { id: 2, context: "", fragments: ["she", "quickly", "finished", "her", "homework", "yesterday"], endPunctuation: "." },
+      { id: 3, context: "", fragments: ["did", "you", "see", "the", "movie", "last", "night"], endPunctuation: "?" },
+      { id: 4, context: "", fragments: ["where", "did", "the", "researchers", "discover", "the", "new", "species"], endPunctuation: "?" },
+      { id: 5, context: "", fragments: ["the", "book", "on", "the", "table", "belongs", "to", "my", "sister"], endPunctuation: "." },
+      { id: 6, context: "", fragments: ["the", "professor", "who", "taught", "the", "course", "retired", "last", "year"], endPunctuation: "." },
+      { id: 7, context: "", fragments: ["the", "experiment", "was", "conducted", "by", "the", "research", "team"], endPunctuation: "." },
+      { id: 8, context: "", fragments: ["she", "decided", "to", "apply", "for", "the", "scholarship"], endPunctuation: "." },
+      { id: 9, context: "", fragments: ["had", "he", "known", "the", "truth", "he", "would", "have", "acted", "differently"], endPunctuation: "." },
+      { id: 10, context: "", fragments: ["although", "the", "weather", "was", "bad", "we", "decided", "to", "go", "hiking"], endPunctuation: "." },
+      { id: 11, context: "", fragments: ["he", "asked", "whether", "she", "could", "help", "with", "the", "project"], endPunctuation: "." },
+      { id: 12, context: "", fragments: ["the", "museum", "opens", "at", "nine", "in", "the", "morning"], endPunctuation: "." },
+      { id: 13, context: "", fragments: ["why", "did", "you", "leave", "the", "meeting", "early"], endPunctuation: "?" },
+      { id: 14, context: "", fragments: ["the", "report", "that", "she", "wrote", "was", "published", "last", "month"], endPunctuation: "." },
+      { id: 15, context: "", fragments: ["we", "need", "to", "finish", "this", "before", "the", "deadline"], endPunctuation: "." },
+      { id: 16, context: "", fragments: ["is", "there", "a", "bus", "that", "goes", "to", "the", "airport"], endPunctuation: "?" },
+      { id: 17, context: "", fragments: ["the", "students", "were", "asked", "to", "read", "three", "chapters"], endPunctuation: "." },
+      { id: 18, context: "", fragments: ["she", "has", "been", "working", "on", "this", "since", "monday"], endPunctuation: "." },
+      { id: 19, context: "", fragments: ["if", "it", "rains", "tomorrow", "we", "will", "stay", "indoors"], endPunctuation: "." },
+      { id: 20, context: "", fragments: ["the", "conference", "will", "take", "place", "in", "march"], endPunctuation: "." }
+    ];
+    const STORAGE_KEY = 'toefl-build-sentence-progress';
+    const urlParams = new URLSearchParams(window.location.search);
+    const shouldShuffle = urlParams.get('shuffle') !== 'false';
+    let currentQuestionIndex = 0;
+    let wordBankFragments = [];
+    let answerFragments = [];
+    let isCorrect = false;
+    let wrongAttempts = 0;
+    let timerInterval = null;
+    let startTime = null;
+    let elapsedSeconds = 0;
+    let results = [];
+    function formatTime(s) { const m = Math.floor(s / 60); return String(m).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+    function startTimer() {
+      if (timerInterval) return;
+      startTime = Date.now() - elapsedSeconds * 1000;
+      timerInterval = setInterval(() => {
+        elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+        document.getElementById('headerTimer').textContent = formatTime(elapsedSeconds);
+      }, 1000);
+    }
+    function stopTimer() { if (timerInterval) { clearInterval(timerInterval); timerInterval = null; } }
+    function shuffleArray(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+      return a;
+    }
+    function normalizeFragment(t) { return t.toLowerCase().replace(/[.,!?;:]+$/, ''); }
+    function normalizeFragments(arr) { return arr.map(normalizeFragment); }
+    function fragmentsMatch(a, b) { return a.length === b.length && a.every((v, i) => v === b[i]); }
+    function formatFragmentsForDisplay(fragments, endPunctuation) {
+      if (!fragments.length) return [];
+      const out = [...fragments];
+      out[0] = out[0].charAt(0).toUpperCase() + out[0].slice(1);
+      out[out.length - 1] += endPunctuation || '.';
+      return out;
+    }
+    function formatSentenceForDisplay(fragments, endPunctuation) {
+      const formatted = formatFragmentsForDisplay(fragments, endPunctuation);
+      return formatted.join(' ');
+    }
+    function createFragmentEl(text, inAnswer, index) {
+      const el = document.createElement('span');
+      el.className = 'fragment' + (inAnswer ? ' in-answer' : '');
+      el.textContent = text;
+      el.setAttribute('aria-label', 'Word: ' + text);
+      el.setAttribute('data-index', index);
+      el.setAttribute('data-text', text);
+      el.setAttribute('role', 'listitem');
+      el.setAttribute('draggable', 'true');
+      el.tabIndex = 0;
+      el.addEventListener('dragstart', handleDragStart);
+      el.addEventListener('dragend', handleDragEnd);
+      el.addEventListener('click', () => { if (inAnswer) moveToWordBank(index); else moveToAnswer(index); });
+      el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (inAnswer) moveToWordBank(index); else moveToAnswer(index); } });
+      return el;
+    }
+    function renderWordBank() {
+      const bank = document.getElementById('wordBank');
+      bank.innerHTML = '';
+      wordBankFragments.forEach((text, i) => bank.appendChild(createFragmentEl(text, false, i)));
+    }
+    function renderAnswerArea() {
+      const area = document.getElementById('answerArea');
+      area.innerHTML = '';
+      if (answerFragments.length === 0) {
+        const span = document.createElement('span');
+        span.className = 'placeholder';
+        span.textContent = 'Drag words here';
+        area.appendChild(span);
+      } else {
+        answerFragments.forEach((text, i) => area.appendChild(createFragmentEl(text, true, i)));
+      }
+      area.classList.remove('drag-over', 'correct', 'incorrect');
+    }
+    let draggedEl = null, dragSource = null, dragIndex = null, draggedWidth = 24;
+    let answerEnterCount = 0;
+    let currentSpacer = null;
+    let lastIdx = -1;
+    function handleDragStart(e) {
+      draggedEl = e.target;
+      dragSource = e.target.classList.contains('in-answer') ? 'answer' : 'bank';
+      const idx = parseInt(e.target.getAttribute('data-index'), 10);
+      dragIndex = idx;
+      draggedWidth = e.target.getBoundingClientRect().width || 24;
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', e.target.getAttribute('data-text'));
+      e.dataTransfer.setData('application/json', JSON.stringify({ source: dragSource, index: idx }));
+      requestAnimationFrame(() => e.target.classList.add('dragging'));
+      lastIdx = -1;
+    }
+    function handleDragEnd(e) {
+      e.target.classList.remove('dragging');
+      removeSpacer();
+      answerEnterCount = 0;
+      lastIdx = -1;
+      draggedEl = null; dragSource = null; dragIndex = null;
+    }
+    function removeSpacer() {
+      if (currentSpacer && currentSpacer.parentNode) currentSpacer.remove();
+      currentSpacer = null;
+    }
+    function clearFlowSpacing() { removeSpacer(); }
+    function getCleanAnswerIndex(x, y) {
+      const area = document.getElementById('answerArea');
+      // Temporarily detach spacer from DOM (no transitions triggered)
+      const spacerNext = currentSpacer && currentSpacer.parentNode ? currentSpacer.nextSibling : null;
+      const spacerInDom = currentSpacer && currentSpacer.parentNode;
+      if (spacerInDom) currentSpacer.remove();
+      const items = area.querySelectorAll('.fragment.in-answer');
+      if (items.length === 0) return 0;
+      let result = items.length;
+      for (let i = 0; i < items.length; i++) {
+        const r = items[i].getBoundingClientRect();
+        if (r.top > y + 6) { result = i; break; }
+        if (y >= r.top - 6 && y <= r.bottom + 6) {
+          if (x < r.left + r.width / 2) { result = i; break; }
+          if (i === items.length - 1 || items[i + 1].getBoundingClientRect().top > r.bottom + 6) { result = i + 1; break; }
+        }
+      }
+      return result;
+    }
+    function showInsertIndicator(beforeIdx, gap) {
+      const area = document.getElementById('answerArea');
+      const items = area.querySelectorAll('.fragment.in-answer');
+      // Create spacer if needed
+      if (!currentSpacer) {
+        currentSpacer = document.createElement('span');
+        currentSpacer.className = 'drop-spacer';
+      }
+      // Set spacer width
+      currentSpacer.style.width = gap + 'px';
+      // Insert spacer at the correct position
+      if (items.length === 0 || beforeIdx >= items.length) {
+        area.appendChild(currentSpacer);
+      } else {
+        area.insertBefore(currentSpacer, items[beforeIdx]);
+      }
+    }
+    function handleBankDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      document.getElementById('wordBank').classList.add('drag-over');
+    }
+    function handleBankDragLeave(e) {
+      if (!e.currentTarget.contains(e.relatedTarget)) e.currentTarget.classList.remove('drag-over');
+    }
+    function handleBankDrop(e) {
+      e.preventDefault();
+      document.getElementById('wordBank').classList.remove('drag-over');
+      const data = JSON.parse(e.dataTransfer.getData('application/json') || '{}');
+      if (data.source === 'answer' && typeof data.index === 'number') moveToWordBank(data.index);
+    }
+    function handleAnswerDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      const area = document.getElementById('answerArea');
+      area.classList.add('drag-over');
+      const idx = getCleanAnswerIndex(e.clientX, e.clientY);
+      lastIdx = idx;
+      const gap = Math.max(draggedWidth, 24);
+      showInsertIndicator(idx, gap);
+    }
+    function handleAnswerDragEnter(e) {
+      e.preventDefault();
+      answerEnterCount++;
+    }
+    function handleAnswerDragLeave(e) {
+      answerEnterCount--;
+      if (answerEnterCount <= 0) {
+        answerEnterCount = 0;
+        document.getElementById('answerArea').classList.remove('drag-over');
+        removeSpacer();
+        lastIdx = -1;
+      }
+    }
+    function handleAnswerDrop(e) {
+      e.preventDefault();
+      const area = document.getElementById('answerArea');
+      area.classList.remove('drag-over');
+      const idx = lastIdx >= 0 ? lastIdx : getCleanAnswerIndex(e.clientX, e.clientY);
+      removeSpacer();
+      lastIdx = -1;
+      answerEnterCount = 0;
+      const data = JSON.parse(e.dataTransfer.getData('application/json') || '{}');
+      if (data.source === 'bank' && typeof data.index === 'number') {
+        const text = wordBankFragments[data.index];
+        wordBankFragments.splice(data.index, 1);
+        answerFragments.splice(idx, 0, text);
+      } else if (data.source === 'answer' && typeof data.index === 'number') {
+        const from = data.index;
+        if (from === idx || from === idx - 1) return;
+        const [t] = answerFragments.splice(from, 1);
+        answerFragments.splice(idx > from ? idx - 1 : idx, 0, t);
+      }
+      renderWordBank();
+      renderAnswerArea();
+    }
+    function moveToAnswer(bankIndex) {
+      const text = wordBankFragments[bankIndex];
+      wordBankFragments.splice(bankIndex, 1);
+      answerFragments.push(text);
+      renderWordBank();
+      renderAnswerArea();
+    }
+    function moveToWordBank(answerIndex) {
+      const text = answerFragments[answerIndex];
+      answerFragments.splice(answerIndex, 1);
+      wordBankFragments.push(text);
+      renderWordBank();
+      renderAnswerArea();
+    }
+    document.getElementById('wordBank').addEventListener('dragover', handleBankDragOver);
+    document.getElementById('wordBank').addEventListener('dragleave', handleBankDragLeave);
+    document.getElementById('wordBank').addEventListener('drop', handleBankDrop);
+    document.getElementById('answerArea').addEventListener('dragenter', handleAnswerDragEnter);
+    document.getElementById('answerArea').addEventListener('dragover', handleAnswerDragOver);
+    document.getElementById('answerArea').addEventListener('dragleave', handleAnswerDragLeave);
+    document.getElementById('answerArea').addEventListener('drop', handleAnswerDrop);
+    function loadQuestion(index) {
+      currentQuestionIndex = index;
+      const q = questions[index];
+      const frags = shouldShuffle ? shuffleArray([...q.fragments]) : [...q.fragments];
+      wordBankFragments = frags;
+      answerFragments = [];
+      isCorrect = false;
+      wrongAttempts = 0;
+      document.getElementById('feedback').textContent = '';
+      document.getElementById('feedback').className = 'feedback';
+      document.getElementById('checkBtn').style.display = '';
+      document.getElementById('resetBtn').style.display = '';
+      document.getElementById('nextBtn').style.display = 'none';
+      document.getElementById('showAnswerBtn').style.display = 'none';
+      renderWordBank();
+      renderAnswerArea();
+      document.getElementById('questionNum').textContent = index + 1;
+      document.getElementById('questionContext').textContent = q.context || '';
+      document.getElementById('questionContext').classList.toggle('hidden', !q.context);
+      document.getElementById('headerProgress').textContent = 'Question ' + (index + 1) + ' / ' + questions.length;
+      document.querySelectorAll('.progress-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === index);
+        d.classList.toggle('completed', results[i] === true);
+      });
+    }
+    function checkAnswer() {
+      const q = questions[currentQuestionIndex];
+      const expected = normalizeFragments(q.fragments);
+      const actual = normalizeFragments(answerFragments);
+      if (fragmentsMatch(expected, actual)) {
+        isCorrect = true;
+        results[currentQuestionIndex] = true;
+        answerFragments = formatFragmentsForDisplay(q.fragments, q.endPunctuation || '.');
+        renderAnswerArea();
+        document.getElementById('feedback').textContent = 'Correct!';
+        document.getElementById('feedback').className = 'feedback correct';
+        document.getElementById('answerArea').classList.add('correct');
+        document.getElementById('checkBtn').style.display = 'none';
+        document.getElementById('resetBtn').style.display = 'none';
+        document.getElementById('nextBtn').style.display = '';
+        confetti();
+      } else {
+        wrongAttempts++;
+        document.getElementById('feedback').textContent = 'Incorrect. Try again or reset.';
+        document.getElementById('feedback').className = 'feedback incorrect';
+        document.getElementById('answerArea').classList.add('incorrect');
+        if (wrongAttempts >= 2) {
+          document.getElementById('showAnswerBtn').style.display = '';
+        }
+      }
+    }
+    function confetti() {
+      const colors = ['#0066b3','#10b981','#f59e0b','#ef4444','#8b5cf6'];
+      for (let i = 0; i < 80; i++) {
+        const c = document.createElement('div');
+        c.style.cssText = 'position:fixed;width:8px;height:8px;background:'+colors[i%colors.length]+';border-radius:2px;pointer-events:none;z-index:9999;left:'+(Math.random()*100)+'vw;top:20px;animation:cf 2s ease-out forwards;';
+        c.style.animation = 'cf 2s ease-out forwards';
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 2000);
+      }
+      const style = document.createElement('style');
+      style.textContent = '@keyframes cf{to{transform:translateY(100vh) rotate(720deg);opacity:0}}';
+      document.head.appendChild(style);
+      setTimeout(() => style.remove(), 2100);
+    }
+    function resetQuestion() {
+      const q = questions[currentQuestionIndex];
+      const frags = shouldShuffle ? shuffleArray([...q.fragments]) : [...q.fragments];
+      wordBankFragments = frags;
+      answerFragments = [];
+      document.getElementById('feedback').textContent = '';
+      document.getElementById('feedback').className = 'feedback';
+      document.getElementById('answerArea').classList.remove('correct', 'incorrect');
+      document.getElementById('showAnswerBtn').style.display = 'none';
+      renderWordBank();
+      renderAnswerArea();
+    }
+    function showAnswer() {
+      const q = questions[currentQuestionIndex];
+      answerFragments = formatFragmentsForDisplay(q.fragments, q.endPunctuation || '.');
+      wordBankFragments = [];
+      results[currentQuestionIndex] = false;
+      document.getElementById('feedback').textContent = 'Answer shown.';
+      document.getElementById('feedback').className = 'feedback';
+      document.getElementById('answerArea').classList.remove('incorrect');
+      document.getElementById('answerArea').classList.add('correct');
+      document.getElementById('checkBtn').style.display = 'none';
+      document.getElementById('resetBtn').style.display = 'none';
+      document.getElementById('nextBtn').style.display = '';
+      document.getElementById('showAnswerBtn').style.display = 'none';
+      renderWordBank();
+      renderAnswerArea();
+    }
+    function nextQuestion() {
+      if (currentQuestionIndex < questions.length - 1) {
+        loadQuestion(currentQuestionIndex + 1);
+      } else {
+        showResults();
+      }
+    }
+    function showResults() {
+      stopTimer();
+      const correct = results.filter(Boolean).length;
+      document.getElementById('resultScore').textContent = correct + ' / ' + questions.length;
+      document.getElementById('resultTime').textContent = 'Time: ' + formatTime(elapsedSeconds);
+      const review = document.getElementById('resultReview');
+      review.innerHTML = '';
+      questions.forEach((q, i) => {
+        const div = document.createElement('div');
+        div.className = 'result-item ' + (results[i] ? 'correct' : 'incorrect');
+        div.innerHTML = '<strong>Q' + (i+1) + ':</strong> ' + (results[i] ? '✓ ' : '✗ ') + formatSentenceForDisplay(q.fragments, q.endPunctuation || '.');
+        review.appendChild(div);
+      });
+      document.getElementById('practiceScreen').classList.add('hidden');
+      document.getElementById('resultScreen').classList.add('result-screen', 'visible');
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ results, elapsedSeconds, date: Date.now() })); } catch (_) {}
+    }
+    function retryMistakes() {
+      const wrongIndices = results.map((r, i) => r ? -1 : i).filter(i => i >= 0);
+      if (wrongIndices.length === 0) { newPractice(); return; }
+      const wrongQuestions = wrongIndices.map(i => ({ ...questions[i] }));
+      questions.length = 0;
+      questions.push(...wrongQuestions);
+      results = [];
+      questions.forEach((_, i) => results[i] = undefined);
+      elapsedSeconds = 0;
+      startTime = Date.now();
+      timerInterval = null;
+      startTimer();
+      document.getElementById('resultScreen').classList.remove('visible');
+      document.getElementById('practiceScreen').classList.remove('hidden');
+      buildProgressBar();
+      currentQuestionIndex = 0;
+      loadQuestion(0);
+    }
+    function newPractice() {
+      results = [];
+      questions.forEach((_, i) => results[i] = undefined);
+      elapsedSeconds = 0;
+      startTime = Date.now();
+      timerInterval = null;
+      startTimer();
+      document.getElementById('resultScreen').classList.remove('visible');
+      document.getElementById('practiceScreen').classList.remove('hidden');
+      const orig = [
+        { id: 1, context: "", fragments: ["the", "students", "study", "in", "the", "library"], endPunctuation: "." },
+        { id: 2, context: "", fragments: ["she", "quickly", "finished", "her", "homework", "yesterday"], endPunctuation: "." },
+        { id: 3, context: "", fragments: ["did", "you", "see", "the", "movie", "last", "night"], endPunctuation: "?" },
+        { id: 4, context: "", fragments: ["where", "did", "the", "researchers", "discover", "the", "new", "species"], endPunctuation: "?" },
+        { id: 5, context: "", fragments: ["the", "book", "on", "the", "table", "belongs", "to", "my", "sister"], endPunctuation: "." },
+        { id: 6, context: "", fragments: ["the", "professor", "who", "taught", "the", "course", "retired", "last", "year"], endPunctuation: "." },
+        { id: 7, context: "", fragments: ["the", "experiment", "was", "conducted", "by", "the", "research", "team"], endPunctuation: "." },
+        { id: 8, context: "", fragments: ["she", "decided", "to", "apply", "for", "the", "scholarship"], endPunctuation: "." },
+        { id: 9, context: "", fragments: ["had", "he", "known", "the", "truth", "he", "would", "have", "acted", "differently"], endPunctuation: "." },
+        { id: 10, context: "", fragments: ["although", "the", "weather", "was", "bad", "we", "decided", "to", "go", "hiking"], endPunctuation: "." },
+        { id: 11, context: "", fragments: ["he", "asked", "whether", "she", "could", "help", "with", "the", "project"], endPunctuation: "." },
+        { id: 12, context: "", fragments: ["the", "museum", "opens", "at", "nine", "in", "the", "morning"], endPunctuation: "." },
+        { id: 13, context: "", fragments: ["why", "did", "you", "leave", "the", "meeting", "early"], endPunctuation: "?" },
+        { id: 14, context: "", fragments: ["the", "report", "that", "she", "wrote", "was", "published", "last", "month"], endPunctuation: "." },
+        { id: 15, context: "", fragments: ["we", "need", "to", "finish", "this", "before", "the", "deadline"], endPunctuation: "." },
+        { id: 16, context: "", fragments: ["is", "there", "a", "bus", "that", "goes", "to", "the", "airport"], endPunctuation: "?" },
+        { id: 17, context: "", fragments: ["the", "students", "were", "asked", "to", "read", "three", "chapters"], endPunctuation: "." },
+        { id: 18, context: "", fragments: ["she", "has", "been", "working", "on", "this", "since", "monday"], endPunctuation: "." },
+        { id: 19, context: "", fragments: ["if", "it", "rains", "tomorrow", "we", "will", "stay", "indoors"], endPunctuation: "." },
+        { id: 20, context: "", fragments: ["the", "conference", "will", "take", "place", "in", "march"], endPunctuation: "." }
+      ];
+      questions.length = 0;
+      questions.push(...(shouldShuffle ? shuffleArray([...orig]) : orig));
+      buildProgressBar();
+      currentQuestionIndex = 0;
+      loadQuestion(0);
+    }
+    function buildProgressBar() {
+      const bar = document.getElementById('progressBar');
+      bar.innerHTML = '';
+      for (let i = 0; i < questions.length; i++) {
+        if (i > 0) {
+          const conn = document.createElement('div');
+          conn.className = 'progress-connector' + (results[i-1] === true ? ' completed' : '');
+          bar.appendChild(conn);
+        }
+        const dot = document.createElement('div');
+        dot.className = 'progress-dot' + (i === 0 ? ' active' : '') + (results[i] === true ? ' completed' : '');
+        dot.setAttribute('aria-label', 'Question ' + (i+1));
+        dot.onclick = () => { if (i !== currentQuestionIndex && !isCorrect) loadQuestion(i); };
+        bar.appendChild(dot);
+      }
+    }
+    (function init() {
+      questions.forEach((_, i) => results[i] = undefined);
+      buildProgressBar();
+      startTimer();
+      loadQuestion(0);
+    })();
+  </script>
+</body>
+</html>

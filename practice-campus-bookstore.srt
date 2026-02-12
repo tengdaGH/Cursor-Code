@@ -1,0 +1,80 @@
+1
+00:00:00,001 --> 00:00:01,760
+Welcome to the campus bookstore.
+
+2
+00:00:03,200 --> 00:00:05,600
+We sell textbooks and school supplies.
+
+3
+00:00:07,040 --> 00:00:08,960
+New books are on the first floor.
+
+4
+00:00:10,400 --> 00:00:12,880
+Used books are cheaper and easier to find.
+
+5
+00:00:14,320 --> 00:00:17,120
+You can find notebooks and pens over there.
+
+6
+00:00:18,560 --> 00:00:20,960
+The checkout counter is near the front door.
+
+7
+00:00:22,080 --> 00:00:24,560
+We accept both cash and credit cards.
+
+8
+00:00:26,039 --> 00:00:28,920
+Student discounts are available with your ID card.
+
+9
+00:00:30,279 --> 00:00:33,559
+The return policy allows exchanges within two weeks
+
+10
+00:00:34,840 --> 00:00:37,400
+Please keep your receipt if you want a refund.
+
+11
+00:00:38,920 --> 00:00:41,960
+Our store hours are from 9 to 6 on weekdays
+
+12
+00:00:43,239 --> 00:00:45,719
+We also have a small cafe in the back corner.
+
+13
+00:00:47,000 --> 00:00:49,800
+You can order coffee and sandwiches while you browse.
+
+14
+00:00:51,239 --> 00:00:54,199
+The best seller section is right next to the main entrance.
+
+15
+00:00:55,700 --> 00:00:58,900
+We carry a wide selection of academic journals as well.
+
+16
+00:01:00,100 --> 00:01:03,300
+If we don't have a book in stock, we can order it for you
+
+17
+00:01:04,540 --> 00:01:08,060
+Online orders can be picked up at the service desk downstairs.
+
+18
+00:01:09,500 --> 00:01:13,180
+During finals week, the store stays open until 10 at night.
+
+19
+00:01:14,540 --> 00:01:17,980
+There's a study lounge upstairs where you can read before buying.
+
+20
+00:01:19,340 --> 00:01:22,860
+Feel free to ask any of our staff if you need help finding something
+

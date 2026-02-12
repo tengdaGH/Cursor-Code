@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOEFL 2026 — Listen and Repeat Test</title>
+  <style>
+    /* TOEFL/ETS Design System */
+    :root {
+      --ets-blue: #0066b3;
+      --ets-blue-dark: #004c87;
+      --ets-blue-light: #e6f2fa;
+      --bg: #f0f2f5;
+      --card: #ffffff;
+      --border: #d1d5db;
+      --text: #1a1a1a;
+      --muted: #6b7280;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --header-height: 48px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 24px;
+    }
+
+    /* Header */
+    .header {
+      height: var(--header-height);
+      background: var(--ets-blue);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    }
+
+    /* Screen Container System */
+    .screen {
+      display: none;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 20px 16px;
+    }
+    .screen.active { display: block; }
+    .screen.fade-in {
+      animation: fadeIn 0.3s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Card Styling */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      background: var(--ets-blue);
+      color: #fff;
+    }
+    .btn:hover:not(:disabled) { background: var(--ets-blue-dark); }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-secondary {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover:not(:disabled) {
+      background: #f3f4f6;
+      border-color: var(--ets-blue);
+      color: var(--ets-blue);
+    }
+
+    /* Screen 1: Section Intro */
+    .intro-screen h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: var(--ets-blue-dark);
+    }
+    .intro-screen p {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      color: var(--text);
+    }
+    .task-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .task-table th,
+    .task-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .task-table th {
+      background: var(--ets-blue-light);
+      font-weight: 600;
+      color: var(--ets-blue-dark);
+    }
+    .task-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Screen 2: Task Instructions */
+    .instructions-screen h2 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: var(--ets-blue-dark);
+    }
+    .instructions-screen p {
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .instructions-screen .highlight {
+      background: var(--ets-blue-light);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+
+    /* Screen 3: Scenario Context */
+    .scenario-screen h2 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: var(--ets-blue-dark);
+    }
+    .scenario-illustration {
+      width: 100%;
+      height: 200px;
+      background: var(--ets-blue-light);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      color: var(--ets-blue);
+    }
+    .scenario-description {
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .scenario-warning {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #856404;
+    }
+
+    /* Screen 4: Sentence Player */
+    .sentence-screen h2 {
+      font-size: 20px;
+      margin-bottom: 16px;
+      color: var(--ets-blue-dark);
+    }
+    .progress-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      padding: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .progress-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: all .3s;
+    }
+    .progress-dot.active {
+      background: var(--ets-blue);
+      transform: scale(1.2);
+    }
+    .progress-dot.completed {
+      background: var(--success);
+    }
+    .progress-connector {
+      width: 24px;
+      height: 2px;
+      background: var(--border);
+    }
+    .progress-connector.completed {
+      background: var(--success);
+    }
+
+    .sentence-phase {
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    /* Listening Phase */
+    .phase-listening {
+      border-color: var(--ets-blue);
+    }
+    .phase-listening .phase-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    .phase-listening .phase-text {
+      font-size: 18px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .audio-progress {
+      width: 100%;
+      max-width: 400px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 16px;
+    }
+    .audio-progress-bar {
+      height: 100%;
+      background: var(--ets-blue);
+      transition: width 0.1s linear;
+    }
+
+    /* Recording Phase */
+    .phase-recording {
+      border-color: var(--error);
+    }
+    .phase-recording .phase-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+      color: var(--error);
+      animation: pulse 1s ease-in-out infinite;
+    }
+    .recording-timer {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--error);
+      margin: 16px 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .waveform-container {
+      width: 100%;
+      max-width: 500px;
+      height: 80px;
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+    }
+    .waveform-bar {
+      width: 4px;
+      background: var(--ets-blue);
+      border-radius: 2px;
+      transition: height 0.1s;
+      min-height: 4px;
+    }
+
+    /* Processing Phase */
+    .phase-processing {
+      border-color: var(--warning);
+    }
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid var(--border);
+      border-top-color: var(--ets-blue);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 16px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Scored Phase */
+    .phase-scored {
+      border-color: var(--success);
+    }
+    .score-display {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--success);
+      margin-bottom: 8px;
+      animation: scoreFlash 0.5s ease-out;
+    }
+    @keyframes scoreFlash {
+      0% { transform: scale(0.5); opacity: 0; }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .score-label {
+      font-size: 14px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Screen 5: Results Summary */
+    .results-screen h2 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: var(--ets-blue-dark);
+    }
+    .results-scenario {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+    }
+    .results-table th,
+    .results-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .results-table th {
+      background: var(--ets-blue-light);
+      font-weight: 600;
+      color: var(--ets-blue-dark);
+    }
+    .results-table tr:last-child td {
+      border-bottom: none;
+    }
+    .results-table .sentence-preview {
+      max-width: 400px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .score-cell {
+      font-weight: 600;
+      text-align: center;
+    }
+    .score-cell.score-5 { color: var(--success); }
+    .score-cell.score-4 { color: #3b82f6; }
+    .score-cell.score-3 { color: var(--warning); }
+    .score-cell.score-2 { color: #f97316; }
+    .score-cell.score-1 { color: var(--error); }
+    .score-cell.score-0 { color: var(--muted); }
+    .results-summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      background: var(--ets-blue-light);
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+    .results-summary .total-score {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--ets-blue-dark);
+    }
+    .results-summary .average-score {
+      font-size: 18px;
+      color: var(--muted);
+    }
+
+    /* Screen 6: Detailed Review */
+    .review-screen h2 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: var(--ets-blue-dark);
+    }
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .review-score {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--ets-blue);
+    }
+    .sentence-comparison {
+      margin-bottom: 24px;
+    }
+    .sentence-comparison h3 {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .sentence-box {
+      padding: 16px;
+      background: #fafafa;
+      border-radius: 6px;
+      border-left: 4px solid var(--ets-blue);
+      margin-bottom: 16px;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .word-diff {
+      display: inline-block;
+      padding: 2px 4px;
+      margin: 0 2px;
+      border-radius: 3px;
+    }
+    .word-correct {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .word-substituted {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .word-omitted {
+      background: #fee2e2;
+      color: #991b1b;
+      text-decoration: line-through;
+    }
+    .word-added {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+    .score-breakdown {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .breakdown-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .breakdown-label {
+      width: 100px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .breakdown-bar-container {
+      flex: 1;
+      height: 24px;
+      background: var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .breakdown-bar {
+      height: 100%;
+      background: var(--ets-blue);
+      transition: width 0.5s ease-out;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 8px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .audio-controls {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .audio-btn {
+      padding: 10px 20px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all .2s;
+    }
+    .audio-btn:hover {
+      background: var(--ets-blue-light);
+      border-color: var(--ets-blue);
+    }
+    .review-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 24px;
+    }
+
+    /* Button Container */
+    .btn-container {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    /* Utility Classes */
+    .hidden { display: none !important; }
+    .text-center { text-align: center; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="title">TOEFL® Speaking Section</div>
+    <div class="progress" id="headerProgress"></div>
+  </header>
+
+  <!-- Screen 1: Section Intro -->
+  <div class="screen active" id="screenIntro">
+    <div class="card intro-screen">
+      <h1>Speaking Section</h1>
+      <p>In the speaking section, you will answer 11 questions to demonstrate how well you can speak English. There are two types of tasks.</p>
+      <table class="task-table">
+        <thead>
+          <tr>
+            <th>Type of Task</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Listen & Repeat</strong></td>
+            <td>Listen and repeat what you heard</td>
+          </tr>
+          <tr>
+            <td><strong>Take an Interview</strong></td>
+            <td>Answer questions from the interviewer</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="btn-container">
+        <button class="btn" onclick="showScreen('instructions')">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 2: Task Instructions -->
+  <div class="screen" id="screenInstructions">
+    <div class="card instructions-screen">
+      <h2>Listen and Repeat</h2>
+      <p>You will listen as someone speaks to you. Listen carefully and then repeat what you have heard. The clock will indicate how much time you have to speak.</p>
+      <p><span class="highlight">No time for preparation will be provided.</span></p>
+      <div class="btn-container">
+        <button class="btn" onclick="showScreen('scenario')">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 3: Scenario Context -->
+  <div class="screen" id="screenScenario">
+    <div class="card scenario-screen">
+      <h2>Listen and Repeat</h2>
+      <div class="scenario-illustration" id="scenarioIllustration">
+        🏛️
+      </div>
+      <p class="scenario-description" id="scenarioDescription"></p>
+      <div class="scenario-warning">
+        <strong>Repeat only once.</strong>
+      </div>
+      <div class="btn-container">
+        <button class="btn" onclick="startTest()">Begin →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 4: Sentence Player -->
+  <div class="screen" id="screenSentence">
+    <div class="card sentence-screen">
+      <h2>Listen and Repeat <span id="sentenceCounter">Sentence 1 of 7</span></h2>
+      
+      <!-- Progress Bar -->
+      <div class="progress-bar" id="progressBar"></div>
+
+      <!-- Scenario Illustration -->
+      <div class="scenario-illustration" id="sentenceIllustration" style="height: 150px; margin-bottom: 20px;">
+        🏛️
+      </div>
+
+      <!-- Phase: Listening -->
+      <div class="sentence-phase phase-listening" id="phaseListening">
+        <div class="phase-icon">🔊</div>
+        <div class="phase-text">Playing audio...</div>
+        <div class="audio-progress">
+          <div class="audio-progress-bar" id="audioProgressBar" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Phase: Recording -->
+      <div class="sentence-phase phase-recording hidden" id="phaseRecording">
+        <div class="phase-icon">🎙️</div>
+        <div class="recording-timer" id="recordingTimer">00:15</div>
+        <div class="phase-text">Recording... Speak now. Repeat only once.</div>
+        <div class="waveform-container" id="waveformContainer"></div>
+      </div>
+
+      <!-- Phase: Processing -->
+      <div class="sentence-phase phase-processing hidden" id="phaseProcessing">
+        <div class="spinner"></div>
+        <div class="phase-text">Analyzing your response...</div>
+      </div>
+
+      <!-- Phase: Scored -->
+      <div class="sentence-phase phase-scored hidden" id="phaseScored">
+        <div class="score-display" id="scoreDisplay">5</div>
+        <div class="score-label">Score</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 5: Results Summary -->
+  <div class="screen" id="screenResults">
+    <div class="card results-screen">
+      <h2>Listen and Repeat — Results</h2>
+      <div class="results-scenario" id="resultsScenario"></div>
+      
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Sentence</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody id="resultsTableBody">
+        </tbody>
+      </table>
+
+      <div class="results-summary">
+        <div>
+          <div class="total-score" id="totalScore">30/35</div>
+        </div>
+        <div class="average-score" id="averageScore">Average: 4.3</div>
+      </div>
+
+      <div class="btn-container">
+        <button class="btn btn-secondary" onclick="showReview(0)">Review Details</button>
+        <button class="btn" onclick="startNewTest()">Try Another Set →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 6: Detailed Review -->
+  <div class="screen" id="screenReview">
+    <div class="card review-screen">
+      <div class="review-header">
+        <h2>Sentence <span id="reviewSentenceNum">1</span> Review</h2>
+        <div class="review-score" id="reviewScore">4/5</div>
+      </div>
+
+      <div class="sentence-comparison">
+        <h3>Original</h3>
+        <div class="sentence-box" id="reviewOriginal"></div>
+        <h3>Your response</h3>
+        <div class="sentence-box" id="reviewResponse"></div>
+      </div>
+
+      <div class="score-breakdown">
+        <div class="breakdown-item">
+          <div class="breakdown-label">Accuracy</div>
+          <div class="breakdown-bar-container">
+            <div class="breakdown-bar" id="breakdownAccuracy" style="width: 80%">80%</div>
+          </div>
+        </div>
+        <div class="breakdown-item">
+          <div class="breakdown-label">Fluency</div>
+          <div class="breakdown-bar-container">
+            <div class="breakdown-bar" id="breakdownFluency" style="width: 90%">90%</div>
+          </div>
+        </div>
+        <div class="breakdown-item">
+          <div class="breakdown-label">Pronunc.</div>
+          <div class="breakdown-bar-container">
+            <div class="breakdown-bar" id="breakdownPronunciation" style="width: 90%">90%</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="audio-controls">
+        <button class="audio-btn" onclick="playOriginalAudio()">
+          🎧 Play Original
+        </button>
+        <button class="audio-btn" onclick="playUserRecording()">
+          🎙️ Play My Recording
+        </button>
+      </div>
+
+      <div class="review-nav">
+        <button class="btn btn-secondary" id="reviewPrevBtn" onclick="showReview(currentReviewIndex - 1)">← Prev</button>
+        <button class="btn btn-secondary" onclick="showScreen('results')">Back to Results</button>
+        <button class="btn btn-secondary" id="reviewNextBtn" onclick="showReview(currentReviewIndex + 1)">Next →</button>
+      </div>
+    </div>
+  </div>
+
+  <audio id="mainAudio" src="practice-campus-bookstore.mp3"></audio>
+  <audio id="userAudioPlayback"></audio>
+
+  <script>
+    // ==================== DATA STRUCTURE ====================
+    const scenarios = [
+      {
+        id: 'bookstore',
+        title: 'Campus Bookstore Tour',
+        setting: 'daily_life',
+        description: 'You are being trained as a tour guide at a campus bookstore. Listen to your supervisor and repeat what she says.',
+        illustration: '📚',
+        sentences: [
+          { id: 1, order: 1, text: 'Welcome to the campus bookstore.', wordCount: 5, audioStart: 0.02, audioEnd: 1.32 },
+          { id: 2, order: 2, text: 'We sell textbooks and school supplies.', wordCount: 6, audioStart: 1.92, audioEnd: 3.68 },
+          { id: 3, order: 3, text: 'New books are on the first floor.', wordCount: 7, audioStart: 4.34, audioEnd: 5.64 },
+          { id: 4, order: 4, text: 'Used books are cheaper and easier to find.', wordCount: 8, audioStart: 6.16, audioEnd: 8.04 },
+          { id: 5, order: 5, text: 'Student discounts are available with your ID card.', wordCount: 8, audioStart: 15.84, audioEnd: 18.14 },
+          { id: 6, order: 6, text: 'If we don\'t have a book in stock, we can order it for you.', wordCount: 13, audioStart: 38.60, audioEnd: 43.38 },
+          { id: 7, order: 7, text: 'Feel free to ask any of our staff if you need help finding something.', wordCount: 13, audioStart: 49.14, audioEnd: 53.60 }
+        ]
+      }
+    ];
+
+    // ==================== STATE MANAGEMENT ====================
+    let currentScreen = 'intro';
+    let currentScenario = null;
+    let currentSentenceIndex = 0;
+    let testSession = {
+      scenarioId: null,
+      responses: [],
+      startedAt: null,
+      completedAt: null
+    };
+    let sentenceState = 'idle';
+    let currentReviewIndex = 0;
+
+    // ==================== SCREEN NAVIGATION ====================
+    function showScreen(screenName) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const screen = document.getElementById(`screen${screenName.charAt(0).toUpperCase() + screenName.slice(1)}`);
+      if (screen) {
+        screen.classList.add('active', 'fade-in');
+        currentScreen = screenName;
+        updateHeader();
+      }
+    }
+
+    function updateHeader() {
+      const headerProgress = document.getElementById('headerProgress');
+      if (currentScreen === 'sentence') {
+        headerProgress.textContent = `Sentence ${currentSentenceIndex + 1} of 7`;
+      } else if (currentScreen === 'results') {
+        headerProgress.textContent = 'Results';
+      } else if (currentScreen === 'review') {
+        headerProgress.textContent = `Review: Sentence ${currentReviewIndex + 1}`;
+      } else {
+        headerProgress.textContent = '';
+      }
+    }
+
+    // ==================== TEST INITIALIZATION ====================
+    function startTest() {
+      currentScenario = scenarios[0];
+      currentSentenceIndex = 0;
+      testSession = {
+        scenarioId: currentScenario.id,
+        responses: [],
+        startedAt: new Date(),
+        completedAt: null
+      };
+
+      // Update scenario screen
+      document.getElementById('scenarioDescription').textContent = currentScenario.description;
+      document.getElementById('scenarioIllustration').textContent = currentScenario.illustration;
+
+      showScreen('sentence');
+      startSentence();
+    }
+
+    function startSentence() {
+      if (currentSentenceIndex >= currentScenario.sentences.length) {
+        completeTest();
+        return;
+      }
+
+      const sentence = currentScenario.sentences[currentSentenceIndex];
+      document.getElementById('sentenceCounter').textContent = `Sentence ${currentSentenceIndex + 1} of 7`;
+      updateProgressBar();
+      document.getElementById('sentenceIllustration').textContent = currentScenario.illustration;
+
+      sentenceState = 'idle';
+      transitionToState('playing_audio', sentence);
+    }
+
+    function updateProgressBar() {
+      const container = document.getElementById('progressBar');
+      container.innerHTML = '';
+      for (let i = 0; i < 7; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'progress-dot';
+        if (i < currentSentenceIndex) {
+          dot.classList.add('completed');
+        } else if (i === currentSentenceIndex) {
+          dot.classList.add('active');
+        }
+        container.appendChild(dot);
+        if (i < 6) {
+          const connector = document.createElement('div');
+          connector.className = 'progress-connector';
+          if (i < currentSentenceIndex) {
+            connector.classList.add('completed');
+          }
+          container.appendChild(connector);
+        }
+      }
+    }
+
+    // ==================== STATE MACHINE ====================
+    function transitionToState(state, sentence) {
+      sentenceState = state;
+
+      // Hide all phases
+      document.getElementById('phaseListening').classList.add('hidden');
+      document.getElementById('phaseRecording').classList.add('hidden');
+      document.getElementById('phaseProcessing').classList.add('hidden');
+      document.getElementById('phaseScored').classList.add('hidden');
+
+      switch (state) {
+        case 'playing_audio':
+          playAudio(sentence);
+          break;
+        case 'pause':
+          setTimeout(() => transitionToState('recording', sentence), 500);
+          break;
+        case 'recording':
+          startRecording(sentence);
+          break;
+        case 'processing':
+          processRecording(sentence);
+          break;
+        case 'scored':
+          showScore();
+          setTimeout(() => {
+            currentSentenceIndex++;
+            startSentence();
+          }, 1500);
+          break;
+      }
+    }
+
+    // ==================== AUDIO PLAYBACK ====================
+    let audioEndTimer = null;
+
+    function playAudio(sentence) {
+      document.getElementById('phaseListening').classList.remove('hidden');
+      document.getElementById('audioProgressBar').style.width = '0%';
+
+      const audio = document.getElementById('mainAudio');
+      const start = sentence.audioStart;
+      const end = sentence.audioEnd;
+      const duration = end - start;
+
+      audio.currentTime = start;
+      audio.play().catch(err => console.error('Audio play failed:', err));
+
+      // Update progress bar
+      const progressBar = document.getElementById('audioProgressBar');
+      const updateInterval = setInterval(() => {
+        const elapsed = audio.currentTime - start;
+        const progress = Math.min(100, (elapsed / duration) * 100);
+        progressBar.style.width = progress + '%';
+
+        if (audio.currentTime >= end || audio.ended) {
+          clearInterval(updateInterval);
+          audio.pause();
+          transitionToState('pause', sentence);
+        }
+      }, 50);
+    }
+
+    // ==================== RECORDING ====================
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let recordingStream = null;
+    let recordingTimer = null;
+    let silenceTimer = null;
+    let analyser = null;
+    let waveformAnimation = null;
+    const MAX_RECORDING_TIME = 15;
+    const SILENCE_TIMEOUT = 3;
+
+    async function startRecording(sentence) {
+      document.getElementById('phaseRecording').classList.remove('hidden');
+      document.getElementById('recordingTimer').textContent = formatTime(MAX_RECORDING_TIME);
+
+      try {
+        recordingStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(recordingStream);
+        audioChunks = [];
+
+        mediaRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) {
+            audioChunks.push(event.data);
+          }
+        };
+
+        mediaRecorder.onstop = () => {
+          const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+          transitionToState('processing', sentence);
+          processRecording(sentence, audioBlob);
+        };
+
+        // Setup waveform visualization
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioContext.createAnalyser();
+        const source = audioContext.createMediaStreamSource(recordingStream);
+        source.connect(analyser);
+        analyser.fftSize = 256;
+        startWaveformVisualization();
+
+        // Start recording
+        mediaRecorder.start();
+        let timeRemaining = MAX_RECORDING_TIME;
+        let lastSoundTime = Date.now();
+
+        recordingTimer = setInterval(() => {
+          timeRemaining--;
+          document.getElementById('recordingTimer').textContent = formatTime(timeRemaining);
+
+          // Check for silence
+          const dataArray = new Uint8Array(analyser.frequencyBinCount);
+          analyser.getByteFrequencyData(dataArray);
+          const average = dataArray.reduce((a, b) => a + b) / dataArray.length;
+          const threshold = 20;
+
+          if (average > threshold) {
+            lastSoundTime = Date.now();
+            if (silenceTimer) {
+              clearTimeout(silenceTimer);
+              silenceTimer = null;
+            }
+          } else {
+            if (!silenceTimer) {
+              silenceTimer = setTimeout(() => {
+                stopRecording();
+              }, SILENCE_TIMEOUT * 1000);
+            }
+          }
+
+          if (timeRemaining <= 0) {
+            stopRecording();
+          }
+        }, 1000);
+      } catch (error) {
+        console.error('Recording failed:', error);
+        alert('Microphone access denied. Please allow microphone access to continue.');
+      }
+    }
+
+    function stopRecording() {
+      if (recordingTimer) {
+        clearInterval(recordingTimer);
+        recordingTimer = null;
+      }
+      if (silenceTimer) {
+        clearTimeout(silenceTimer);
+        silenceTimer = null;
+      }
+      if (waveformAnimation) {
+        cancelAnimationFrame(waveformAnimation);
+        waveformAnimation = null;
+      }
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+      }
+      if (recordingStream) {
+        recordingStream.getTracks().forEach(track => track.stop());
+        recordingStream = null;
+      }
+    }
+
+    function startWaveformVisualization() {
+      const container = document.getElementById('waveformContainer');
+      container.innerHTML = '';
+      const barCount = 40;
+      const bars = [];
+
+      for (let i = 0; i < barCount; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'waveform-bar';
+        bar.style.height = '4px';
+        container.appendChild(bar);
+        bars.push(bar);
+      }
+
+      function updateWaveform() {
+        if (!analyser) return;
+        const dataArray = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(dataArray);
+
+        bars.forEach((bar, i) => {
+          const index = Math.floor((i / barCount) * dataArray.length);
+          const value = dataArray[index] || 0;
+          const height = Math.max(4, (value / 255) * 80);
+          bar.style.height = height + 'px';
+        });
+
+        waveformAnimation = requestAnimationFrame(updateWaveform);
+      }
+
+      updateWaveform();
+    }
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    // ==================== MOCK SCORING ENGINE ====================
+    function processRecording(sentence, audioBlob) {
+      document.getElementById('phaseProcessing').classList.remove('hidden');
+
+      // Simulate processing delay
+      setTimeout(() => {
+        const transcription = mockTranscribe(sentence.text);
+        const wordDiff = computeWordDiff(sentence.text, transcription);
+        const score = scoreResponse(sentence.text, transcription, {
+          duration: audioBlob ? 5000 : 3000,
+          wordCount: transcription.split(' ').length
+        });
+
+        const response = {
+          sentenceId: sentence.id,
+          sentenceText: sentence.text,
+          audioBlob: audioBlob,
+          transcription: transcription,
+          score: score.total,
+          accuracy: score.accuracy,
+          fluencyScore: score.fluency,
+          intelligibilityScore: score.intelligibility,
+          wordDiff: wordDiff,
+          durationMs: score.duration
+        };
+
+        testSession.responses.push(response);
+        currentResponse = response;
+        transitionToState('scored', sentence);
+      }, 1500);
+    }
+
+    function mockTranscribe(reference) {
+      const words = tokenize(reference);
+      const accuracy = 0.75 + Math.random() * 0.2; // 75-95% accuracy
+      const wordCount = Math.floor(words.length * accuracy);
+
+      // Simulate variations
+      const transcribed = [];
+      for (let i = 0; i < wordCount; i++) {
+        if (i < words.length) {
+          // Sometimes substitute a word
+          if (Math.random() < 0.1 && i > 0) {
+            transcribed.push(getSimilarWord(words[i]));
+          } else {
+            transcribed.push(words[i]);
+          }
+        }
+      }
+
+      // Sometimes add extra words
+      if (Math.random() < 0.2) {
+        transcribed.push('the');
+      }
+
+      return transcribed.join(' ');
+    }
+
+    function getSimilarWord(word) {
+      const substitutions = {
+        'the': 'a',
+        'a': 'the',
+        'is': 'are',
+        'are': 'is',
+        'to': 'for',
+        'and': 'or'
+      };
+      return substitutions[word.toLowerCase()] || word;
+    }
+
+    function tokenize(text) {
+      return text.toLowerCase().replace(/[.,!?;:]/g, '').split(/\s+/).filter(w => w.length > 0);
+    }
+
+    function computeWordDiff(reference, transcription) {
+      const refWords = tokenize(reference);
+      const transWords = tokenize(transcription);
+      const diffs = [];
+      let refIdx = 0;
+      let transIdx = 0;
+
+      while (refIdx < refWords.length || transIdx < transWords.length) {
+        if (refIdx >= refWords.length) {
+          // Extra words in transcription
+          diffs.push({
+            referenceWord: null,
+            spokenWord: transWords[transIdx],
+            status: 'added',
+            confidence: 0.7 + Math.random() * 0.2
+          });
+          transIdx++;
+        } else if (transIdx >= transWords.length) {
+          // Missing words
+          diffs.push({
+            referenceWord: refWords[refIdx],
+            spokenWord: null,
+            status: 'omitted',
+            confidence: 0
+          });
+          refIdx++;
+        } else if (refWords[refIdx] === transWords[transIdx]) {
+          // Match
+          diffs.push({
+            referenceWord: refWords[refIdx],
+            spokenWord: transWords[transIdx],
+            status: 'correct',
+            confidence: 0.9 + Math.random() * 0.1
+          });
+          refIdx++;
+          transIdx++;
+        } else {
+          // Check if it's a substitution or if words are out of order
+          const nextRefMatch = transWords.slice(transIdx).indexOf(refWords[refIdx]);
+          const nextTransMatch = refWords.slice(refIdx).indexOf(transWords[transIdx]);
+
+          if (nextRefMatch === 0) {
+            // Extra word in transcription
+            diffs.push({
+              referenceWord: null,
+              spokenWord: transWords[transIdx],
+              status: 'added',
+              confidence: 0.7 + Math.random() * 0.2
+            });
+            transIdx++;
+          } else if (nextTransMatch === 0) {
+            // Missing word
+            diffs.push({
+              referenceWord: refWords[refIdx],
+              spokenWord: null,
+              status: 'omitted',
+              confidence: 0
+            });
+            refIdx++;
+          } else {
+            // Substitution
+            diffs.push({
+              referenceWord: refWords[refIdx],
+              spokenWord: transWords[transIdx],
+              status: 'substituted',
+              confidence: 0.6 + Math.random() * 0.2
+            });
+            refIdx++;
+            transIdx++;
+          }
+        }
+      }
+
+      return diffs;
+    }
+
+    function scoreResponse(reference, transcription, audioMetrics) {
+      const refWords = tokenize(reference);
+      const transWords = tokenize(transcription);
+      const wordDiff = computeWordDiff(reference, transcription);
+
+      // Calculate accuracy
+      const correct = wordDiff.filter(d => d.status === 'correct').length;
+      const accuracy = refWords.length > 0 ? correct / refWords.length : 0;
+
+      // Content word coverage (simplified - assume nouns/verbs/adjectives are longer words)
+      const contentWords = refWords.filter(w => w.length > 4);
+      const matchedContent = wordDiff.filter(d => 
+        d.status === 'correct' && contentWords.includes(d.referenceWord)
+      ).length;
+      const contentCoverage = contentWords.length > 0 ? matchedContent / contentWords.length : 1;
+
+      // Fluency (mock)
+      const expectedDuration = refWords.length * 400; // ~400ms per word
+      const actualDuration = audioMetrics.duration;
+      const fluency = Math.min(1, expectedDuration / Math.max(actualDuration, expectedDuration * 0.5));
+      const fluencyScore = 0.7 + Math.random() * 0.25;
+
+      // Intelligibility (mock)
+      const avgConfidence = wordDiff.reduce((sum, d) => sum + d.confidence, 0) / Math.max(wordDiff.length, 1);
+      const intelligibility = avgConfidence;
+
+      // Map to 0-5 scale
+      let totalScore = 0;
+      if (accuracy >= 0.95 && intelligibility >= 0.9) {
+        totalScore = 5;
+      } else if (accuracy >= 0.80 && contentCoverage >= 0.90) {
+        totalScore = 4;
+      } else if (contentCoverage >= 0.60 && transWords.length >= refWords.length * 0.7) {
+        totalScore = 3;
+      } else if (contentCoverage >= 0.30) {
+        totalScore = 2;
+      } else if (transWords.length > 0) {
+        totalScore = 1;
+      } else {
+        totalScore = 0;
+      }
+
+      return {
+        total: totalScore,
+        accuracy: accuracy,
+        fluency: fluencyScore,
+        intelligibility: intelligibility,
+        duration: audioMetrics.duration
+      };
+    }
+
+    let currentResponse = null;
+
+    function showScore() {
+      document.getElementById('phaseScored').classList.remove('hidden');
+      if (currentResponse) {
+        document.getElementById('scoreDisplay').textContent = currentResponse.score;
+      }
+    }
+
+    // ==================== TEST COMPLETION ====================
+    function completeTest() {
+      testSession.completedAt = new Date();
+      const totalScore = testSession.responses.reduce((sum, r) => sum + r.score, 0);
+      const average = (totalScore / testSession.responses.length).toFixed(1);
+
+      // Update results screen
+      document.getElementById('resultsScenario').textContent = `Scenario: ${currentScenario.title}`;
+      const tbody = document.getElementById('resultsTableBody');
+      tbody.innerHTML = '';
+      testSession.responses.forEach((response, idx) => {
+        const row = document.createElement('tr');
+        const preview = response.sentenceText.length > 40 
+          ? response.sentenceText.substring(0, 40) + '...' 
+          : response.sentenceText;
+        row.innerHTML = `
+          <td>${idx + 1}</td>
+          <td class="sentence-preview">${preview}</td>
+          <td class="score-cell score-${response.score}">${response.score}/5</td>
+        `;
+        tbody.appendChild(row);
+      });
+
+      document.getElementById('totalScore').textContent = `${totalScore}/35`;
+      document.getElementById('averageScore').textContent = `Average: ${average}`;
+
+      showScreen('results');
+    }
+
+    // ==================== REVIEW SCREEN ====================
+    function showReview(index) {
+      if (index < 0 || index >= testSession.responses.length) return;
+      currentReviewIndex = index;
+      const response = testSession.responses[index];
+
+      document.getElementById('reviewSentenceNum').textContent = index + 1;
+      document.getElementById('reviewScore').textContent = `${response.score}/5`;
+
+      // Display original sentence
+      document.getElementById('reviewOriginal').textContent = response.sentenceText;
+
+      // Display response with word diffs
+      const responseBox = document.getElementById('reviewResponse');
+      responseBox.innerHTML = '';
+      response.wordDiff.forEach(diff => {
+        const span = document.createElement('span');
+        span.className = `word-diff word-${diff.status}`;
+        if (diff.status === 'omitted') {
+          span.textContent = diff.referenceWord;
+          span.style.textDecoration = 'line-through';
+        } else if (diff.status === 'added') {
+          span.textContent = diff.spokenWord;
+        } else if (diff.spokenWord) {
+          span.textContent = diff.spokenWord;
+        }
+        responseBox.appendChild(span);
+        responseBox.appendChild(document.createTextNode(' '));
+      });
+
+      // Update breakdown bars
+      document.getElementById('breakdownAccuracy').style.width = (response.accuracy * 100) + '%';
+      document.getElementById('breakdownAccuracy').textContent = Math.round(response.accuracy * 100) + '%';
+      document.getElementById('breakdownFluency').style.width = (response.fluencyScore * 100) + '%';
+      document.getElementById('breakdownFluency').textContent = Math.round(response.fluencyScore * 100) + '%';
+      document.getElementById('breakdownPronunciation').style.width = (response.intelligibilityScore * 100) + '%';
+      document.getElementById('breakdownPronunciation').textContent = Math.round(response.intelligibilityScore * 100) + '%';
+
+      // Update navigation buttons
+      document.getElementById('reviewPrevBtn').disabled = index === 0;
+      document.getElementById('reviewNextBtn').disabled = index === testSession.responses.length - 1;
+
+      // Store current response for audio playback
+      currentReviewResponse = response;
+
+      showScreen('review');
+    }
+
+    let currentReviewResponse = null;
+
+    function playOriginalAudio() {
+      if (!currentReviewResponse) return;
+      const sentence = currentScenario.sentences.find(s => s.id === currentReviewResponse.sentenceId);
+      if (sentence) {
+        const audio = document.getElementById('mainAudio');
+        audio.currentTime = sentence.audioStart;
+        audio.play();
+      }
+    }
+
+    function playUserRecording() {
+      if (!currentReviewResponse || !currentReviewResponse.audioBlob) {
+        alert('Recording not available');
+        return;
+      }
+      const audio = document.getElementById('userAudioPlayback');
+      const url = URL.createObjectURL(currentReviewResponse.audioBlob);
+      audio.src = url;
+      audio.play();
+    }
+
+    function startNewTest() {
+      showScreen('scenario');
+    }
+
+    // Initialize
+    updateHeader();
+  </script>
+</body>
+</html>
