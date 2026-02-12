@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOEFL Listening — Conversation Practice</title>
+  <style>
+    /* TOEFL/ETS Design System */
+    :root {
+      --ets-blue: #0066b3;
+      --ets-blue-dark: #004c87;
+      --ets-blue-light: #e6f2fa;
+      --bg: #f0f2f5;
+      --card: #ffffff;
+      --border: #d1d5db;
+      --text: #1a1a1a;
+      --muted: #6b7280;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --header-height: 48px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 24px;
+    }
+
+    /* Header */
+    .header {
+      height: var(--header-height);
+      background: var(--ets-blue);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    }
+    .header-home {
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background 0.2s;
+      margin-right: 12px;
+    }
+    .header-home:hover {
+      background: rgba(255,255,255,.15);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+    .header-select {
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 6px 12px;
+      cursor: pointer;
+      min-width: 200px;
+    }
+    .header-select:hover { background: rgba(255,255,255,.25); }
+    .header-select option { color: var(--text); background: var(--card); }
+
+    /* Main Container */
+    .main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px 16px;
+    }
+
+    /* Card Styling */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    .card h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: var(--ets-blue-dark);
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0;
+      margin-bottom: 24px;
+      padding: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      width: 100%;
+    }
+    .progress-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: all .3s;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .progress-dot:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 0 2px var(--ets-blue-light);
+    }
+    .progress-dot.active {
+      background: var(--ets-blue);
+      transform: scale(1.2);
+    }
+    .progress-dot.completed {
+      background: var(--success);
+    }
+    .progress-connector {
+      height: 2px;
+      background: var(--border);
+      flex: 1;
+      min-width: 4px;
+    }
+    .progress-connector.completed {
+      background: var(--success);
+    }
+
+    /* Conversation Section */
+    .conversation-section {
+      background: var(--ets-blue-light);
+      border: 2px solid var(--ets-blue);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .conversation-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .conversation-icon {
+      font-size: 32px;
+    }
+    .conversation-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ets-blue-dark);
+    }
+    .conversation-info {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+    .audio-player-wrapper {
+      margin-top: 16px;
+    }
+    .audio-player-wrapper audio {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    /* Questions Section */
+    .questions-section {
+      margin-top: 32px;
+    }
+    .question-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .question-number {
+      display: inline-block;
+      background: var(--ets-blue);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+    .question-text {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .options-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .option-item {
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--card);
+    }
+    .option-item:hover:not(.disabled) {
+      border-color: var(--ets-blue);
+      background: var(--ets-blue-light);
+    }
+    .option-item.selected {
+      border-color: var(--ets-blue);
+      background: var(--ets-blue-light);
+    }
+    .option-item.correct {
+      border-color: var(--success);
+      background: #d1fae5;
+    }
+    .option-item.incorrect {
+      border-color: var(--error);
+      background: #fee2e2;
+    }
+    .option-item.disabled {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+    .option-label {
+      font-weight: 600;
+      color: var(--ets-blue-dark);
+      margin-right: 8px;
+    }
+    .option-text {
+      color: var(--text);
+    }
+    .feedback {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      display: none;
+    }
+    .feedback.show {
+      display: block;
+    }
+    .feedback.correct {
+      background: #d1fae5;
+      color: #065f46;
+      border-left: 4px solid var(--success);
+    }
+    .feedback.incorrect {
+      background: #fee2e2;
+      color: #991b1b;
+      border-left: 4px solid var(--error);
+    }
+    .feedback-explanation {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Section title */
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      background: var(--ets-blue);
+      color: #fff;
+    }
+    .btn:hover:not(:disabled) { 
+      background: var(--ets-blue-dark); 
+    }
+    .btn:disabled { 
+      opacity: .5; 
+      cursor: not-allowed; 
+    }
+    .btn-secondary {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover:not(:disabled) {
+      background: #f3f4f6;
+      border-color: var(--ets-blue);
+      color: var(--ets-blue);
+    }
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    /* Results Summary */
+    .results-summary {
+      background: var(--card);
+      border: 2px solid var(--success);
+      border-radius: 8px;
+      padding: 24px;
+      text-align: center;
+      margin-top: 24px;
+    }
+    .results-score {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--ets-blue-dark);
+      margin: 12px 0;
+    }
+    .results-text {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    /* Instructions */
+    .instructions {
+      background: #fefce8;
+      border: 1px solid #fde68a;
+      border-radius: 6px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+    .instructions h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #92400e;
+      margin-bottom: 8px;
+    }
+    .instructions ul {
+      font-size: 13px;
+      color: #78350f;
+      line-height: 1.8;
+      padding-left: 20px;
+    }
+
+    .hidden { display: none !important; }
+    .text-center { text-align: center; }
+  </style>
+</head>
+<body>
+  <!--
+  REVIEW LOG (for maintainers; not shown to users)
+  Scripts + MC items: this file (CONVERSATION_SETS[*].conversations[].script, .questions[]).
+  Detailed item/set edit log: docs/item-review-log.md (Listening: Conversation section)
+  -->
+  <header class="header">
+    <div class="header-left">
+      <a href="index.html" class="header-home">← Home</a>
+      <div class="title">TOEFL® Listening — Conversation Practice</div>
+    </div>
+    <select class="header-select" id="setSelect" onchange="switchSet()">
+    </select>
+    <div id="headerProgress">Conversation 1 / 1</div>
+  </header>
+
+  <main class="main">
+    <div class="card">
+      <h2>Listen to a Conversation</h2>
+
+      <!-- Progress Bar -->
+      <div class="progress-bar" id="progressBar"></div>
+
+      <!-- Instructions -->
+      <div class="instructions">
+        <h3>Instructions</h3>
+        <ul>
+          <li>Each conversation features a short dialogue between two speakers</li>
+          <li>After listening, answer the questions that follow</li>
+          <li>You can listen to each conversation only once</li>
+          <li>Take notes while listening</li>
+          <li>Review explanations after selecting your answers</li>
+        </ul>
+      </div>
+
+      <!-- Conversation Section -->
+      <div class="conversation-section" id="conversationSection">
+        <div class="conversation-header">
+          <span class="conversation-icon">💬</span>
+          <div>
+            <div class="conversation-title" id="conversationTitle">Loading...</div>
+            <div class="conversation-info" id="conversationInfo">Topic: Loading...</div>
+          </div>
+        </div>
+        <div class="audio-player-wrapper">
+          <audio id="conversationAudio" controls style="width: 100%; max-width: 500px;">
+            <source id="audioSource" src="" type="audio/mpeg">
+            Your browser does not support audio playback.
+          </audio>
+        </div>
+        <div style="margin-top: 16px; text-align: center;">
+          <button class="btn" id="startBtn" onclick="startConversation()">Start Practice</button>
+          <button class="btn btn-secondary hidden" id="replayBtn" onclick="replayConversation()">Replay</button>
+        </div>
+      </div>
+
+      <!-- Questions Section -->
+      <div class="questions-section hidden" id="questionsSection">
+        <div class="section-title">Answer Questions</div>
+        <div id="questionsContainer"></div>
+        <div class="btn-group">
+          <button class="btn btn-secondary" id="prevBtn" onclick="previousConversation()" disabled>← Previous</button>
+          <button class="btn" id="checkBtn" onclick="checkAnswers()" disabled>Check Answers</button>
+          <button class="btn hidden" id="nextBtn" onclick="nextConversation()">Next →</button>
+        </div>
+      </div>
+
+      <!-- Results Summary -->
+      <div class="results-summary hidden" id="resultsSummary">
+        <div style="font-size: 18px; font-weight: 700; color: var(--ets-blue-dark);">Practice Complete!</div>
+        <div class="results-score" id="resultsScore">0/0</div>
+        <div class="results-text" id="resultsText">Accuracy: 0%</div>
+        <div class="btn-group" style="margin-top: 20px;">
+          <button class="btn btn-secondary" onclick="restartPractice()">Restart</button>
+          <button class="btn" onclick="reviewAnswers()">Review Answers</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // ==================== CONVERSATION SETS ====================
+    const CONVERSATION_SETS = {
+      C01: {
+        label: 'Set 1 — Campus Life',
+        conversations: [
+          {
+            id: 'C01-01',
+            title: 'Finding a Piano to Practice',
+            topic: 'Education',
+            audioFile: 'audio/listening/LC-C01-01.mp3',
+            script: {
+              student: 'Uh, I almost forgot to return the keys to the music practice room. Uh, it\'s been a long day.',
+              administrator: 'Okay, thanks. You know, very soon that\'s not gonna be an issue anymore. The school is planning to distribute electronic key cards to students, so you won\'t have to pick up and drop off the key every time you use the practice rooms.',
+              student: 'Oh, that\'ll be good. But what would really make life easier would be if it were possible to use a room earlier in the day. I can never get anything before 9 in the evening.',
+              administrator: 'Really? Why\'s that?',
+              student: 'So, if you\'re not getting a degree in music, which I\'m not, the only times practice rooms are available to you are early in the morning and late in the evening. My major course of study is biology, so I have lab classes and they\'re early in the morning, so I don\'t have a lot of energy left when I finally do get to practice.',
+              administrator: 'Well, you aren\'t the first to complain about lack of availability. You know, now that the weather\'s been better, I often hear students just practicing outside in the courtyard.',
+              student: 'Yeah, but they\'re not playing pianos.',
+              administrator: 'Ah, that\'s true. But doesn\'t every resident hall have a piano in the lounge area?',
+              student: 'Yeah, but when people are studying, which is a lot of the time, I don\'t think my playing would be much appreciated. Besides, you know, you usually want some privacy to practice in a quiet, soundproofed place.',
+              administrator: 'Well, I think there actually may be some good news on the way, but it wouldn\'t go into effect until at least next year, as you said, students in the music department get priority on using the rooms.',
+              student: 'Right?',
+              administrator: 'But tell me, are you currently taking private music lessons?',
+              student: 'Yeah?',
+              administrator: 'Well, they\'re considering giving students from other departments an incentive to sign up for lessons with instructors from our department, so if you study with one of our people, it\'d give you priority on the rooms, equal to that of the music students. Well, that\'s the plan anyway.',
+              student: 'Seriously? because my instructor, Eric Miller, actually is one of your graduate students.',
+              administrator: 'Good. Plus, we\'re hoping we\'ll be able to increase the hours for open on the weekends, that\'d make things more convenient too.',
+              student: 'All sounds promising! Oh, well, I have your ear. I should mention that the piano in room 220 really needs tuning.',
+              administrator: 'Ah, really? Someone comes in every few months to retune them all.',
+              student: 'Well, that one needs to be serviced again, trust me.'
+            },
+            questions: [
+              {
+                id: 'Q1',
+                text: 'According to the conversation, what do the speakers mainly discuss?',
+                options: [
+                  { label: 'A', text: 'The reservation policy for music practice rooms' },
+                  { label: 'B', text: 'A misunderstanding about who can use the music rooms' },
+                  { label: 'C', text: 'Plans to improve the quality of instruction in the music department' },
+                  { label: 'D', text: 'Problems with some of the equipment in the music building' }
+                ],
+                correct: 'A',
+                explanation: 'The conversation focuses on the student\'s difficulty accessing practice rooms and the administrator\'s explanation of current policies and potential future changes to room access.'
+              },
+              {
+                id: 'Q2',
+                text: 'According to the conversation, what does the man imply when he mentions that his lab classes start early in the morning?',
+                options: [
+                  { label: 'A', text: 'He is not able to take as many music classes as he would like to.' },
+                  { label: 'B', text: 'He does not like having to practice late in the evening.' },
+                  { label: 'C', text: 'He would prefer to practice music early in the morning rather than go to a lab class.' },
+                  { label: 'D', text: 'He forgot to explain why he would be late returning a key.' }
+                ],
+                correct: 'B',
+                explanation: 'The student explains that because he has early morning lab classes, he doesn\'t have energy left when practice rooms become available late in the evening, implying he dislikes having to practice at that time.'
+              },
+              {
+                id: 'Q3',
+                text: 'According to the conversation, why does the woman mention students playing instruments in the courtyard?',
+                options: [
+                  { label: 'A', text: 'To point out a recent renovation of the music department facilities' },
+                  { label: 'B', text: 'To suggest that more students from other departments should take music lessons' },
+                  { label: 'C', text: 'To increase the man\'s confidence about performing in public' },
+                  { label: 'D', text: 'To suggest a practice location that the man might not have considered' }
+                ],
+                correct: 'D',
+                explanation: 'The administrator mentions students practicing in the courtyard as an alternative location, though the student points out this doesn\'t work for piano practice.'
+              },
+              {
+                id: 'Q4',
+                text: 'According to the conversation, what are the man\'s objections to using the pianos in the residence hall lounges? Click on 2 answers.',
+                options: [
+                  { label: 'A', text: 'His instructor prefers that he practice in the music building.' },
+                  { label: 'B', text: 'He is concerned about disturbing other students.' },
+                  { label: 'C', text: 'He does not like to be overheard while practicing.' },
+                  { label: 'D', text: 'There is often competition for the use of the pianos.' }
+                ],
+                correct: 'BC',
+                explanation: 'The student mentions two concerns: that his playing would disturb students who are studying, and that he wants privacy to practice in a quiet, soundproofed place.'
+              },
+              {
+                id: 'Q5',
+                text: 'According to the conversation, what does the woman imply when she says "Well, that\'s the plan anyway"?',
+                options: [
+                  { label: 'A', text: 'She thinks that the man should consider getting a different music instructor.' },
+                  { label: 'B', text: 'She is concerned that some rules may be unfair to students in the music department.' },
+                  { label: 'C', text: 'She is uncertain that the arrangement she describes will go into effect.' },
+                  { label: 'D', text: 'She feels that the practice rooms in the music building are not all equally desirable.' }
+                ],
+                correct: 'C',
+                explanation: 'The phrase "that\'s the plan anyway" suggests uncertainty about whether the proposed changes will actually be implemented.'
+              }
+            ]
+          }
+        ]
+      }
+    };
+
+    // ==================== STATE ====================
+    const STORAGE_KEY = 'toefl-listening-conversation-state';
+    let currentSetId = 'C01';
+    let currentConversationIndex = 0;
+    let answers = {}; // { conversationId: { Q1: 'A', Q2: 'B' } }
+    let hasStarted = false;
+
+    // ==================== INIT ====================
+    function init() {
+      // Populate set selector
+      const select = document.getElementById('setSelect');
+      select.innerHTML = '';
+      for (const [id, set] of Object.entries(CONVERSATION_SETS)) {
+        const opt = document.createElement('option');
+        opt.value = id;
+        opt.textContent = set.label;
+        select.appendChild(opt);
+      }
+
+      // Restore state
+      const saved = restoreState();
+      if (saved) {
+        currentSetId = saved.setId;
+        currentConversationIndex = saved.conversationIndex || 0;
+      }
+      select.value = currentSetId;
+
+      updateUI();
+    }
+
+    // ==================== STATE MANAGEMENT ====================
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          setId: currentSetId,
+          conversationIndex: currentConversationIndex
+        }));
+      } catch (e) { /* ignore */ }
+    }
+
+    function restoreState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+        if (!data.setId || !CONVERSATION_SETS[data.setId]) return null;
+        return data;
+      } catch (e) { return null; }
+    }
+
+    function updateUI() {
+      const set = CONVERSATION_SETS[currentSetId];
+      const conversation = set.conversations[currentConversationIndex];
+      const total = set.conversations.length;
+
+      // Update header
+      document.getElementById('headerProgress').textContent = `Conversation ${currentConversationIndex + 1} / ${total}`;
+
+      // Update progress bar
+      updateProgressBar();
+
+      // Update conversation info
+      document.getElementById('conversationTitle').textContent = conversation.title;
+      document.getElementById('conversationInfo').textContent = `Topic: ${conversation.topic}`;
+      
+      // Reset UI
+      document.getElementById('startBtn').classList.remove('hidden');
+      document.getElementById('replayBtn').classList.add('hidden');
+      document.getElementById('questionsSection').classList.add('hidden');
+      document.getElementById('resultsSummary').classList.add('hidden');
+      hasStarted = false;
+
+      // Update navigation buttons
+      document.getElementById('prevBtn').disabled = currentConversationIndex === 0;
+      document.getElementById('checkBtn').disabled = true;
+      document.getElementById('nextBtn').classList.add('hidden');
+
+      saveState();
+    }
+
+    function updateProgressBar() {
+      const container = document.getElementById('progressBar');
+      container.innerHTML = '';
+      const set = CONVERSATION_SETS[currentSetId];
+      const total = set.conversations.length;
+
+      for (let i = 0; i < total; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'progress-dot';
+        dot.setAttribute('data-index', i);
+        dot.setAttribute('title', `Conversation ${i + 1}`);
+        
+        if (i < currentConversationIndex) {
+          dot.classList.add('completed');
+        } else if (i === currentConversationIndex) {
+          dot.classList.add('active');
+        }
+        
+        dot.addEventListener('click', () => {
+          if (i !== currentConversationIndex) {
+            currentConversationIndex = i;
+            updateUI();
+          }
+        });
+        
+        container.appendChild(dot);
+        
+        if (i < total - 1) {
+          const connector = document.createElement('div');
+          connector.className = 'progress-connector';
+          if (i < currentConversationIndex) {
+            connector.classList.add('completed');
+          }
+          container.appendChild(connector);
+        }
+      }
+    }
+
+    // ==================== CONVERSATION PLAYBACK ====================
+    function startConversation() {
+      const set = CONVERSATION_SETS[currentSetId];
+      const conversation = set.conversations[currentConversationIndex];
+      
+      hasStarted = true;
+      document.getElementById('startBtn').classList.add('hidden');
+      document.getElementById('replayBtn').classList.remove('hidden');
+      
+      // Load audio if available
+      if (conversation.audioFile) {
+        document.getElementById('audioSource').src = conversation.audioFile;
+        document.getElementById('conversationAudio').load();
+      } else {
+        // Show script if no audio
+        showScript(conversation);
+      }
+
+      // Show questions after a delay
+      setTimeout(() => {
+        showQuestions(conversation);
+      }, 1000);
+    }
+
+    function replayConversation() {
+      const audio = document.getElementById('conversationAudio');
+      audio.currentTime = 0;
+      audio.play();
+    }
+
+    function showScript(conversation) {
+      // If no audio file, show the script as text
+      // Build script HTML from all turns
+      let scriptHtml = '<div style="margin-top: 16px; padding: 16px; background: #fff; border-radius: 6px; font-size: 13px; line-height: 1.8;"><div style="font-weight: 600; margin-bottom: 12px; color: var(--ets-blue-dark);">Conversation Script:</div>';
+      
+      // Display script as alternating turns
+      const script = conversation.script;
+      if (script.student && script.administrator) {
+        // Simple format: show student and administrator text
+        scriptHtml += `<div style="margin-bottom: 8px;"><strong>Student:</strong> ${script.student}</div>`;
+        scriptHtml += `<div style="margin-bottom: 8px;"><strong>Administrator:</strong> ${script.administrator}</div>`;
+      } else {
+        // Fallback: show raw script object
+        scriptHtml += `<div style="margin-bottom: 8px;"><pre style="white-space: pre-wrap;">${JSON.stringify(script, null, 2)}</pre></div>`;
+      }
+      
+      scriptHtml += '</div>';
+      
+      const audioWrapper = document.querySelector('.audio-player-wrapper');
+      const existingScript = audioWrapper.parentElement.querySelector('.script-display');
+      if (existingScript) {
+        existingScript.remove();
+      }
+      audioWrapper.insertAdjacentHTML('afterend', `<div class="script-display">${scriptHtml}</div>`);
+    }
+
+    function showQuestions(conversation) {
+      document.getElementById('questionsSection').classList.remove('hidden');
+      const container = document.getElementById('questionsContainer');
+      container.innerHTML = '';
+
+      conversation.questions.forEach((q, qIndex) => {
+        const questionCard = document.createElement('div');
+        questionCard.className = 'question-card';
+        questionCard.innerHTML = `
+          <div class="question-number">Question ${qIndex + 1}</div>
+          <div class="question-text">${q.text}</div>
+          <ul class="options-list" id="options-${conversation.id}-${q.id}">
+            ${q.options.map(opt => `
+              <li class="option-item" data-question="${q.id}" data-option="${opt.label}" onclick="selectOption('${conversation.id}', '${q.id}', '${opt.label}')">
+                <span class="option-label">${opt.label}.</span>
+                <span class="option-text">${opt.text}</span>
+              </li>
+            `).join('')}
+          </ul>
+          <div class="feedback" id="feedback-${conversation.id}-${q.id}">
+            <div class="feedback-explanation"></div>
+          </div>
+        `;
+        container.appendChild(questionCard);
+      });
+
+      // Check if already answered
+      if (answers[conversation.id]) {
+        Object.keys(answers[conversation.id]).forEach(qId => {
+          const option = answers[conversation.id][qId];
+          selectOption(conversation.id, qId, option, false);
+        });
+        document.getElementById('checkBtn').disabled = false;
+      }
+    }
+
+    function selectOption(conversationId, questionId, optionLabel, enableCheck = true) {
+      // Store answer
+      if (!answers[conversationId]) answers[conversationId] = {};
+      const conversation = CONVERSATION_SETS[currentSetId].conversations[currentConversationIndex];
+      const question = conversation.questions.find(q => q.id === questionId);
+      
+      // Handle multiple select questions
+      if (question.correct.length > 1) {
+        // Multiple select: toggle option
+        if (!answers[conversationId][questionId]) {
+          answers[conversationId][questionId] = '';
+        }
+        const current = answers[conversationId][questionId];
+        if (current.includes(optionLabel)) {
+          answers[conversationId][questionId] = current.replace(optionLabel, '');
+        } else {
+          answers[conversationId][questionId] = (current + optionLabel).split('').sort().join('');
+        }
+      } else {
+        // Single select: replace answer
+        answers[conversationId][questionId] = optionLabel;
+      }
+
+      // Update UI
+      const options = document.querySelectorAll(`#options-${conversationId}-${questionId} .option-item`);
+      const currentAnswer = answers[conversationId][questionId] || '';
+      options.forEach(opt => {
+        opt.classList.remove('selected');
+        if (question.correct.length > 1) {
+          if (currentAnswer.includes(opt.dataset.option)) {
+            opt.classList.add('selected');
+          }
+        } else {
+          if (opt.dataset.option === optionLabel) {
+            opt.classList.add('selected');
+          }
+        }
+      });
+
+      // Enable check button if all questions answered
+      if (enableCheck) {
+        const allAnswered = conversation.questions.every(q => {
+          const ans = answers[conversationId] && answers[conversationId][q.id];
+          return ans && (q.correct.length > 1 ? ans.length > 0 : ans.length === 1);
+        });
+        document.getElementById('checkBtn').disabled = !allAnswered;
+      }
+    }
+
+    function checkAnswers() {
+      const set = CONVERSATION_SETS[currentSetId];
+      const conversation = set.conversations[currentConversationIndex];
+      
+      conversation.questions.forEach(q => {
+        const selected = answers[conversation.id] && answers[conversation.id][q.id];
+        // Handle multiple correct answers (e.g., "BC")
+        const isCorrect = q.correct.length > 1 
+          ? selected && selected.length === q.correct.length && [...selected].every(c => q.correct.includes(c))
+          : selected === q.correct;
+        
+        // Update option styling
+        const options = document.querySelectorAll(`#options-${conversation.id}-${q.id} .option-item`);
+        const correctAnswers = q.correct.length > 1 ? [...q.correct] : [q.correct];
+        options.forEach(opt => {
+          opt.classList.add('disabled');
+          if (correctAnswers.includes(opt.dataset.option)) {
+            opt.classList.add('correct');
+          }
+          if (selected && !correctAnswers.includes(opt.dataset.option) && opt.dataset.option === selected) {
+            opt.classList.add('incorrect');
+          }
+        });
+
+        // Show feedback
+        const feedback = document.getElementById(`feedback-${conversation.id}-${q.id}`);
+        feedback.classList.add('show', isCorrect ? 'correct' : 'incorrect');
+        feedback.innerHTML = `
+          <div><strong>${isCorrect ? '✓ Correct' : '✗ Incorrect'}</strong></div>
+          <div class="feedback-explanation">${q.explanation}</div>
+        `;
+      });
+
+      document.getElementById('checkBtn').classList.add('hidden');
+      document.getElementById('nextBtn').classList.remove('hidden');
+      
+      // Update progress
+      updateProgressBar();
+    }
+
+    // ==================== NAVIGATION ====================
+    function previousConversation() {
+      if (currentConversationIndex > 0) {
+        currentConversationIndex--;
+        updateUI();
+      }
+    }
+
+    function nextConversation() {
+      const set = CONVERSATION_SETS[currentSetId];
+      if (currentConversationIndex < set.conversations.length - 1) {
+        currentConversationIndex++;
+        updateUI();
+      } else {
+        showResults();
+      }
+    }
+
+    function switchSet() {
+      const select = document.getElementById('setSelect');
+      if (!CONVERSATION_SETS[select.value]) return;
+      currentSetId = select.value;
+      currentConversationIndex = 0;
+      answers = {};
+      updateUI();
+    }
+
+    function showResults() {
+      const set = CONVERSATION_SETS[currentSetId];
+      let correct = 0;
+      let total = 0;
+
+      set.conversations.forEach(conv => {
+        conv.questions.forEach(q => {
+          total++;
+          const selected = answers[conv.id] && answers[conv.id][q.id];
+          if (selected) {
+            const isCorrect = q.correct.length > 1
+              ? selected.length === q.correct.length && [...selected].every(c => q.correct.includes(c))
+              : selected === q.correct;
+            if (isCorrect) correct++;
+          }
+        });
+      });
+
+      document.getElementById('questionsSection').classList.add('hidden');
+      document.getElementById('resultsSummary').classList.remove('hidden');
+      document.getElementById('resultsScore').textContent = `${correct}/${total}`;
+      document.getElementById('resultsText').textContent = `Accuracy: ${Math.round(correct / total * 100)}%`;
+    }
+
+    function restartPractice() {
+      currentConversationIndex = 0;
+      answers = {};
+      updateUI();
+    }
+
+    function reviewAnswers() {
+      currentConversationIndex = 0;
+      updateUI();
+      // Show all answers as checked
+      setTimeout(() => {
+        const set = CONVERSATION_SETS[currentSetId];
+        set.conversations.forEach(conv => {
+          if (answers[conv.id]) {
+            startConversation();
+            setTimeout(() => {
+              checkAnswers();
+            }, 500);
+          }
+        });
+      }, 100);
+    }
+
+    // ==================== INIT ====================
+    init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>纽约课 NYK — TOEFL Speaking Practice</title>
+  <style>
+    /* TOEFL/ETS Design System */
+    :root {
+      --ets-blue: #0066b3;
+      --ets-blue-dark: #004c87;
+      --ets-blue-light: #e6f2fa;
+      --bg: #f0f2f5;
+      --card: #ffffff;
+      --border: #d1d5db;
+      --text: #1a1a1a;
+      --muted: #6b7280;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --header-height: 64px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      height: var(--header-height);
+      background: var(--ets-blue);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    }
+    .header-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, var(--ets-blue) 0%, var(--ets-blue-dark) 100%);
+      color: #fff;
+      padding: 48px 20px;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -1px;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,.2);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-top: 16px;
+      border: 1px solid rgba(255,255,255,.3);
+    }
+    .hero p {
+      font-size: 18px;
+      opacity: 0.95;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Main Container */
+    .main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* Section */
+    .section-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--ets-blue-dark);
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .section-subtitle {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ets-blue-dark);
+      margin: 40px 0 20px 0;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--ets-blue-light);
+    }
+    .mock-test-card {
+      background: linear-gradient(135deg, var(--ets-blue) 0%, var(--ets-blue-dark) 100%);
+      color: #fff;
+      border: none;
+      padding: 48px 40px;
+      text-align: center;
+      margin-bottom: 50px;
+      position: relative;
+      overflow: hidden;
+    }
+    .mock-test-card::before {
+      display: none;
+    }
+    .mock-test-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 102, 179, 0.3);
+    }
+    .mock-test-card .card-icon {
+      font-size: 72px;
+      margin-bottom: 24px;
+      display: block;
+    }
+    .mock-test-card .card-title {
+      color: #fff;
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+    .mock-test-card .card-description {
+      color: rgba(255,255,255,.95);
+      font-size: 18px;
+      margin-bottom: 28px;
+      line-height: 1.7;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .mock-test-card .card-badge {
+      background: rgba(255,255,255,.25);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.3);
+      font-size: 13px;
+      padding: 8px 20px;
+    }
+    .skill-section {
+      margin-bottom: 50px;
+    }
+    .skill-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .skill-icon {
+      font-size: 32px;
+    }
+    .skill-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ets-blue-dark);
+    }
+    .skill-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .skill-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .skill-card:hover {
+      border-color: var(--ets-blue);
+      box-shadow: 0 2px 8px rgba(0, 102, 179, 0.1);
+      transform: translateY(-2px);
+    }
+    .skill-card.disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background: #f9fafb;
+      position: relative;
+    }
+    .skill-card.disabled:hover {
+      transform: none;
+      border-color: var(--border);
+      box-shadow: none;
+    }
+    .skill-card.disabled::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: transparent;
+      z-index: 1;
+    }
+    .skill-card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ets-blue-dark);
+      margin-bottom: 6px;
+    }
+    .skill-card-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .coming-soon {
+      display: inline-block;
+      font-size: 10px;
+      color: var(--muted);
+      font-style: italic;
+      margin-top: 4px;
+    }
+    .official-badge {
+      display: inline-block;
+      background: var(--success);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 8px;
+      margin-left: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Practice Grid */
+    .practice-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    /* Practice Card */
+    .practice-card {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      position: relative;
+      overflow: hidden;
+    }
+    .practice-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--ets-blue);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+    .practice-card:hover {
+      border-color: var(--ets-blue);
+      box-shadow: 0 4px 12px rgba(0, 102, 179, 0.15);
+      transform: translateY(-2px);
+    }
+    .practice-card:hover::before {
+      transform: scaleX(1);
+    }
+    .practice-card:active {
+      transform: translateY(0);
+    }
+
+    .card-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ets-blue-dark);
+      margin-bottom: 8px;
+    }
+    .card-description {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .card-features {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .card-features li {
+      font-size: 13px;
+      color: var(--text);
+      padding: 6px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+    .card-features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--success);
+      font-weight: 700;
+    }
+    .card-badge {
+      display: inline-block;
+      background: var(--ets-blue-light);
+      color: var(--ets-blue-dark);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 12px;
+      margin-top: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Info Section */
+    .info-section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin-top: 40px;
+    }
+    .info-section h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ets-blue-dark);
+      margin-bottom: 16px;
+    }
+    .info-section p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .info-section ul {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.8;
+      padding-left: 24px;
+      margin-top: 12px;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      padding: 24px 20px;
+      text-align: center;
+      margin-top: 60px;
+    }
+    .footer p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 28px; }
+      .hero p { font-size: 16px; }
+      .practice-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .main { padding: 24px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-title">纽约课 NYK — TOEFL® Practice Platform</div>
+  </header>
+
+  <div class="hero">
+    <h1>欢迎使用纽约课 TOEFL 练习平台</h1>
+    <p>纽约课 (NYK) 精心设计的托福综合练习工具，涵盖听说读写四项。我们的平台提供全科模考和单题型专项练习，完全符合 TOEFL 2026 标准，采用精细化管理与个性化学习路径。</p>
+    <div class="hero-badge">✓ 符合 TOEFL 2026 标准 | ✓ 遵循 ETS 评分标准 | ✓ CEFR A2-C1 分级</div>
+  </div>
+
+  <main class="main">
+    <!-- ============ 第一部分：全科模考 ============ -->
+    <h2 class="section-title">全科模考</h2>
+    
+    <a href="#" class="practice-card mock-test-card" onclick="alert('全科模考功能即将上线'); return false;">
+      <span class="card-icon">📋</span>
+      <div class="card-title">TOEFL 全科模拟考试</div>
+      <div class="card-description">
+        完整的 TOEFL 2026 格式模拟考试，包含阅读、听力、口语、写作四项，限时完成，真实还原考试环境。
+      </div>
+      <span class="card-badge">全科模考</span>
+    </a>
+
+    <!-- ============ 第二部分：单题型专项练习 ============ -->
+    <h2 class="section-subtitle">单题型专项练习</h2>
+
+    <!-- 听力部分 -->
+    <div class="skill-section">
+      <div class="skill-header">
+        <span class="skill-icon">👂</span>
+        <h3 class="skill-title">听力 (Listening) — TOEFL 2026 官方题型</h3>
+      </div>
+      <div class="skill-grid">
+        <a href="toefl-listening-choose-response-practice.html" class="skill-card">
+          <div class="skill-card-title">Listen and Choose a Response</div>
+          <div class="skill-card-desc">听音选择回应 — 选择最合适的回应</div>
+          <span class="card-badge" style="margin-top: 8px;">TOEFL 2026</span>
+        </a>
+        <a href="toefl-listening-announcement-practice.html" class="skill-card">
+          <div class="skill-card-title">Listen to an Announcement</div>
+          <div class="skill-card-desc">公告理解 — 理解学术环境中的公告内容</div>
+          <span class="card-badge" style="margin-top: 8px;">TOEFL 2026</span>
+        </a>
+        <a href="toefl-listening-academic-talk-practice.html" class="skill-card">
+          <div class="skill-card-title">Listen to an Academic Talk</div>
+          <div class="skill-card-desc">学术讲座 — 理解学术讲座内容并回答问题</div>
+          <span class="card-badge" style="margin-top: 8px;">TOEFL 2026</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 口语部分 -->
+    <div class="skill-section">
+      <div class="skill-header">
+        <span class="skill-icon">🎤</span>
+        <h3 class="skill-title">口语 (Speaking) — TOEFL 2026 官方题型</h3>
+      </div>
+      <div class="skill-grid">
+        <a href="toefl-listen-repeat-practice.html" class="skill-card">
+          <div class="skill-card-title">Listen and Repeat</div>
+          <div class="skill-card-desc">听音复述 — 听句子并准确复述</div>
+          <span class="card-badge" style="margin-top: 8px;">TOEFL 2026</span>
+        </a>
+        <a href="toefl-take-interview-practice.html" class="skill-card">
+          <div class="skill-card-title">Take an Interview</div>
+          <div class="skill-card-desc">面试练习 — 回答面试问题，60秒录音作答</div>
+          <span class="card-badge" style="margin-top: 8px;">TOEFL 2026</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 阅读部分 -->
+    <div class="skill-section">
+      <div class="skill-header">
+        <span class="skill-icon">📖</span>
+        <h3 class="skill-title">阅读 (Reading) — TOEFL 2026 官方题型</h3>
+      </div>
+      <div class="skill-grid">
+        <a href="toefl-complete-the-words-practice.html" class="skill-card">
+          <div class="skill-card-title">Complete the Words</div>
+          <div class="skill-card-desc">完成单词 (C-test) — 段落首句完整，每隔一词删去后半段，填写缺失字母</div>
+          <span class="card-badge" style="margin-top: 8px;">TOEFL 2026</span>
+        </a>
+        <a href="toefl-reading-daily-life-practice.html" class="skill-card">
+          <div class="skill-card-title">Read in Daily Life</div>
+          <div class="skill-card-desc">日常阅读 — 理解日常生活中的文本（邮件、菜单、通知、消息等）</div>
+          <span class="card-badge" style="margin-top: 8px;">TOEFL 2026</span>
+        </a>
+        <a href="toefl-reading-academic-passage-practice.html" class="skill-card">
+          <div class="skill-card-title">Read an Academic Passage</div>
+          <div class="skill-card-desc">学术文章阅读 — 理解学术类文章并回答问题</div>
+          <span class="card-badge" style="margin-top: 8px;">TOEFL 2026</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 写作部分 -->
+    <div class="skill-section">
+      <div class="skill-header">
+        <span class="skill-icon">✍️</span>
+        <h3 class="skill-title">写作 (Writing) — TOEFL 2026 官方题型</h3>
+      </div>
+      <div class="skill-grid">
+        <a href="toefl-build-sentence-practice.html" class="skill-card">
+          <div class="skill-card-title">Build a Sentence</div>
+          <div class="skill-card-desc">句子构建 — 重新排列词语组成正确句子</div>
+          <span class="card-badge" style="margin-top: 8px;">TOEFL 2026</span>
+        </a>
+        <a href="toefl-writing-email-practice.html" class="skill-card">
+          <div class="skill-card-title">Write an Email</div>
+          <div class="skill-card-desc">写邮件 — 校园/社交情境，按要求要点撰写完整邮件</div>
+          <span class="card-badge" style="margin-top: 8px;">TOEFL 2026</span>
+        </a>
+        <a href="toefl-writing-academic-discussion-practice.html" class="skill-card">
+          <div class="skill-card-title">Write for Academic Discussion</div>
+          <div class="skill-card-desc">学术讨论写作 — 根据教授问题与同学帖子撰写讨论回复</div>
+          <span class="card-badge" style="margin-top: 8px;">TOEFL 2026</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Info Section -->
+    <div class="info-section">
+      <h2>关于纽约课 (NYK)</h2>
+      <p>
+        <strong>纽约课 (NYK)</strong> 是一家位于北京的英语培训机构，专注于托福和雅思考试培训。我们提供全面的语言培训、留学申请服务和个性化教学，为每位学生量身定制学习方案。
+      </p>
+      <p>
+        <strong>我们的教学理念：</strong>
+      </p>
+      <ul>
+        <li><strong>精细化管理</strong> — 系统化追踪和详细的进度监控，确保每个学习环节都得到关注</li>
+        <li><strong>个性化教学</strong> — 为每位学生定制专属学习路径，因材施教</li>
+        <li><strong>ETS 标准对齐</strong> — 所有材料均符合 TOEFL 2026 格式和 ETS 评分标准</li>
+        <li><strong>CEFR 分级体系</strong> — 内容从 A2 到 C1 级别结构化设计</li>
+      </ul>
+      <p style="margin-top: 20px;">
+        <strong>平台特色：</strong>
+      </p>
+      <ul>
+        <li>多种练习模式，满足不同学习需求和技能水平</li>
+        <li>音频材料以美式发音为主，提供真实的 TOEFL 考试体验</li>
+        <li>进度追踪和跨会话状态保存，学习不中断</li>
+        <li>符合 ETS 0-5 分评分标准的自评工具</li>
+        <li>响应式设计，完美适配桌面和移动设备</li>
+        <li>TOEFL 2026 格式合规 — 所有练习严格遵循 TOEFL Technical Manual 2026 规范，仅包含官方题型</li>
+      </ul>
+      <p style="margin-top: 20px; font-size: 13px; color: var(--muted);">
+        <strong>说明：</strong> TOEFL 是 Educational Testing Service (ETS) 的注册商标。本平台由纽约课 (NYK) 开发，仅用于教育目的，与 ETS 无关联，亦未获得 ETS 认可。
+      </p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><strong>纽约课 NYK</strong> — 托福雅思培训 | 语言学习 | 留学申请服务</p>
+    <p style="margin-top: 8px; font-size: 12px;">北京 | 熟能生巧</p>
+  </footer>
+</body>
+</html>

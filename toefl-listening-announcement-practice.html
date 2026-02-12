@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOEFL Listening — Announcement Practice</title>
+  <style>
+    /* TOEFL/ETS Design System */
+    :root {
+      --ets-blue: #0066b3;
+      --ets-blue-dark: #004c87;
+      --ets-blue-light: #e6f2fa;
+      --bg: #f0f2f5;
+      --card: #ffffff;
+      --border: #d1d5db;
+      --text: #1a1a1a;
+      --muted: #6b7280;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --header-height: 48px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 24px;
+    }
+
+    /* Header */
+    .header {
+      height: var(--header-height);
+      background: var(--ets-blue);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    }
+    .header-home {
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background 0.2s;
+      margin-right: 12px;
+    }
+    .header-home:hover {
+      background: rgba(255,255,255,.15);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+    .header-select {
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 6px 12px;
+      cursor: pointer;
+      min-width: 200px;
+    }
+    .header-select:hover { background: rgba(255,255,255,.25); }
+    .header-select option { color: var(--text); background: var(--card); }
+
+    /* Main Container */
+    .main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px 16px;
+    }
+
+    /* Card Styling */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    .card h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: var(--ets-blue-dark);
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0;
+      margin-bottom: 24px;
+      padding: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      width: 100%;
+    }
+    .progress-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: all .3s;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .progress-dot:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 0 2px var(--ets-blue-light);
+    }
+    .progress-dot.active {
+      background: var(--ets-blue);
+      transform: scale(1.2);
+    }
+    .progress-dot.completed {
+      background: var(--success);
+    }
+    .progress-connector {
+      height: 2px;
+      background: var(--border);
+      flex: 1;
+      min-width: 4px;
+    }
+    .progress-connector.completed {
+      background: var(--success);
+    }
+
+    /* Announcement Section */
+    .announcement-section {
+      background: var(--ets-blue-light);
+      border: 2px solid var(--ets-blue);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .announcement-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .announcement-icon {
+      font-size: 32px;
+    }
+    .announcement-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ets-blue-dark);
+    }
+    .announcement-info {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+    .audio-player-wrapper {
+      margin-top: 16px;
+    }
+    .audio-player-wrapper audio {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    /* Questions Section */
+    .questions-section {
+      margin-top: 32px;
+    }
+    .question-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .question-number {
+      display: inline-block;
+      background: var(--ets-blue);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+    .question-text {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .options-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .option-item {
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--card);
+    }
+    .option-item:hover:not(.disabled) {
+      border-color: var(--ets-blue);
+      background: var(--ets-blue-light);
+    }
+    .option-item.selected {
+      border-color: var(--ets-blue);
+      background: var(--ets-blue-light);
+    }
+    .option-item.correct {
+      border-color: var(--success);
+      background: #d1fae5;
+    }
+    .option-item.incorrect {
+      border-color: var(--error);
+      background: #fee2e2;
+    }
+    .option-item.disabled {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+    .option-label {
+      font-weight: 600;
+      color: var(--ets-blue-dark);
+      margin-right: 8px;
+    }
+    .option-text {
+      color: var(--text);
+    }
+    .feedback {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      display: none;
+    }
+    .feedback.show {
+      display: block;
+    }
+    .feedback.correct {
+      background: #d1fae5;
+      color: #065f46;
+      border-left: 4px solid var(--success);
+    }
+    .feedback.incorrect {
+      background: #fee2e2;
+      color: #991b1b;
+      border-left: 4px solid var(--error);
+    }
+    .feedback-explanation {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Section title */
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      background: var(--ets-blue);
+      color: #fff;
+    }
+    .btn:hover:not(:disabled) { 
+      background: var(--ets-blue-dark); 
+    }
+    .btn:disabled { 
+      opacity: .5; 
+      cursor: not-allowed; 
+    }
+    .btn-secondary {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover:not(:disabled) {
+      background: #f3f4f6;
+      border-color: var(--ets-blue);
+      color: var(--ets-blue);
+    }
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    /* Results Summary */
+    .results-summary {
+      background: var(--card);
+      border: 2px solid var(--success);
+      border-radius: 8px;
+      padding: 24px;
+      text-align: center;
+      margin-top: 24px;
+    }
+    .results-score {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--ets-blue-dark);
+      margin: 12px 0;
+    }
+    .results-text {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    /* Instructions */
+    .instructions {
+      background: #fefce8;
+      border: 1px solid #fde68a;
+      border-radius: 6px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+    .instructions h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #92400e;
+      margin-bottom: 8px;
+    }
+    .instructions ul {
+      font-size: 13px;
+      color: #78350f;
+      line-height: 1.8;
+      padding-left: 20px;
+    }
+
+    .hidden { display: none !important; }
+    .text-center { text-align: center; }
+  </style>
+</head>
+<body>
+  <!--
+  REVIEW LOG (for maintainers; not shown to users)
+  Scripts + MC items: this file (ANNOUNCEMENT_SETS[*].announcements[].text, .questions[]).
+  Detailed item/set edit log: docs/item-review-log.md (Listening: Announcement section)
+  -->
+  <header class="header">
+    <div class="header-left">
+      <a href="index.html" class="header-home">← Home</a>
+      <div class="title">TOEFL® Listening — Announcement Practice</div>
+    </div>
+    <select class="header-select" id="setSelect" onchange="switchSet()">
+    </select>
+    <div id="headerProgress">Announcement 1 / 1</div>
+  </header>
+
+  <main class="main">
+    <div class="card">
+      <h2>Listen to an Announcement</h2>
+
+      <!-- Progress Bar -->
+      <div class="progress-bar" id="progressBar"></div>
+
+      <!-- Instructions -->
+      <div class="instructions">
+        <h3>Instructions</h3>
+        <ul>
+          <li>Each announcement is set in an academic context (e.g., classroom, school event)</li>
+          <li>After listening, answer the two questions that follow</li>
+          <li>You can listen to each announcement only once</li>
+          <li>Take notes while listening</li>
+          <li>Review explanations after selecting your answers</li>
+        </ul>
+      </div>
+
+      <!-- Announcement Section -->
+      <div class="announcement-section" id="announcementSection">
+        <div class="announcement-header">
+          <span class="announcement-icon">📢</span>
+          <div>
+            <div class="announcement-title" id="announcementTitle">Loading...</div>
+            <div class="announcement-info" id="announcementInfo">Context: Loading...</div>
+          </div>
+        </div>
+        <div class="audio-player-wrapper">
+          <audio id="announcementAudio" controls style="width: 100%; max-width: 500px;">
+            <source id="audioSource" src="" type="audio/mpeg">
+            Your browser does not support audio playback.
+          </audio>
+        </div>
+        <div style="margin-top: 16px; text-align: center;">
+          <button class="btn" id="startBtn" onclick="startAnnouncement()">Start Practice</button>
+          <button class="btn btn-secondary hidden" id="replayBtn" onclick="replayAnnouncement()">Replay</button>
+        </div>
+      </div>
+
+      <!-- Questions Section -->
+      <div class="questions-section hidden" id="questionsSection">
+        <div class="section-title">Answer Questions</div>
+        <div id="questionsContainer"></div>
+        <div class="btn-group">
+          <button class="btn btn-secondary" id="prevBtn" onclick="previousAnnouncement()" disabled>← Previous</button>
+          <button class="btn" id="checkBtn" onclick="checkAnswers()" disabled>Check Answers</button>
+          <button class="btn hidden" id="nextBtn" onclick="nextAnnouncement()">Next →</button>
+        </div>
+      </div>
+
+      <!-- Results Summary -->
+      <div class="results-summary hidden" id="resultsSummary">
+        <div style="font-size: 18px; font-weight: 700; color: var(--ets-blue-dark);">Practice Complete!</div>
+        <div class="results-score" id="resultsScore">0/0</div>
+        <div class="results-text" id="resultsText">Accuracy: 0%</div>
+        <div class="btn-group" style="margin-top: 20px;">
+          <button class="btn btn-secondary" onclick="restartPractice()">Restart</button>
+          <button class="btn" onclick="reviewAnswers()">Review Answers</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // ==================== ANNOUNCEMENT SETS ====================
+    const ANNOUNCEMENT_SETS = {
+      A01: {
+        label: 'Set 1 — Campus Announcements',
+        announcements: [
+          {
+            id: 'A01-01',
+            title: 'Library Hours Change',
+            context: 'Campus Library',
+            audioFile: 'audio/listening/LA-A01-01.mp3',
+            text: 'Good morning, everyone. This is a message from the campus library. We wanted to inform you that starting next Monday, the library will be extending its weekend hours. The library will now be open from 8 AM to 10 PM on Saturdays and Sundays, instead of the previous 9 AM to 6 PM schedule. This change is being made to better accommodate students who prefer to study on weekends. Additionally, the quiet study areas on the third and fourth floors will now be available 24 hours a day, seven days a week, for students who need a quiet place to work. Please note that you will need your student ID card to access the building after regular hours. If you have any questions, please visit the library information desk or check our website. Thank you.',
+            questions: [
+              {
+                id: 'Q1',
+                text: 'What is the main purpose of the announcement?',
+                options: [
+                  { label: 'A', text: 'To inform students about changes to library hours' },
+                  { label: 'B', text: 'To remind students to bring their ID cards' },
+                  { label: 'C', text: 'To announce new study areas in the library' },
+                  { label: 'D', text: 'To explain how to access the library website' }
+                ],
+                correct: 'A',
+                explanation: 'The announcement primarily informs students about extended weekend hours and 24-hour access to quiet study areas.'
+              },
+              {
+                id: 'Q2',
+                text: 'According to the announcement, what will students need to access the library after regular hours?',
+                options: [
+                  { label: 'A', text: 'A special permission form' },
+                  { label: 'B', text: 'Their student ID card' },
+                  { label: 'C', text: 'A reservation confirmation' },
+                  { label: 'D', text: 'A library membership card' }
+                ],
+                correct: 'B',
+                explanation: 'The announcement explicitly states that students will need their student ID card to access the building after regular hours.'
+              }
+            ]
+          },
+          {
+            id: 'A01-02',
+            title: 'Course Registration Reminder',
+            context: 'Academic Affairs Office',
+            audioFile: 'audio/listening/LA-A01-02.mp3',
+            text: 'Attention all students. This is a reminder from the Academic Affairs Office regarding course registration for the upcoming semester. Registration will begin next Monday at 8 AM and will remain open until Friday at 5 PM. Please note that registration is done online through the student portal. You will need your student ID number and password to log in. We strongly recommend that you register as early as possible, as popular courses tend to fill up quickly. If you encounter any technical difficulties during registration, please contact the IT help desk immediately. Additionally, if you need to make changes to your schedule after registration closes, you will need to submit a formal request to your academic advisor. Thank you for your attention.',
+            questions: [
+              {
+                id: 'Q1',
+                text: 'What is the main topic of this announcement?',
+                options: [
+                  { label: 'A', text: 'How to contact the IT help desk' },
+                  { label: 'B', text: 'Information about course registration procedures' },
+                  { label: 'C', text: 'Requirements for academic advisors' },
+                  { label: 'D', text: 'Popular courses available next semester' }
+                ],
+                correct: 'B',
+                explanation: 'The announcement focuses on course registration procedures, including when it starts, how to register, and what to do if there are problems.'
+              },
+              {
+                id: 'Q2',
+                text: 'According to the announcement, what does the speaker recommend students do?',
+                options: [
+                  { label: 'A', text: 'Register as early as possible' },
+                  { label: 'B', text: 'Wait until Friday to register' },
+                  { label: 'C', text: 'Contact their academic advisor first' },
+                  { label: 'D', text: 'Choose only popular courses' }
+                ],
+                correct: 'A',
+                explanation: 'The speaker explicitly recommends registering early because popular courses fill up quickly.'
+              }
+            ]
+          },
+          {
+            id: 'A01-03',
+            title: 'Campus Event Cancellation',
+            context: 'Student Activities Office',
+            audioFile: 'audio/listening/LA-A01-03.mp3',
+            text: 'Hello, this is a message from the Student Activities Office. We regret to inform you that the outdoor concert scheduled for this Saturday has been cancelled due to severe weather forecasts. The event will be rescheduled for next Saturday at the same time and location. All tickets purchased for this weekend\'s event will be valid for the rescheduled date. If you are unable to attend the new date, you can request a full refund by contacting the ticket office before next Wednesday. We apologize for any inconvenience this may cause. For updates and more information, please check the Student Activities website or follow us on social media. Thank you for your understanding.',
+            questions: [
+              {
+                id: 'Q1',
+                text: 'According to the announcement, why was the concert cancelled?',
+                options: [
+                  { label: 'A', text: 'The performers were unavailable' },
+                  { label: 'B', text: 'Severe weather is expected' },
+                  { label: 'C', text: 'Not enough tickets were sold' },
+                  { label: 'D', text: 'The venue was double-booked' }
+                ],
+                correct: 'B',
+                explanation: 'The announcement states the cancellation is due to severe weather forecasts.'
+              },
+              {
+                id: 'Q2',
+                text: 'According to the announcement, what should students do if they cannot attend the rescheduled event?',
+                options: [
+                  { label: 'A', text: 'Request a refund before next Wednesday' },
+                  { label: 'B', text: 'Contact the performers directly' },
+                  { label: 'C', text: 'Exchange tickets for a different event' },
+                  { label: 'D', text: 'Wait for another rescheduled date' }
+                ],
+                correct: 'A',
+                explanation: 'The announcement states that students can request a full refund by contacting the ticket office before next Wednesday if they cannot attend the new date.'
+              }
+            ]
+          },
+          {
+            id: 'A01-04',
+            title: 'Parking Policy Update',
+            context: 'Campus Security',
+            audioFile: 'audio/listening/LA-A01-04.mp3',
+            text: 'Good afternoon. This is an important announcement from Campus Security regarding parking regulations. Effective immediately, all vehicles parked on campus must display a valid parking permit. Permits can be purchased online through the campus portal or in person at the security office. The cost is fifty dollars per semester. Please note that vehicles without permits will be subject to fines, and repeated violations may result in your vehicle being towed. Additionally, we have designated new parking areas near the science building and the student center to accommodate increased demand. These areas are clearly marked with blue signs. If you have any questions about parking regulations or need assistance purchasing a permit, please visit the security office or call our help line. Thank you.',
+            questions: [
+              {
+                id: 'Q1',
+                text: 'What is the main point of this announcement?',
+                options: [
+                  { label: 'A', text: 'New parking areas have been added' },
+                  { label: 'B', text: 'All vehicles must display parking permits' },
+                  { label: 'C', text: 'Parking permits cost fifty dollars' },
+                  { label: 'D', text: 'Vehicles may be towed for violations' }
+                ],
+                correct: 'B',
+                explanation: 'The announcement emphasizes that all vehicles must display valid parking permits, which is the main regulatory change.'
+              },
+              {
+                id: 'Q2',
+                text: 'According to the announcement, what happens to vehicles without permits?',
+                options: [
+                  { label: 'A', text: 'They will be subject to fines' },
+                  { label: 'B', text: 'They will be moved to designated areas' },
+                  { label: 'C', text: 'They will be given a warning first' },
+                  { label: 'D', text: 'They will be allowed to park temporarily' }
+                ],
+                correct: 'A',
+                explanation: 'The announcement states that vehicles without permits will be subject to fines, and repeated violations may result in towing.'
+              }
+            ]
+          },
+          {
+            id: 'A01-05',
+            title: 'Dining Hall Menu Changes',
+            context: 'Campus Dining Services',
+            audioFile: 'audio/listening/LA-A01-05.mp3',
+            text: 'Hello, this is a message from Campus Dining Services. We wanted to let you know about some exciting changes coming to the main dining hall. Starting next week, we will be introducing new vegetarian and vegan options at every meal. These options will be clearly labeled and available at a dedicated station. We have also expanded our salad bar to include more fresh vegetables and fruits. In response to student feedback, we are reducing the use of processed foods and focusing on fresh, locally sourced ingredients whenever possible. Additionally, we will be offering extended hours on weekdays, with the dining hall now open until 9 PM instead of 8 PM. We hope these changes will better serve our diverse student community. If you have any dietary concerns or suggestions, please speak with our dining services manager. Thank you.',
+            questions: [
+              {
+                id: 'Q1',
+                text: 'According to the announcement, what change is being made to the dining hall menu?',
+                options: [
+                  { label: 'A', text: 'The dining hall will close earlier' },
+                  { label: 'B', text: 'New vegetarian and vegan options will be added' },
+                  { label: 'C', text: 'Processed foods will be increased' },
+                  { label: 'D', text: 'The salad bar will be removed' }
+                ],
+                correct: 'B',
+                explanation: 'The announcement states that new vegetarian and vegan options will be introduced at every meal.'
+              },
+              {
+                id: 'Q2',
+                text: 'According to the announcement, what is one reason mentioned for these changes?',
+                options: [
+                  { label: 'A', text: 'In response to student feedback' },
+                  { label: 'B', text: 'To reduce costs' },
+                  { label: 'C', text: 'To comply with new regulations' },
+                  { label: 'D', text: 'To prepare for a special event' }
+                ],
+                correct: 'A',
+                explanation: 'The announcement explicitly states that the changes are "in response to student feedback."'
+              }
+            ]
+          }
+        ]
+      }
+    };
+
+    // ==================== STATE ====================
+    const STORAGE_KEY = 'toefl-listening-announcement-state';
+    let currentSetId = 'A01';
+    let currentAnnouncementIndex = 0;
+    let answers = {}; // { announcementId: { Q1: 'A', Q2: 'B' } }
+    let hasStarted = false;
+
+    // ==================== INIT ====================
+    function init() {
+      // Populate set selector
+      const select = document.getElementById('setSelect');
+      select.innerHTML = '';
+      for (const [id, set] of Object.entries(ANNOUNCEMENT_SETS)) {
+        const opt = document.createElement('option');
+        opt.value = id;
+        opt.textContent = set.label;
+        select.appendChild(opt);
+      }
+
+      // Restore state
+      const saved = restoreState();
+      if (saved) {
+        currentSetId = saved.setId;
+        currentAnnouncementIndex = saved.announcementIndex || 0;
+      }
+      select.value = currentSetId;
+
+      updateUI();
+    }
+
+    // ==================== STATE MANAGEMENT ====================
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          setId: currentSetId,
+          announcementIndex: currentAnnouncementIndex
+        }));
+      } catch (e) { /* ignore */ }
+    }
+
+    function restoreState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+        if (!data.setId || !ANNOUNCEMENT_SETS[data.setId]) return null;
+        return data;
+      } catch (e) { return null; }
+    }
+
+    function updateUI() {
+      const set = ANNOUNCEMENT_SETS[currentSetId];
+      const announcement = set.announcements[currentAnnouncementIndex];
+      const total = set.announcements.length;
+
+      // Update header
+      document.getElementById('headerProgress').textContent = `Announcement ${currentAnnouncementIndex + 1} / ${total}`;
+
+      // Update progress bar
+      updateProgressBar();
+
+      // Update announcement info
+      document.getElementById('announcementTitle').textContent = announcement.title;
+      document.getElementById('announcementInfo').textContent = `Context: ${announcement.context}`;
+      
+      // Reset UI
+      document.getElementById('startBtn').classList.remove('hidden');
+      document.getElementById('replayBtn').classList.add('hidden');
+      document.getElementById('questionsSection').classList.add('hidden');
+      document.getElementById('resultsSummary').classList.add('hidden');
+      hasStarted = false;
+
+      // Update navigation buttons
+      document.getElementById('prevBtn').disabled = currentAnnouncementIndex === 0;
+      document.getElementById('checkBtn').disabled = true;
+      document.getElementById('nextBtn').classList.add('hidden');
+
+      saveState();
+    }
+
+    function updateProgressBar() {
+      const container = document.getElementById('progressBar');
+      container.innerHTML = '';
+      const set = ANNOUNCEMENT_SETS[currentSetId];
+      const total = set.announcements.length;
+
+      for (let i = 0; i < total; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'progress-dot';
+        dot.setAttribute('data-index', i);
+        dot.setAttribute('title', `Announcement ${i + 1}`);
+        
+        if (i < currentAnnouncementIndex) {
+          dot.classList.add('completed');
+        } else if (i === currentAnnouncementIndex) {
+          dot.classList.add('active');
+        }
+        
+        dot.addEventListener('click', () => {
+          if (i !== currentAnnouncementIndex) {
+            currentAnnouncementIndex = i;
+            updateUI();
+          }
+        });
+        
+        container.appendChild(dot);
+        
+        if (i < total - 1) {
+          const connector = document.createElement('div');
+          connector.className = 'progress-connector';
+          if (i < currentAnnouncementIndex) {
+            connector.classList.add('completed');
+          }
+          container.appendChild(connector);
+        }
+      }
+    }
+
+    // ==================== ANNOUNCEMENT PLAYBACK ====================
+    function startAnnouncement() {
+      const set = ANNOUNCEMENT_SETS[currentSetId];
+      const announcement = set.announcements[currentAnnouncementIndex];
+      
+      hasStarted = true;
+      document.getElementById('startBtn').classList.add('hidden');
+      document.getElementById('replayBtn').classList.remove('hidden');
+      
+      // Load audio if available
+      if (announcement.audioFile) {
+        document.getElementById('audioSource').src = announcement.audioFile;
+        document.getElementById('announcementAudio').load();
+      } else {
+        // Show text if no audio
+        showAnnouncementText(announcement);
+      }
+
+      // Show questions after a delay
+      setTimeout(() => {
+        showQuestions(announcement);
+      }, 1000);
+    }
+
+    function replayAnnouncement() {
+      const audio = document.getElementById('announcementAudio');
+      audio.currentTime = 0;
+      audio.play();
+    }
+
+    function showAnnouncementText(announcement) {
+      // If no audio file, show the text
+      let textHtml = '<div style="margin-top: 16px; padding: 16px; background: #fff; border-radius: 6px; font-size: 13px; line-height: 1.8;"><div style="font-weight: 600; margin-bottom: 12px; color: var(--ets-blue-dark);">Announcement Text:</div>';
+      textHtml += `<div style="margin-bottom: 8px;">${announcement.text}</div>`;
+      textHtml += '</div>';
+      
+      const audioWrapper = document.querySelector('.audio-player-wrapper');
+      const existingText = audioWrapper.parentElement.querySelector('.text-display');
+      if (existingText) {
+        existingText.remove();
+      }
+      audioWrapper.insertAdjacentHTML('afterend', `<div class="text-display">${textHtml}</div>`);
+    }
+
+    function showQuestions(announcement) {
+      document.getElementById('questionsSection').classList.remove('hidden');
+      const container = document.getElementById('questionsContainer');
+      container.innerHTML = '';
+
+      announcement.questions.forEach((q, qIndex) => {
+        const questionCard = document.createElement('div');
+        questionCard.className = 'question-card';
+        questionCard.innerHTML = `
+          <div class="question-number">Question ${qIndex + 1}</div>
+          <div class="question-text">${q.text}</div>
+          <ul class="options-list" id="options-${announcement.id}-${q.id}">
+            ${q.options.map(opt => `
+              <li class="option-item" data-question="${q.id}" data-option="${opt.label}" onclick="selectOption('${announcement.id}', '${q.id}', '${opt.label}')">
+                <span class="option-label">${opt.label}.</span>
+                <span class="option-text">${opt.text}</span>
+              </li>
+            `).join('')}
+          </ul>
+          <div class="feedback" id="feedback-${announcement.id}-${q.id}">
+            <div class="feedback-explanation"></div>
+          </div>
+        `;
+        container.appendChild(questionCard);
+      });
+
+      // Check if already answered
+      if (answers[announcement.id]) {
+        Object.keys(answers[announcement.id]).forEach(qId => {
+          const option = answers[announcement.id][qId];
+          selectOption(announcement.id, qId, option, false);
+        });
+        document.getElementById('checkBtn').disabled = false;
+      }
+    }
+
+    function selectOption(announcementId, questionId, optionLabel, enableCheck = true) {
+      // Store answer
+      if (!answers[announcementId]) answers[announcementId] = {};
+      answers[announcementId][questionId] = optionLabel;
+
+      // Update UI
+      const options = document.querySelectorAll(`#options-${announcementId}-${questionId} .option-item`);
+      options.forEach(opt => {
+        opt.classList.remove('selected');
+        if (opt.dataset.option === optionLabel) {
+          opt.classList.add('selected');
+        }
+      });
+
+      // Enable check button if all questions answered
+      if (enableCheck) {
+        const announcement = ANNOUNCEMENT_SETS[currentSetId].announcements[currentAnnouncementIndex];
+        const allAnswered = announcement.questions.every(q => {
+          return answers[announcementId] && answers[announcementId][q.id];
+        });
+        document.getElementById('checkBtn').disabled = !allAnswered;
+      }
+    }
+
+    function checkAnswers() {
+      const set = ANNOUNCEMENT_SETS[currentSetId];
+      const announcement = set.announcements[currentAnnouncementIndex];
+      
+      announcement.questions.forEach(q => {
+        const selected = answers[announcement.id] && answers[announcement.id][q.id];
+        const isCorrect = selected === q.correct;
+        
+        // Update option styling
+        const options = document.querySelectorAll(`#options-${announcement.id}-${q.id} .option-item`);
+        options.forEach(opt => {
+          opt.classList.add('disabled');
+          if (opt.dataset.option === q.correct) {
+            opt.classList.add('correct');
+          }
+          if (selected && opt.dataset.option === selected && !isCorrect) {
+            opt.classList.add('incorrect');
+          }
+        });
+
+        // Show feedback
+        const feedback = document.getElementById(`feedback-${announcement.id}-${q.id}`);
+        feedback.classList.add('show', isCorrect ? 'correct' : 'incorrect');
+        feedback.innerHTML = `
+          <div><strong>${isCorrect ? '✓ Correct' : '✗ Incorrect'}</strong></div>
+          <div class="feedback-explanation">${q.explanation}</div>
+        `;
+      });
+
+      document.getElementById('checkBtn').classList.add('hidden');
+      document.getElementById('nextBtn').classList.remove('hidden');
+      
+      // Update progress
+      updateProgressBar();
+    }
+
+    // ==================== NAVIGATION ====================
+    function previousAnnouncement() {
+      if (currentAnnouncementIndex > 0) {
+        currentAnnouncementIndex--;
+        updateUI();
+      }
+    }
+
+    function nextAnnouncement() {
+      const set = ANNOUNCEMENT_SETS[currentSetId];
+      if (currentAnnouncementIndex < set.announcements.length - 1) {
+        currentAnnouncementIndex++;
+        updateUI();
+      } else {
+        showResults();
+      }
+    }
+
+    function switchSet() {
+      const select = document.getElementById('setSelect');
+      if (!ANNOUNCEMENT_SETS[select.value]) return;
+      currentSetId = select.value;
+      currentAnnouncementIndex = 0;
+      answers = {};
+      updateUI();
+    }
+
+    function showResults() {
+      const set = ANNOUNCEMENT_SETS[currentSetId];
+      let correct = 0;
+      let total = 0;
+
+      set.announcements.forEach(ann => {
+        ann.questions.forEach(q => {
+          total++;
+          const selected = answers[ann.id] && answers[ann.id][q.id];
+          if (selected === q.correct) correct++;
+        });
+      });
+
+      document.getElementById('questionsSection').classList.add('hidden');
+      document.getElementById('resultsSummary').classList.remove('hidden');
+      document.getElementById('resultsScore').textContent = `${correct}/${total}`;
+      document.getElementById('resultsText').textContent = `Accuracy: ${Math.round(correct / total * 100)}%`;
+    }
+
+    function restartPractice() {
+      currentAnnouncementIndex = 0;
+      answers = {};
+      updateUI();
+    }
+
+    function reviewAnswers() {
+      currentAnnouncementIndex = 0;
+      updateUI();
+      // Show all answers as checked
+      setTimeout(() => {
+        const set = ANNOUNCEMENT_SETS[currentSetId];
+        set.announcements.forEach(ann => {
+          if (answers[ann.id]) {
+            startAnnouncement();
+            setTimeout(() => {
+              checkAnswers();
+            }, 500);
+          }
+        });
+      }, 100);
+    }
+
+    // ==================== INIT ====================
+    init();
+  </script>
+</body>
+</html>

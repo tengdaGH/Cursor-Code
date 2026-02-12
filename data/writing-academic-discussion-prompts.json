@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "format": "TOEFL 2026 Write for Academic Discussion",
+    "rules": "Read professor's question and two student posts; write your own post (~100–120+ words) that contributes to the discussion with reasons or examples. ~10 min.",
+    "reviewLogRef": "docs/item-review-log.md"
+  },
+  "prompts": [
+    {
+      "id": "D01",
+      "question": "Do you think that universities should require all students to take at least one course in a subject outside their major (for example, a science student taking an arts course, or an arts student taking a science course)? Why or why not?",
+      "posts": [
+        { "author": "Alex", "text": "I think they should. In my major we never read anything from other fields, and I feel like I'm missing a lot. If I had to take one course in history or literature, I would see how other people think and solve problems. That could help me in my own work later." },
+        { "author": "Sam", "text": "I'm not sure. Students already have a lot of required courses in their major. Adding one more requirement might mean they have less time for what they really want to study. Maybe it's better to just encourage students to take electives instead of requiring them." }
+      ],
+      "timeLimitMinutes": 10,
+      "wordTarget": 120
+    },
+    {
+      "id": "D02",
+      "question": "Some people believe that working in a group is the best way to learn, while others prefer to work alone. In your experience, which helps you learn more—group work or individual work? Use reasons or examples to support your view.",
+      "posts": [
+        { "author": "Jordan", "text": "I learn more in groups. When I work with others, I have to explain my ideas and listen to theirs. That makes me think more clearly. Also, if I don't understand something, someone in the group might explain it in a different way that makes sense to me." },
+        { "author": "Casey", "text": "I prefer working alone. In groups, sometimes we spend too much time deciding what to do instead of actually doing it. When I work by myself, I can focus and go at my own pace. I also feel like I remember the material better when I've figured it out on my own." }
+      ],
+      "timeLimitMinutes": 10,
+      "wordTarget": 120
+    },
+    {
+      "id": "D03",
+      "question": "Many cities are trying to reduce the use of cars by adding bike lanes, improving public transport, or making it more expensive to park. Do you think that governments should encourage people to use cars less? Why or why not?",
+      "posts": [
+        { "author": "Riley", "text": "Yes. Cars cause a lot of pollution and traffic. If more people used buses or bikes, the air would be cleaner and it would be easier to get around. I think governments should make public transport cheaper and safer so that people choose it instead of driving." },
+        { "author": "Morgan", "text": "It depends on the city. In some places, public transport doesn't go everywhere people need to go. If you have to get to work or take kids to school, a car might be the only option. So I think governments should improve alternatives first before making driving harder or more expensive." }
+      ],
+      "timeLimitMinutes": 10,
+      "wordTarget": 120
+    },
+    {
+      "id": "D04",
+      "question": "Some schools have started to teach students about managing money—for example, budgeting, saving, and avoiding debt. Should financial literacy be a required subject in high school? Use reasons or examples to support your answer.",
+      "posts": [
+        { "author": "Taylor", "text": "I think it should be required. A lot of young adults get into debt because they never learned how to manage money. If we learned about budgets and saving in school, we would be better prepared when we start working and living on our own." },
+        { "author": "Jamie", "text": "It could be useful, but I'm not sure it needs to be required. Students already have many required subjects. Maybe it could be an optional course or a short workshop. Also, some of this might be better taught by parents or through real experience." }
+      ],
+      "timeLimitMinutes": 10,
+      "wordTarget": 120
+    },
+    {
+      "id": "D05",
+      "question": "In some countries, young people are encouraged to take a \"gap year\"—a year off between high school and university—to travel, work, or volunteer. Do you think taking a gap year is a good idea? Why or why not?",
+      "posts": [
+        { "author": "Quinn", "text": "I think it's a good idea. A year of travel or work can help you understand what you want to study and why. You might also learn skills that you don't get in school. When you start university, you could be more focused and motivated." },
+        { "author": "Avery", "text": "I'm not sure. If you take a year off, you might forget some of what you learned in high school. It could also be harder to get back into the habit of studying. And not everyone can afford to travel or take a year without earning money. So it might work for some people but not for everyone." }
+      ],
+      "timeLimitMinutes": 10,
+      "wordTarget": 120
+    },
+    {
+      "id": "D06",
+      "question": "Some people think that reading books (fiction or non-fiction) is more valuable than watching videos or films on the same topics. Others think that videos and films can teach us just as much as books. What do you think? Use reasons or examples to support your view.",
+      "posts": [
+        { "author": "Parker", "text": "I think reading is more valuable for learning. When you read, you have to imagine the scenes and think about the words. That uses your brain more. With videos, everything is already shown to you, so you might not think as deeply. Reading also improves your vocabulary and writing." },
+        { "author": "Skyler", "text": "Videos and films can be just as valuable. Documentaries can show you real places and events that are hard to describe in words. And a good film can make you feel and think about a topic in a powerful way. For some people, watching is easier than reading, so they might learn more from a video than from a book." }
+      ],
+      "timeLimitMinutes": 10,
+      "wordTarget": 120
+    }
+  ]
+}

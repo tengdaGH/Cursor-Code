@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOEFL Reading — Read an Academic Passage Practice</title>
+  <style>
+    :root {
+      --ets-blue: #0066b3;
+      --ets-blue-dark: #004c87;
+      --ets-blue-light: #e6f2fa;
+      --bg: #f0f2f5;
+      --card: #ffffff;
+      --border: #d1d5db;
+      --text: #1a1a1a;
+      --muted: #6b7280;
+      --success: #10b981;
+      --error: #ef4444;
+      --header-height: 48px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 24px;
+    }
+    .header {
+      height: var(--header-height);
+      background: var(--ets-blue);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    }
+    .header-home {
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background 0.2s;
+      margin-right: 12px;
+    }
+    .header-home:hover { background: rgba(255,255,255,.15); }
+    .header-left { display: flex; align-items: center; }
+    .header-select {
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 6px 12px;
+      cursor: pointer;
+      min-width: 200px;
+    }
+    .header-select:hover { background: rgba(255,255,255,.25); }
+    .header-select option { color: var(--text); background: var(--card); }
+    .main { max-width: 720px; margin: 0 auto; padding: 20px 16px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    .card h2 { font-size: 20px; margin-bottom: 20px; color: var(--ets-blue-dark); }
+    .progress-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0;
+      margin-bottom: 24px;
+      padding: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      width: 100%;
+    }
+    .progress-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: all .3s;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .progress-dot:hover { transform: scale(1.2); box-shadow: 0 0 0 2px var(--ets-blue-light); }
+    .progress-dot.active { background: var(--ets-blue); transform: scale(1.2); }
+    .progress-dot.completed { background: var(--success); }
+    .progress-connector { height: 2px; background: var(--border); flex: 1; min-width: 4px; }
+    .progress-connector.completed { background: var(--success); }
+    .instruction {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .passage-box {
+      background: var(--ets-blue-light);
+      border: 2px solid var(--ets-blue);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .passage-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ets-blue-dark);
+      margin-bottom: 6px;
+    }
+    .passage-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .passage-content {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text);
+      white-space: pre-wrap;
+    }
+    .questions-section { margin-top: 24px; }
+    .question-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .question-number {
+      display: inline-block;
+      background: var(--ets-blue);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+    .question-text { font-size: 15px; line-height: 1.6; margin-bottom: 14px; }
+    .options-list { list-style: none; padding: 0; margin: 0; }
+    .option-item {
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--card);
+    }
+    .option-item:hover:not(.disabled) {
+      border-color: var(--ets-blue);
+      background: var(--ets-blue-light);
+    }
+    .option-item.selected {
+      border-color: var(--ets-blue);
+      background: var(--ets-blue-light);
+    }
+    .option-item.correct { border-color: var(--success); background: #d1fae5; }
+    .option-item.incorrect { border-color: var(--error); background: #fee2e2; }
+    .option-item.disabled { cursor: not-allowed; opacity: 0.8; }
+    .option-label { font-weight: 600; color: var(--ets-blue-dark); margin-right: 8px; }
+    .feedback {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      display: none;
+    }
+    .feedback.show { display: block; }
+    .feedback.correct { background: #d1fae5; color: #065f46; border-left: 4px solid var(--success); }
+    .feedback.incorrect { background: #fee2e2; color: #991b1b; border-left: 4px solid var(--error); }
+    .feedback-explanation { margin-top: 6px; font-size: 12px; color: var(--muted); }
+    .btn-group { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--ets-blue);
+      color: #fff;
+      transition: all .2s;
+    }
+    .btn:hover:not(:disabled) { background: var(--ets-blue-dark); }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-secondary { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover:not(:disabled) { background: #f3f4f6; border-color: var(--ets-blue); color: var(--ets-blue); }
+    .results-summary {
+      background: var(--card);
+      border: 2px solid var(--success);
+      border-radius: 8px;
+      padding: 24px;
+      text-align: center;
+      margin-top: 24px;
+    }
+    .results-score { font-size: 36px; font-weight: 700; color: var(--ets-blue-dark); margin: 12px 0; }
+    .results-text { font-size: 14px; color: var(--muted); margin-top: 8px; }
+    .practice-screen.hidden { display: none !important; }
+    .result-screen { display: none; }
+    .result-screen.visible { display: block; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <!--
+  REVIEW LOG (for maintainers; not shown to users)
+  Item data: data/read-academic-passage-passages.json
+  Detailed item/set edit log: docs/item-review-log.md (Reading: Academic Passage section)
+  -->
+  <header class="header">
+    <div class="header-left">
+      <a href="index.html" class="header-home">← Home</a>
+      <div class="title">Read an Academic Passage</div>
+    </div>
+    <select class="header-select" id="setSelect" style="display: none;"></select>
+    <div id="headerProgress">Passage 1 / 1</div>
+  </header>
+
+  <main class="main">
+    <div class="practice-screen" id="practiceScreen">
+      <div class="card">
+        <h2>Read an Academic Passage</h2>
+        <p class="instruction">Choose an academic domain from the menu, then read each passage and answer the multiple-choice questions. Use "According to the passage" when the question asks about specific information.</p>
+        <div class="progress-bar" id="progressBar"></div>
+        <div class="passage-title" id="passageTitle"></div>
+        <div class="passage-meta" id="passageMeta"></div>
+        <div class="passage-box" id="passageBox"></div>
+        <div class="questions-section" id="questionsSection">
+          <div id="questionsContainer"></div>
+          <div class="btn-group">
+            <button class="btn btn-secondary" id="prevBtn" onclick="prevPassage()" disabled>← Previous</button>
+            <button class="btn" id="checkBtn" onclick="checkAnswers()" disabled>Check Answers</button>
+            <button class="btn hidden" id="nextBtn" onclick="nextPassage()">Next →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="result-screen" id="resultScreen">
+      <div class="card">
+        <h2>Practice Complete</h2>
+        <div class="results-score text-center" id="resultsScore">0 / 0</div>
+        <div class="results-text text-center" id="resultsText">Accuracy: 0%</div>
+        <div class="btn-group" style="justify-content: center; margin-top: 20px;">
+          <button class="btn btn-secondary" onclick="retryMistakes()">Retry Mistakes</button>
+          <button class="btn" onclick="newPractice()">New Practice</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const STORAGE_KEY = 'toefl-reading-academic-passage-state';
+    let sets = {};
+    let setIds = [];
+    let currentSetId = '';
+    let currentIndex = 0;
+    let passages = [];
+    let answers = {};
+    let results = [];
+
+    function loadData() {
+      return fetch('data/read-academic-passage-passages.json')
+        .then(r => r.json())
+        .then(data => {
+          sets = data.sets || {};
+          setIds = Object.keys(sets);
+          if (setIds.length === 0) throw new Error('No sets');
+          currentSetId = setIds[0];
+          applyPassages();
+          return data;
+        });
+    }
+
+    function applyPassages() {
+      const set = sets[currentSetId];
+      if (!set || !set.passages) return;
+      passages = set.passages;
+      results = passages.map(() => null);
+      answers = {};
+      currentIndex = 0;
+    }
+
+    function escapeHtml(s) {
+      const div = document.createElement('div');
+      div.textContent = s == null ? '' : s;
+      return div.innerHTML;
+    }
+
+    function renderPassage(passage) {
+      document.getElementById('passageTitle').textContent = passage.title || 'Passage';
+      const meta = [passage.topic, passage.difficulty, passage.wordCount ? passage.wordCount + ' words' : ''].filter(Boolean).join(' · ');
+      document.getElementById('passageMeta').textContent = meta;
+      const box = document.getElementById('passageBox');
+      box.innerHTML = '<div class="passage-content">' + escapeHtml(passage.content || '').replace(/\n/g, '<br>') + '</div>';
+    }
+
+    function optionLabel(i) {
+      return String.fromCharCode(65 + i);
+    }
+
+    function renderQuestions(passage) {
+      const container = document.getElementById('questionsContainer');
+      container.innerHTML = '';
+      (passage.questions || []).forEach((q, qIdx) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        const optionsHtml = (q.options || []).map((opt, i) =>
+          '<li class="option-item" data-q="' + qIdx + '" data-opt="' + i + '" onclick="selectOption(' + currentIndex + ',' + qIdx + ',' + i + ')"><span class="option-label">' + optionLabel(i) + '.</span> ' + escapeHtml(opt) + '</li>'
+        ).join('');
+        card.innerHTML = '<div class="question-number">Question ' + (qIdx + 1) + '</div><div class="question-text">' + escapeHtml(q.text) + '</div><ul class="options-list" id="opts-' + currentIndex + '-' + qIdx + '">' + optionsHtml + '</ul><div class="feedback" id="fb-' + currentIndex + '-' + qIdx + '"><div class="feedback-explanation"></div></div>';
+        container.appendChild(card);
+      });
+      document.getElementById('checkBtn').disabled = true;
+      document.getElementById('checkBtn').classList.remove('hidden');
+      document.getElementById('nextBtn').classList.add('hidden');
+      const key = passage.id || currentIndex;
+      if (answers[key]) {
+        Object.keys(answers[key]).forEach(qIdx => {
+          selectOption(currentIndex, parseInt(qIdx, 10), answers[key][qIdx], false);
+        });
+        updateCheckButton();
+      }
+    }
+
+    function selectOption(passageIdx, qIdx, optIdx, updateUi) {
+      const p = passages[passageIdx];
+      if (!p || !p.questions || !p.questions[qIdx]) return;
+      const key = p.id || passageIdx;
+      if (!answers[key]) answers[key] = {};
+      answers[key][qIdx] = optIdx;
+      const list = document.getElementById('opts-' + passageIdx + '-' + qIdx);
+      if (list) {
+        list.querySelectorAll('.option-item').forEach(el => {
+          el.classList.remove('selected');
+          if (parseInt(el.dataset.opt, 10) === optIdx) el.classList.add('selected');
+        });
+      }
+      if (updateUi !== false) updateCheckButton();
+    }
+
+    function updateCheckButton() {
+      const p = passages[currentIndex];
+      if (!p || !p.questions) return;
+      const key = p.id || currentIndex;
+      const numQ = p.questions.length;
+      const answered = answers[key] ? Object.keys(answers[key]).length : 0;
+      document.getElementById('checkBtn').disabled = answered < numQ;
+    }
+
+    function checkAnswers() {
+      const p = passages[currentIndex];
+      if (!p || !p.questions) return;
+      const key = p.id || currentIndex;
+      let allCorrect = true;
+      p.questions.forEach((q, qIdx) => {
+        const selected = answers[key] && answers[key][qIdx];
+        const correct = q.correct === selected;
+        if (!correct) allCorrect = false;
+        const opts = document.querySelectorAll('#opts-' + currentIndex + '-' + qIdx + ' .option-item');
+        opts.forEach(el => {
+          el.classList.add('disabled');
+          const i = parseInt(el.dataset.opt, 10);
+          if (i === q.correct) el.classList.add('correct');
+          else if (selected !== undefined && i === selected) el.classList.add('incorrect');
+        });
+        const fb = document.getElementById('fb-' + currentIndex + '-' + qIdx);
+        if (fb) {
+          fb.classList.add('show', correct ? 'correct' : 'incorrect');
+          fb.innerHTML = '<div><strong>' + (correct ? '✓ Correct' : '✗ Incorrect') + '</strong></div><div class="feedback-explanation">' + escapeHtml(q.explanation || '') + '</div>';
+        }
+      });
+      results[currentIndex] = allCorrect;
+      document.getElementById('checkBtn').classList.add('hidden');
+      document.getElementById('nextBtn').classList.remove('hidden');
+      buildProgressBar();
+    }
+
+    function nextPassage() {
+      if (currentIndex < passages.length - 1) {
+        currentIndex++;
+        updateUI();
+      } else {
+        showResults();
+      }
+    }
+
+    function prevPassage() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateUI();
+      }
+    }
+
+    function showResults() {
+      const total = passages.length;
+      const correct = results.filter(Boolean).length;
+      let totalQ = 0;
+      let correctQ = 0;
+      passages.forEach((p, i) => {
+        (p.questions || []).forEach((q, qIdx) => {
+          totalQ++;
+          const key = p.id || i;
+          const sel = answers[key] && answers[key][qIdx];
+          if (sel === q.correct) correctQ++;
+        });
+      });
+      document.getElementById('practiceScreen').classList.add('hidden');
+      document.getElementById('resultScreen').classList.add('visible');
+      document.getElementById('resultsScore').textContent = correctQ + ' / ' + totalQ;
+      document.getElementById('resultsText').textContent = 'Passages: ' + correct + '/' + total + ' all correct · Questions: ' + correctQ + '/' + totalQ + ' (' + (totalQ ? Math.round(correctQ / totalQ * 100) : 0) + '%)';
+      saveState();
+    }
+
+    function retryMistakes() {
+      const wrongIndices = results.map((r, i) => (r === false ? i : -1)).filter(i => i >= 0);
+      if (wrongIndices.length === 0) {
+        newPractice();
+        return;
+      }
+      passages = wrongIndices.map(i => passages[i]);
+      results = passages.map(() => null);
+      const newAnswers = {};
+      wrongIndices.forEach((origIdx, newIdx) => {
+        const p = passages[newIdx];
+        const key = p.id || origIdx;
+        if (answers[key]) newAnswers[p.id || newIdx] = answers[key];
+      });
+      answers = newAnswers;
+      currentIndex = 0;
+      document.getElementById('resultScreen').classList.remove('visible');
+      document.getElementById('practiceScreen').classList.remove('hidden');
+      buildProgressBar();
+      updateUI();
+    }
+
+    function newPractice() {
+      applyPassages();
+      currentIndex = 0;
+      document.getElementById('resultScreen').classList.remove('visible');
+      document.getElementById('practiceScreen').classList.remove('hidden');
+      buildProgressBar();
+      updateUI();
+    }
+
+    function buildProgressBar() {
+      const bar = document.getElementById('progressBar');
+      bar.innerHTML = '';
+      passages.forEach((_, i) => {
+        if (i > 0) {
+          const conn = document.createElement('div');
+          conn.className = 'progress-connector' + (results[i - 1] === true ? ' completed' : '');
+          bar.appendChild(conn);
+        }
+        const dot = document.createElement('div');
+        dot.className = 'progress-dot' + (i === currentIndex ? ' active' : '') + (results[i] === true ? ' completed' : '');
+        dot.setAttribute('aria-label', 'Passage ' + (i + 1));
+        dot.onclick = () => { if (i !== currentIndex) { currentIndex = i; updateUI(); } };
+        bar.appendChild(dot);
+      });
+    }
+
+    function updateUI() {
+      const p = passages[currentIndex];
+      if (!p) return;
+      document.getElementById('headerProgress').textContent = 'Passage ' + (currentIndex + 1) + ' / ' + passages.length;
+      buildProgressBar();
+      renderPassage(p);
+      renderQuestions(p);
+      document.getElementById('prevBtn').disabled = currentIndex === 0;
+      const setSelect = document.getElementById('setSelect');
+      if (setSelect && setIds.length > 1) {
+        setSelect.style.display = '';
+        setSelect.value = currentSetId;
+      }
+      saveState();
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          setId: currentSetId,
+          index: currentIndex,
+          results,
+          answers,
+          date: Date.now()
+        }));
+      } catch (_) {}
+    }
+
+    function restoreState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+        if (!data.setId || !sets[data.setId]) return null;
+        return data;
+      } catch (_) { return null; }
+    }
+
+    function switchSet() {
+      const sel = document.getElementById('setSelect');
+      if (!sel || !sets[sel.value]) return;
+      currentSetId = sel.value;
+      applyPassages();
+      const saved = restoreState();
+      if (saved && saved.setId === currentSetId && saved.index != null) {
+        currentIndex = Math.min(saved.index, passages.length - 1);
+        if (saved.results) results = saved.results.slice(0, passages.length);
+        if (saved.answers) answers = saved.answers;
+      }
+      updateUI();
+    }
+
+    function init() {
+      loadData().then(() => {
+        const setSelect = document.getElementById('setSelect');
+        setSelect.innerHTML = '';
+        setIds.forEach(id => {
+          const opt = document.createElement('option');
+          opt.value = id;
+          opt.textContent = sets[id].label || id;
+          setSelect.appendChild(opt);
+        });
+        setSelect.onchange = switchSet;
+        setSelect.style.display = setIds.length > 1 ? '' : 'none';
+        const saved = restoreState();
+        if (saved && sets[saved.setId]) {
+          currentSetId = saved.setId;
+          applyPassages();
+          currentIndex = Math.min(saved.index || 0, passages.length - 1);
+          if (saved.results && saved.results.length === passages.length) results = saved.results;
+          if (saved.answers) answers = saved.answers;
+        }
+        updateUI();
+      }).catch(() => {
+        document.getElementById('passageTitle').textContent = '';
+        document.getElementById('passageMeta').textContent = '';
+        document.getElementById('passageBox').innerHTML = '<p class="passage-content">Unable to load passages. Check that <code>data/read-academic-passage-passages.json</code> exists.</p>';
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>

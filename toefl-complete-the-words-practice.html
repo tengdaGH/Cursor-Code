@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOEFL Complete the Words Practice (C-test)</title>
+  <style>
+    :root {
+      --ets-blue: #0066b3;
+      --ets-blue-dark: #004c87;
+      --ets-blue-light: #e6f2fa;
+      --bg: #f0f2f5;
+      --card: #ffffff;
+      --border: #d1d5db;
+      --text: #1a1a1a;
+      --muted: #6b7280;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --header-height: 48px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 24px;
+    }
+    .header {
+      height: var(--header-height);
+      background: var(--ets-blue);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    }
+    .header-home {
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background 0.2s;
+      margin-right: 12px;
+    }
+    .header-home:hover { background: rgba(255,255,255,.15); }
+    .header-left { display: flex; align-items: center; }
+    .header-timer { font-variant-numeric: tabular-nums; margin-left: 12px; }
+    .main { max-width: 720px; margin: 0 auto; padding: 20px 16px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    .card h2 { font-size: 20px; margin-bottom: 20px; color: var(--ets-blue-dark); }
+    .progress-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0;
+      margin-bottom: 24px;
+      padding: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      width: 100%;
+    }
+    .progress-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: all .3s;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .progress-dot:hover { transform: scale(1.2); box-shadow: 0 0 0 2px var(--ets-blue-light); }
+    .progress-dot.active { background: var(--ets-blue); transform: scale(1.2); }
+    .progress-dot.completed { background: var(--success); }
+    .progress-connector { height: 2px; background: var(--border); flex: 1; min-width: 4px; }
+    .progress-connector.completed { background: var(--success); }
+    .instruction {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .passage-box {
+      font-size: 17px;
+      line-height: 1.8;
+      padding: 20px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 24px;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .passage-box .word-intact { white-space: pre-wrap; }
+    .passage-box .word-gap {
+      display: inline;
+      white-space: nowrap;
+    }
+    .passage-box .gap-slot {
+      display: inline-block;
+      position: relative;
+      vertical-align: baseline;
+      line-height: 0;
+      margin: 0 1px;
+      background: #e5e7eb;
+      border-radius: 3px;
+    }
+    .passage-box .gap-underscores {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      padding: 2px 3px;
+      font-family: 'SF Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
+      font-size: 16px;
+      line-height: 1.3;
+      letter-spacing: 2px;
+      color: #aaa;
+      pointer-events: none;
+      white-space: pre;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    .passage-box .word-gap input {
+      position: relative;
+      font-family: 'SF Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
+      font-size: 16px;
+      line-height: 1.3;
+      letter-spacing: 2px;
+      padding: 2px 3px;
+      border: none;
+      border-radius: 3px;
+      background: transparent;
+      color: var(--text);
+      vertical-align: baseline;
+      box-sizing: border-box;
+      box-shadow: none;
+    }
+    .passage-box .word-gap input:focus { outline: none; }
+    .passage-box .gap-slot:focus-within { background: #d1d5db; }
+    .passage-box .gap-slot.correct { background: #d1fae5; }
+    .passage-box .gap-slot.correct .gap-underscores { visibility: hidden; }
+    .passage-box .gap-slot.incorrect { background: #fee2e2; }
+    .passage-box .gap-slot.incorrect .gap-underscores { visibility: hidden; }
+    .passage-box .word-gap input:disabled { cursor: default; }
+    .passage-box .word-consolidated {
+      color: var(--success);
+      background: #ecfdf5;
+      padding: 1px 4px;
+      border-radius: 4px;
+      transition: color 0.5s ease, background 0.5s ease;
+    }
+    .passage-box .word-consolidated.settled {
+      color: inherit;
+      background: transparent;
+    }
+    .passage-box .word-gap input.shake {
+      animation: shake 0.4s ease-in-out;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+    .countdown { font-variant-numeric: tabular-nums; font-weight: 700; }
+    .countdown.low { color: var(--error); }
+    .feedback { font-size: 15px; margin-bottom: 16px; min-height: 24px; }
+    .explanations { margin-top: 16px; padding: 16px; background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; }
+    .explanations h4 { margin-bottom: 12px; color: var(--ets-blue-dark); }
+    .explanation-item { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .explanation-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+    .explanation-item .word { font-weight: 600; color: var(--text); }
+    .explanation-item .hint { color: var(--muted); margin-top: 4px; }
+    .feedback.correct { color: var(--success); font-weight: 500; }
+    .feedback.incorrect { color: var(--error); font-weight: 500; }
+    .action-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--ets-blue);
+      color: #fff;
+      transition: all .2s;
+    }
+    .btn:hover:not(:disabled) { background: var(--ets-blue-dark); }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-secondary { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover:not(:disabled) { background: #f3f4f6; border-color: var(--ets-blue); color: var(--ets-blue); }
+    .result-screen { display: none; }
+    .result-screen.visible { display: block; }
+    .practice-screen.hidden { display: none !important; }
+    .result-score { font-size: 28px; font-weight: 700; color: var(--ets-blue-dark); margin-bottom: 8px; }
+    .result-time { font-size: 16px; color: var(--muted); margin-bottom: 24px; }
+    .result-review { margin-bottom: 24px; }
+    .result-item { padding: 12px; border-radius: 6px; margin-bottom: 8px; border: 1px solid var(--border); }
+    .result-item.correct { background: #ecfdf5; border-color: var(--success); }
+    .result-item.incorrect { background: #fef2f2; border-color: var(--error); }
+    .hidden { display: none !important; }
+    .text-center { text-align: center; }
+  </style>
+</head>
+<body>
+  <!--
+  REVIEW LOG (for maintainers; not shown to users)
+  Item data: data/complete-the-words-passages.json, data/complete-the-words-cefr-sets.json
+  Detailed item/set edit log: docs/item-review-log.md (Complete the Words section)
+  -->
+  <header class="header">
+    <div class="header-left">
+      <a href="index.html" class="header-home">← Home</a>
+      <div class="title">Complete the Words (C-test)</div>
+    </div>
+    <div class="header-right">
+      <span id="headerProgress">Passage 1 / 5</span>
+      <span class="header-timer" id="headerTimer">00:00</span>
+      <span class="countdown" id="countdown">3:00</span>
+    </div>
+  </header>
+  <main class="main">
+    <div class="practice-screen" id="practiceScreen">
+      <div class="card">
+        <h2>Complete the Words</h2>
+        <p class="instruction">Read the passage. The first sentence is complete. From the second sentence, every 2nd word has the second half removed: type the missing letters only (punctuation is shown for you). One wrong letter = wrong. 3 minutes per passage.</p>
+        <div class="set-selector" style="margin-bottom: 16px;">
+          <label for="setSelect" style="font-weight: 600; margin-right: 8px;">Set:</label>
+          <select id="setSelect" style="font-size: 15px; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border);">
+            <option value="">B2/C1 (legacy)</option>
+            <option value="A1">A1 — Beginner</option>
+            <option value="A2">A2 — Elementary</option>
+            <option value="B1">B1 — Intermediate</option>
+            <option value="B2">B2 — Upper intermediate</option>
+            <option value="C1">C1 — Advanced</option>
+            <option value="C2">C2 — Proficient</option>
+          </select>
+          <span style="margin-left: 8px; color: var(--muted); font-size: 14px;">Changing set starts a new practice.</span>
+        </div>
+        <div class="progress-bar" id="progressBar"></div>
+        <div class="passage-box" id="passageBox"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="explanations hidden" id="explanationsBox"></div>
+        <div class="action-buttons">
+          <button class="btn" id="checkBtn" onclick="checkAnswer()">Check</button>
+          <button class="btn" id="nextBtn" onclick="nextQuestion()" style="display: none;">Next</button>
+        </div>
+      </div>
+    </div>
+    <div class="result-screen" id="resultScreen">
+      <div class="card">
+        <h2>Practice Complete</h2>
+        <div class="result-score text-center" id="resultScore">0 / 5</div>
+        <div class="result-time text-center" id="resultTime">Time: 00:00</div>
+        <div class="result-review">
+          <div class="section-title" style="font-size: 14px; font-weight: 600; color: var(--muted); margin-bottom: 12px;">Review</div>
+          <div id="resultReview"></div>
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-secondary" id="retryMistakesBtn" onclick="retryMistakes()">Retry Mistakes</button>
+          <button class="btn" id="newPracticeBtn" onclick="newPractice()">New Practice</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script>
+    // TOEFL 2026 C-test: first sentence intact; from second sentence every 2nd word: keep floor(len/2), delete rest; 10 gaps; punctuation outside blank.
+    const EMBEDDED_PASSAGES = [
+      "The library is a quiet place where students can study and borrow books. Many people come here to read and complete their assignments. The staff are very helpful and can assist you with finding materials. There are computers available for research and printing documents. You will need your student card to check out any books from the collection.",
+      "Weather can change quickly in this region. In the morning it might be sunny but by afternoon it could start to rain. People often carry an umbrella when they go out. The local news provides daily forecasts so you can plan your activities accordingly. It is a good idea to dress in layers so you can stay comfortable throughout the day."
+    ];
+
+    const STORAGE_KEY = 'toefl-complete-the-words-progress';
+    const urlParams = new URLSearchParams(window.location.search);
+    const shouldShuffle = urlParams.get('shuffle') !== 'false';
+
+    const COUNTDOWN_PER_PASSAGE = 180;  // 3 minutes
+    const COUNTDOWN_WARN_AT = 30;      // turn red at 30 seconds
+
+    let passages = [];
+    let currentIndex = 0;
+    let answered = false;
+    let timerInterval = null;
+    let startTime = null;
+    let elapsedSeconds = 0;
+    let results = [];
+    let countdownRemaining = COUNTDOWN_PER_PASSAGE;
+    let countdownInterval = null;
+
+    function getFirstSentence(text) {
+      const match = text.match(/^[^.!?]+[.!?]/);
+      return match ? match[0].trim() : text.trim();
+    }
+
+    function getRemainingAfterFirstSentence(text) {
+      const first = getFirstSentence(text);
+      const rest = text.slice(first.length).trim();
+      return rest;
+    }
+
+    // TOEFL 2026 strict rule: keep floor(length/2) chars, delete the rest. Punctuation NEVER part of blank.
+    function buildPassageData(passageObj) {
+      const fullText = typeof passageObj === 'string' ? passageObj : passageObj.text;
+      const hints = (passageObj.hints || []);
+      const firstSentence = getFirstSentence(fullText);
+      const rest = getRemainingAfterFirstSentence(fullText);
+      const words = rest.split(/\s+/).filter(Boolean);
+      const gaps = [];
+      let hintIdx = 0;
+      for (let i = 1; i < words.length && gaps.length < 10; i += 2) {
+        const raw = words[i];
+        const suffix = (raw.match(/[.,;:!?']$/)) ? raw.match(/[.,;:!?']$/)[0] : '';
+        const word = raw.replace(/[.,;:!?']$/, '');
+        if (word.length < 2) continue;
+        const keepLen = Math.floor(word.length / 2);  // keep first floor(len/2)
+        const firstPart = word.slice(0, keepLen);
+        const missingPart = word.slice(keepLen);        // blank is letters only; punctuation after input
+        gaps.push({
+          firstPart,
+          missingPart,
+          suffix,
+          wordIndex: i,
+          fullWord: word + suffix,
+          hint: hints[hintIdx++] || ''
+        });
+      }
+      return { firstSentence, words, gaps, fullText, tier: passageObj.tier };
+    }
+
+    function setupInputBehavior(input, gapIdx, totalGaps) {
+      const requiredLen = parseInt(input.getAttribute('data-required-len'), 10);
+      input.addEventListener('input', function() {
+        this.value = this.value.replace(/\s/g, '');
+        const val = this.value;
+        if (val.length === requiredLen) {
+          const next = document.getElementById('passageBox').querySelectorAll('.word-gap input')[gapIdx + 1];
+          if (next) next.focus();
+        }
+        this.classList.remove('shake');
+      });
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const next = document.getElementById('passageBox').querySelectorAll('.word-gap input')[gapIdx + 1];
+          if (next) next.focus(); else document.getElementById('checkBtn').focus();
+        }
+      });
+      input.addEventListener('blur', function() {
+        if (this.value.length > 0 && this.value.length !== requiredLen) this.classList.add('shake');
+      });
+    }
+
+    function startCountdown() {
+      countdownRemaining = COUNTDOWN_PER_PASSAGE;
+      const el = document.getElementById('countdown');
+      el.textContent = '3:00';
+      el.classList.remove('low');
+      if (countdownInterval) clearInterval(countdownInterval);
+      countdownInterval = setInterval(function() {
+        countdownRemaining--;
+        const m = Math.floor(countdownRemaining / 60);
+        const s = countdownRemaining % 60;
+        el.textContent = m + ':' + String(s).padStart(2, '0');
+        if (countdownRemaining <= COUNTDOWN_WARN_AT) el.classList.add('low');
+        if (countdownRemaining <= 0) {
+          clearInterval(countdownInterval);
+          countdownInterval = null;
+          if (!answered) {
+            document.getElementById('feedback').textContent = 'Time\'s up!';
+            document.getElementById('feedback').className = 'feedback incorrect';
+            checkAnswer();
+          }
+        }
+      }, 1000);
+    }
+
+    function stopCountdown() {
+      if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
+    }
+
+    function shuffleArray(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function formatTime(s) {
+      const m = Math.floor(s / 60);
+      return String(m).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+    }
+
+    function startTimer() {
+      if (timerInterval) return;
+      startTime = Date.now() - elapsedSeconds * 1000;
+      timerInterval = setInterval(() => {
+        elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+        document.getElementById('headerTimer').textContent = formatTime(elapsedSeconds);
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    function buildProgressBar() {
+      const bar = document.getElementById('progressBar');
+      bar.innerHTML = '';
+      for (let i = 0; i < passages.length; i++) {
+        if (i > 0) {
+          const conn = document.createElement('div');
+          conn.className = 'progress-connector' + (results[i - 1] === true ? ' completed' : '');
+          bar.appendChild(conn);
+        }
+        const dot = document.createElement('div');
+        dot.className = 'progress-dot' + (i === currentIndex ? ' active' : '') + (results[i] === true ? ' completed' : '');
+        dot.setAttribute('aria-label', 'Passage ' + (i + 1));
+        dot.onclick = () => { if (i !== currentIndex && !answered) loadPassage(i); };
+        bar.appendChild(dot);
+      }
+    }
+
+    function loadPassage(index) {
+      currentIndex = index;
+      const p = passages[index];
+      answered = false;
+
+      const box = document.getElementById('passageBox');
+      box.innerHTML = '';
+
+      const intro = document.createElement('span');
+      intro.className = 'word-intact';
+      intro.textContent = p.firstSentence + ' ';
+      box.appendChild(intro);
+
+      let gapIdx = 0;
+      for (let i = 0; i < p.words.length; i++) {
+        const gapInfo = p.gaps[gapIdx];
+        const isGap = gapInfo && gapInfo.wordIndex === i;
+        if (isGap) {
+          const span = document.createElement('span');
+          span.className = 'word-gap';
+          const slot = document.createElement('span');
+          slot.className = 'gap-slot';
+          const underscores = document.createElement('span');
+          underscores.className = 'gap-underscores';
+          underscores.textContent = '_'.repeat(gapInfo.missingPart.length);
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.setAttribute('data-index', gapIdx);
+          input.setAttribute('data-answer', gapInfo.missingPart);
+          input.setAttribute('data-required-len', gapInfo.missingPart.length);
+          input.style.width = 'calc(' + gapInfo.missingPart.length + 'ch + ' + (gapInfo.missingPart.length * 2 + 6) + 'px)';
+          input.maxLength = gapInfo.missingPart.length;
+          slot.appendChild(underscores);
+          slot.appendChild(input);
+          span.appendChild(document.createTextNode(gapInfo.firstPart));
+          span.appendChild(slot);
+          if (gapInfo.suffix) span.appendChild(document.createTextNode(gapInfo.suffix));
+          span.appendChild(document.createTextNode(' '));
+          box.appendChild(span);
+          setupInputBehavior(input, gapIdx, p.gaps.length);
+          gapIdx++;
+        } else {
+          const span = document.createElement('span');
+          span.className = 'word-intact';
+          span.textContent = p.words[i] + ' ';
+          box.appendChild(span);
+        }
+      }
+
+      document.getElementById('feedback').textContent = '';
+      document.getElementById('feedback').className = 'feedback';
+      document.getElementById('checkBtn').style.display = '';
+      document.getElementById('nextBtn').style.display = 'none';
+      document.getElementById('headerProgress').textContent = 'Passage ' + (index + 1) + ' / ' + passages.length;
+
+      document.querySelectorAll('.progress-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === index);
+        d.classList.toggle('completed', results[i] === true);
+      });
+
+      document.getElementById('explanationsBox').classList.add('hidden');
+      document.getElementById('explanationsBox').innerHTML = '';
+      startCountdown();
+      box.querySelector('input') && box.querySelector('input').focus();
+    }
+
+    function checkAnswer() {
+      if (answered) return;
+      const p = passages[currentIndex];
+      const inputs = document.getElementById('passageBox').querySelectorAll('.word-gap input');
+      let allFilled = true;
+      let correctCount = 0;
+      const wrongWithHints = [];
+      function norm(s) {
+        return (s || '').replace(/\s+/g, ' ').trim().toLowerCase();
+      }
+      inputs.forEach((input, i) => {
+        const requiredLen = parseInt(input.getAttribute('data-required-len'), 10);
+        if (input.value.length > 0 && input.value.length !== requiredLen) input.classList.add('shake');
+        const expected = (p.gaps[i] && p.gaps[i].missingPart != null) ? p.gaps[i].missingPart : (input.getAttribute('data-answer') || '');
+        const value = (input.value || '').trim();
+        if (!value) allFilled = false;
+        const correct = norm(value) === norm(expected);
+        if (correct) correctCount++; else wrongWithHints.push({ gap: p.gaps[i], value, correctAnswer: expected });
+        input.disabled = true;
+        var slot = input.closest('.gap-slot');
+        if (slot) slot.classList.add(correct ? 'correct' : 'incorrect');
+        if (!correct) input.value = expected;
+      });
+
+      if (!allFilled) {
+        document.getElementById('feedback').textContent = 'Please fill in all gaps.';
+        document.getElementById('feedback').className = 'feedback incorrect';
+        return;
+      }
+      stopCountdown();
+      answered = true;
+      const allCorrect = correctCount === p.gaps.length;
+      results[currentIndex] = allCorrect;
+
+      const feedbackEl = document.getElementById('feedback');
+      feedbackEl.className = 'feedback ' + (allCorrect ? 'correct' : 'incorrect');
+      feedbackEl.textContent = allCorrect
+        ? 'Correct! All words completed properly.'
+        : 'You got ' + correctCount + ' out of ' + p.gaps.length + ' words correct. One missing letter marks the item wrong.';
+
+      if (wrongWithHints.length > 0) {
+        const exBox = document.getElementById('explanationsBox');
+        exBox.classList.remove('hidden');
+        exBox.innerHTML = '<h4>Why these answers?</h4>';
+        wrongWithHints.forEach(function(item) {
+          const div = document.createElement('div');
+          div.className = 'explanation-item';
+          const fullWord = item.gap.firstPart + item.correctAnswer + (item.gap.suffix || '');
+          div.innerHTML = '<span class="word">Correct: ' + fullWord + '</span>' +
+            (item.gap.hint ? '<div class="hint">' + item.gap.hint + '</div>' : '');
+          exBox.appendChild(div);
+        });
+      }
+
+      document.getElementById('checkBtn').style.display = 'none';
+      document.getElementById('nextBtn').style.display = '';
+
+      if (allCorrect) {
+        const colors = ['#0066b3', '#10b981', '#f59e0b'];
+        for (let i = 0; i < 40; i++) {
+          const c = document.createElement('div');
+          c.style.cssText = 'position:fixed;width:6px;height:6px;background:' + colors[i % 3] + ';border-radius:2px;pointer-events:none;z-index:9999;left:' + (Math.random() * 100) + 'vw;top:30px;animation:cf 1.5s ease-out forwards;';
+          document.body.appendChild(c);
+          setTimeout(() => c.remove(), 1500);
+        }
+        const style = document.createElement('style');
+        style.textContent = '@keyframes cf{to{transform:translateY(100vh) rotate(360deg);opacity:0}}';
+        document.head.appendChild(style);
+        setTimeout(() => style.remove(), 1600);
+      }
+    }
+
+    function nextQuestion() {
+      stopCountdown();
+      if (currentIndex < passages.length - 1) {
+        loadPassage(currentIndex + 1);
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      stopTimer();
+      stopCountdown();
+      const correct = results.filter(Boolean).length;
+      document.getElementById('resultScore').textContent = correct + ' / ' + passages.length;
+      document.getElementById('resultTime').textContent = 'Time: ' + formatTime(elapsedSeconds);
+      const review = document.getElementById('resultReview');
+      review.innerHTML = '';
+      passages.forEach((p, i) => {
+        const div = document.createElement('div');
+        div.className = 'result-item ' + (results[i] ? 'correct' : 'incorrect');
+        div.innerHTML = '<strong>Passage ' + (i + 1) + ':</strong> ' + (results[i] ? '✓ All words correct' : '✗ Some words incorrect');
+        review.appendChild(div);
+      });
+      document.getElementById('practiceScreen').classList.add('hidden');
+      document.getElementById('resultScreen').classList.add('visible');
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ results, elapsedSeconds, date: Date.now() }));
+      } catch (_) {}
+    }
+
+    function retryMistakes() {
+      const wrongIndices = results.map((r, i) => (r ? -1 : i)).filter(i => i >= 0);
+      if (wrongIndices.length === 0) {
+        newPractice();
+        return;
+      }
+      passages = wrongIndices.map(i => passages[i]);
+      results = [];
+      passages.forEach((_, i) => (results[i] = undefined));
+      elapsedSeconds = 0;
+      startTime = Date.now();
+      timerInterval = null;
+      startTimer();
+      document.getElementById('resultScreen').classList.remove('visible');
+      document.getElementById('practiceScreen').classList.remove('hidden');
+      buildProgressBar();
+      currentIndex = 0;
+      loadPassage(0);
+    }
+
+    function applyPassagesAndStart() {
+      results = [];
+      passages.forEach(function(_, i) { results[i] = undefined; });
+      elapsedSeconds = 0;
+      startTime = Date.now();
+      timerInterval = null;
+      startTimer();
+      document.getElementById('resultScreen').classList.remove('visible');
+      document.getElementById('practiceScreen').classList.remove('hidden');
+      buildProgressBar();
+      currentIndex = 0;
+      loadPassage(0);
+    }
+
+    function loadPassagesThenStart(cefrSetId) {
+      if (cefrSetId && ['A1','A2','B1','B2','C1','C2'].indexOf(cefrSetId) >= 0) {
+        fetch('data/complete-the-words-cefr-sets.json')
+          .then(function(r) { return r.json(); })
+          .then(function(data) {
+            const list = (data.sets && data.sets[cefrSetId]) ? data.sets[cefrSetId] : [];
+            if (list.length === 0) throw new Error('No passages for set ' + cefrSetId);
+            passages = list.map(function(p) { return buildPassageData(p); });
+            if (shouldShuffle) passages = shuffleArray(passages);
+            applyPassagesAndStart();
+          })
+          .catch(function() {
+            passages = EMBEDDED_PASSAGES.map(function(t) { return buildPassageData(t); });
+            if (shouldShuffle) passages = shuffleArray(passages);
+            applyPassagesAndStart();
+          });
+        return;
+      }
+      var tier = urlParams.get('tier');
+      fetch('data/complete-the-words-passages.json')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          const list = (data.passages || []).filter(function(p) { return !tier || p.tier === tier; });
+          if (list.length === 0) throw new Error('No passages');
+          passages = list.map(function(p) { return buildPassageData(p); });
+          if (shouldShuffle) passages = shuffleArray(passages);
+          applyPassagesAndStart();
+        })
+        .catch(function() {
+          const raw = EMBEDDED_PASSAGES.map(function(t) { return buildPassageData(t); });
+          passages = shouldShuffle ? shuffleArray([...raw]) : [...raw];
+          applyPassagesAndStart();
+        });
+    }
+
+    function newPractice() {
+      var setSelect = document.getElementById('setSelect');
+      var cefrSet = (setSelect && setSelect.value) ? setSelect.value : urlParams.get('set') || '';
+      loadPassagesThenStart(cefrSet);
+    }
+
+    function init() {
+      var setFromUrl = urlParams.get('set');
+      var setSelect = document.getElementById('setSelect');
+      if (setSelect && setFromUrl && ['A1','A2','B1','B2','C1','C2'].indexOf(setFromUrl) >= 0) setSelect.value = setFromUrl;
+
+      function onLoaded() {
+        results = [];
+        passages.forEach(function(_, i) { results[i] = undefined; });
+        buildProgressBar();
+        startTimer();
+        loadPassage(0);
+      }
+
+      var cefrSet = setFromUrl || (setSelect && setSelect.value) || '';
+      if (cefrSet && ['A1','A2','B1','B2','C1','C2'].indexOf(cefrSet) >= 0) {
+        fetch('data/complete-the-words-cefr-sets.json')
+          .then(function(r) { return r.json(); })
+          .then(function(data) {
+            const list = (data.sets && data.sets[cefrSet]) ? data.sets[cefrSet] : [];
+            if (list.length === 0) throw new Error('No passages for set ' + cefrSet);
+            passages = list.map(function(p) { return buildPassageData(p); });
+            if (shouldShuffle) passages = shuffleArray(passages);
+            onLoaded();
+          })
+          .catch(function() {
+            passages = EMBEDDED_PASSAGES.map(function(t) { return buildPassageData(t); });
+            if (shouldShuffle) passages = shuffleArray(passages);
+            onLoaded();
+          });
+        return;
+      }
+      var tier = urlParams.get('tier');
+      fetch('data/complete-the-words-passages.json')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          const list = (data.passages || []).filter(function(p) { return !tier || p.tier === tier; });
+          if (list.length === 0) throw new Error('No passages');
+          passages = list.map(function(p) { return buildPassageData(p); });
+          if (shouldShuffle) passages = shuffleArray(passages);
+          onLoaded();
+        })
+        .catch(function() {
+          passages = EMBEDDED_PASSAGES.map(function(t) { return buildPassageData(t); });
+          if (shouldShuffle) passages = shuffleArray(passages);
+          onLoaded();
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var setSelect = document.getElementById('setSelect');
+      if (setSelect) setSelect.addEventListener('change', function() {
+        var v = this.value;
+        var params = new URLSearchParams(window.location.search);
+        if (v) params.set('set', v); else params.delete('set');
+        var q = params.toString();
+        window.location.search = q ? '?' + q : '';
+      });
+    });
+
+    init();
+  </script>
+</body>
+</html>

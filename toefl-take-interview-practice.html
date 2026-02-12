@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOEFL Speaking Practice — Take an Interview</title>
+  <style>
+    /* TOEFL/ETS Design System */
+    :root {
+      --ets-blue: #0066b3;
+      --ets-blue-dark: #004c87;
+      --ets-blue-light: #e6f2fa;
+      --bg: #f0f2f5;
+      --card: #ffffff;
+      --border: #d1d5db;
+      --text: #1a1a1a;
+      --muted: #6b7280;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --header-height: 48px;
+      --rec-red: #ef4444;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 24px;
+    }
+
+    /* Header */
+    .header {
+      height: var(--header-height);
+      background: var(--ets-blue);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    }
+    .header-home {
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background 0.2s;
+      margin-right: 12px;
+    }
+    .header-home:hover {
+      background: rgba(255,255,255,.15);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+    .header-select {
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 6px 12px;
+      cursor: pointer;
+      min-width: 240px;
+    }
+    .header-select:hover { background: rgba(255,255,255,.25); }
+    .header-select option { color: var(--text); background: var(--card); }
+    .header-select option:disabled { color: var(--muted); }
+
+    /* Main Container */
+    .main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 20px 16px;
+    }
+
+    /* Card Styling */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    .card h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: var(--ets-blue-dark);
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 24px;
+      padding: 12px 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .progress-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .progress-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      transition: all .3s;
+    }
+    .progress-step:hover .progress-dot {
+      transform: scale(1.1);
+      box-shadow: 0 0 0 3px var(--ets-blue-light);
+    }
+    .progress-dot.active {
+      background: var(--ets-blue);
+      transform: scale(1.15);
+    }
+    .progress-dot.completed { background: var(--success); }
+    .progress-dot.recorded { background: var(--success); }
+    .progress-label {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 4px;
+      white-space: nowrap;
+    }
+    .progress-connector {
+      height: 2px;
+      background: var(--border);
+      flex: 1;
+      min-width: 20px;
+      margin: 0 4px;
+      align-self: flex-start;
+      margin-top: 14px;
+    }
+    .progress-connector.completed { background: var(--success); }
+
+    /* Phase: Intro */
+    .phase { display: none; }
+    .phase.active { display: block; }
+
+    /* Scenario Card */
+    .scenario-card {
+      background: var(--ets-blue-light);
+      border: 2px solid var(--ets-blue);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .scenario-icon { font-size: 48px; text-align: center; margin-bottom: 12px; }
+    .scenario-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ets-blue-dark);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .scenario-desc {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    /* Instructions */
+    .instructions {
+      background: #fefce8;
+      border: 1px solid #fde68a;
+      border-radius: 6px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+    .instructions h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #92400e;
+      margin-bottom: 8px;
+    }
+    .instructions ul {
+      font-size: 13px;
+      color: #78350f;
+      line-height: 1.8;
+      padding-left: 20px;
+    }
+
+    /* Interviewer Question */
+    .interviewer-section {
+      background: var(--card);
+      border: 2px solid var(--ets-blue);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .interviewer-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .interviewer-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--ets-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+    .interviewer-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ets-blue-dark);
+    }
+    .interviewer-role {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .question-badge {
+      background: var(--ets-blue);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 12px;
+      margin-left: auto;
+    }
+    .question-type-badge {
+      background: #dbeafe;
+      color: var(--ets-blue-dark);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 12px;
+    }
+    .interviewer-question {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--text);
+      padding: 16px;
+      background: #f8fafc;
+      border-radius: 8px;
+      border-left: 4px solid var(--ets-blue);
+    }
+
+    /* Timer Section */
+    .timer-section {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .timer-ring-container {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 12px;
+    }
+    .timer-ring {
+      transform: rotate(-90deg);
+    }
+    .timer-ring-bg {
+      fill: none;
+      stroke: #e5e7eb;
+      stroke-width: 8;
+    }
+    .timer-ring-progress {
+      fill: none;
+      stroke: var(--ets-blue);
+      stroke-width: 8;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.5s linear;
+    }
+    .timer-ring-progress.warning { stroke: var(--warning); }
+    .timer-ring-progress.danger { stroke: var(--error); }
+    .timer-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .timer-text.warning { color: var(--warning); }
+    .timer-text.danger { color: var(--error); }
+    .timer-label {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    /* Recording Indicator */
+    .recording-indicator {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 12px 0;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--rec-red);
+    }
+    .recording-indicator.active { display: flex; }
+    .rec-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--rec-red);
+      animation: recPulse 1s ease-in-out infinite;
+    }
+    @keyframes recPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .5; transform: scale(.8); }
+    }
+
+    /* Audio Visualizer */
+    .visualizer {
+      display: none;
+      height: 40px;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      margin: 12px 0;
+    }
+    .visualizer.active { display: flex; }
+    .viz-bar {
+      width: 4px;
+      background: var(--ets-blue);
+      border-radius: 2px;
+      animation: vizPulse 0.5s ease-in-out infinite;
+    }
+    @keyframes vizPulse {
+      0%, 100% { height: 8px; }
+      50% { height: 32px; }
+    }
+
+    /* Playback Section */
+    .playback-section {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 16px 0;
+      text-align: center;
+    }
+    .playback-section audio {
+      width: 100%;
+      max-width: 400px;
+      margin-top: 8px;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      background: var(--ets-blue);
+      color: #fff;
+    }
+    .btn:hover:not(:disabled) { background: var(--ets-blue-dark); }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-secondary {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover:not(:disabled) {
+      background: #f3f4f6;
+      border-color: var(--ets-blue);
+      color: var(--ets-blue);
+    }
+    .btn-danger { background: var(--error); color: #fff; }
+    .btn-danger:hover:not(:disabled) { background: #dc2626; }
+    .btn-success { background: var(--success); color: #fff; }
+    .btn-success:hover:not(:disabled) { background: #059669; }
+    .btn-lg { padding: 14px 36px; font-size: 16px; }
+    .btn-record { background: var(--rec-red); color: #fff; }
+    .btn-record:hover:not(:disabled) { background: #dc2626; }
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    /* Self-Evaluation */
+    .rubric-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .rubric-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+    }
+    .rubric-header:hover { background: #f1f5f9; }
+    .rubric-dimension {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--ets-blue-dark);
+    }
+    .rubric-score-select {
+      padding: 4px 8px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .rubric-body {
+      padding: 12px 16px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    /* Summary */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .summary-item {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px;
+      text-align: center;
+    }
+    .summary-item .label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .summary-item .value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--ets-blue-dark);
+      margin-top: 4px;
+    }
+
+    /* Section title */
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .header { padding: 0 12px; font-size: 13px; }
+      .header-select { min-width: 160px; font-size: 12px; }
+      .main { padding: 12px 8px; }
+      .card { padding: 16px; }
+      .interviewer-question { font-size: 14px; padding: 12px; }
+      .summary-grid { grid-template-columns: 1fr; }
+    }
+
+    .hidden { display: none !important; }
+    .text-center { text-align: center; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <a href="index.html" class="header-home">← Home</a>
+      <div class="title">TOEFL® Speaking — Take an Interview</div>
+    </div>
+    <select class="header-select" id="setSelect" onchange="switchSet()">
+    </select>
+    <div id="headerProgress">Question 1 of 4</div>
+  </header>
+
+  <main class="main">
+    <!-- ============ INTRO PHASE ============ -->
+    <div class="phase active" id="phaseIntro">
+      <div class="card">
+        <h2>Take an Interview</h2>
+
+        <div class="scenario-card">
+          <div class="scenario-icon" id="introIcon">🎙️</div>
+          <div class="scenario-title" id="introTitle">Loading...</div>
+          <div class="scenario-desc" id="introDesc">Loading...</div>
+        </div>
+
+        <div class="instructions">
+          <h3>Instructions</h3>
+          <ul>
+            <li>An interviewer will ask you <strong>4 questions</strong>.</li>
+            <li>Answer each question and say <strong>as much as you can</strong> in the time allowed.</li>
+            <li><strong>No preparation time</strong> will be provided — respond immediately after the question.</li>
+            <li>The first questions focus on <strong>personal experience</strong>; later questions ask for your <strong>opinions</strong> on broader issues.</li>
+            <li>You will have <strong>60 seconds</strong> to answer each question.</li>
+          </ul>
+        </div>
+
+        <div class="text-center">
+          <button class="btn btn-lg" onclick="startInterview()">Begin Interview</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ QUESTION PHASE ============ -->
+    <div class="phase" id="phaseQuestion">
+      <div class="card">
+        <h2>Take an Interview</h2>
+
+        <!-- Progress -->
+        <div class="progress-bar" id="progressBar"></div>
+
+        <!-- Interviewer Question -->
+        <div class="interviewer-section">
+          <div class="interviewer-header">
+            <div class="interviewer-avatar">🎤</div>
+            <div>
+              <div class="interviewer-name" id="interviewerName">Interviewer</div>
+              <div class="interviewer-role" id="interviewerRole">Researcher</div>
+            </div>
+            <span class="question-type-badge" id="questionTypeBadge">Personal</span>
+            <span class="question-badge" id="questionBadge">Q1</span>
+          </div>
+          <div class="interviewer-question" id="questionText">Loading...</div>
+          <!-- Prompt audio playback -->
+          <div id="promptAudioSection" style="margin-top:12px; text-align:center;" class="hidden">
+            <button class="btn btn-secondary" id="playPromptBtn" onclick="playPromptAudio()" style="font-size:13px; padding:8px 16px;">
+              🔊 Play Interviewer Audio
+            </button>
+            <span id="promptAudioStatus" style="font-size:12px; color:var(--muted); margin-left:8px;"></span>
+          </div>
+        </div>
+
+        <!-- Timer -->
+        <div class="timer-section" id="timerSection">
+          <div class="timer-ring-container">
+            <svg class="timer-ring" width="120" height="120" viewBox="0 0 120 120">
+              <circle class="timer-ring-bg" cx="60" cy="60" r="52"/>
+              <circle class="timer-ring-progress" id="timerRingProgress" cx="60" cy="60" r="52"
+                stroke-dasharray="326.73" stroke-dashoffset="0"/>
+            </svg>
+            <div class="timer-text" id="timerText">60</div>
+          </div>
+          <div class="timer-label" id="timerLabel">Press "Start Speaking" when ready</div>
+        </div>
+
+        <!-- Recording indicator -->
+        <div class="recording-indicator" id="recordingIndicator">
+          <span class="rec-dot"></span>
+          <span>Recording...</span>
+        </div>
+
+        <!-- Audio Visualizer -->
+        <div class="visualizer" id="visualizer"></div>
+
+        <!-- Playback (after recording) -->
+        <div class="playback-section hidden" id="playbackSection">
+          <div style="font-size:14px; font-weight:600; color:var(--success);">✓ Response recorded</div>
+          <audio id="playbackAudio" controls></audio>
+        </div>
+
+        <!-- Controls -->
+        <div class="btn-group" id="questionControls">
+          <button class="btn btn-secondary" id="prevQBtn" onclick="prevQuestion()" disabled>← Previous</button>
+          <button class="btn btn-lg" id="startSpeakBtn" onclick="startRecording()">🎙️ Start Speaking</button>
+          <button class="btn btn-danger hidden" id="stopSpeakBtn" onclick="stopRecording()">⬛ Stop</button>
+          <button class="btn btn-secondary hidden" id="reRecordBtn" onclick="reRecord()">↻ Re-record</button>
+          <button class="btn" id="nextQBtn" onclick="nextQuestion()">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ REVIEW PHASE ============ -->
+    <div class="phase" id="phaseReview">
+      <div class="card">
+        <h2>Interview Complete</h2>
+
+        <div class="summary-grid">
+          <div class="summary-item">
+            <div class="label">Questions Answered</div>
+            <div class="value" id="summaryAnswered">0/4</div>
+          </div>
+          <div class="summary-item">
+            <div class="label">Total Recording Time</div>
+            <div class="value" id="summaryTime">0:00</div>
+          </div>
+        </div>
+
+        <!-- Review each Q -->
+        <div id="reviewList"></div>
+
+        <!-- Self-evaluation rubric -->
+        <div class="section-title" style="margin-top:24px;">Self-Evaluation (ETS 0–5 Rubric)</div>
+        <div class="rubric-card">
+          <div class="rubric-header">
+            <span class="rubric-dimension">🗣 Fluency</span>
+            <select class="rubric-score-select" id="scoreFluency"><option value="">—</option><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option><option>0</option></select>
+          </div>
+          <div class="rubric-body">
+            Good conversational speaking pace, appropriate natural pauses, no excessive hesitations.
+          </div>
+        </div>
+        <div class="rubric-card">
+          <div class="rubric-header">
+            <span class="rubric-dimension">👂 Intelligibility</span>
+            <select class="rubric-score-select" id="scoreIntelligibility"><option value="">—</option><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option><option>0</option></select>
+          </div>
+          <div class="rubric-body">
+            Pronunciation is easily intelligible; rhythm and intonation effectively convey meaning.
+          </div>
+        </div>
+        <div class="rubric-card">
+          <div class="rubric-header">
+            <span class="rubric-dimension">📝 Language Use (Vocabulary & Grammar)</span>
+            <select class="rubric-score-select" id="scoreLanguage"><option value="">—</option><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option><option>0</option></select>
+          </div>
+          <div class="rubric-body">
+            A range of accurate grammar and vocabulary allows clear expression of precise meanings.
+          </div>
+        </div>
+        <div class="rubric-card">
+          <div class="rubric-header">
+            <span class="rubric-dimension">🔗 Organization</span>
+            <select class="rubric-score-select" id="scoreOrganization"><option value="">—</option><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option><option>0</option></select>
+          </div>
+          <div class="rubric-body">
+            Discourse coherence; effective use of connectives to organize ideas logically.
+          </div>
+        </div>
+
+        <div class="btn-group" style="margin-top:24px;">
+          <button class="btn btn-secondary" onclick="backToQuestions()">← Review Questions</button>
+          <button class="btn" onclick="restartInterview()">↻ Restart Interview</button>
+          <button class="btn btn-success" onclick="finishAndNext()">Next Set →</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // ==================== INTERVIEW SETS ====================
+    const INTERVIEW_SETS = {
+      PT1: {
+        label: 'Practice Test 1 — Work-Life Balance (Research Study)',
+        icon: '📊',
+        scenario: 'You have volunteered for a research study about work-life balance. You will have a short online interview with a researcher.',
+        interviewerName: 'Dr. Williams',
+        interviewerRole: 'Researcher',
+        questions: [
+          {
+            type: 'Personal / Factual',
+            text: 'Thank you for participating. Today, I\'d like to ask you some questions about your work-life balance. First, can you share one or two strategies that you use that you think are effective in managing your work-life balance?',
+            audioFile: 'audio/interview/TI-PT1-Q1.mp3',
+            timeLimit: 60
+          },
+          {
+            type: 'Personal + Opinion',
+            text: 'I see. Many companies are now developing programs to help employees manage work-life balance. Would programs like this affect your interest in working for a particular company? Why or why not?',
+            audioFile: 'audio/interview/TI-PT1-Q2.mp3',
+            timeLimit: 60
+          },
+          {
+            type: 'Opinion + Argument',
+            text: 'Interesting. Some companies also offer flexible working hours or remote work options to help employees achieve a better work-life balance, but they are concerned that these options would reduce employee attention to tasks or engagement in the workplace. Do you think such programs are a good strategy for companies? Why or why not?',
+            audioFile: 'audio/interview/TI-PT1-Q3.mp3',
+            timeLimit: 60
+          },
+          {
+            type: 'Opinion + Prediction',
+            text: 'Good points. Lastly, looking to the future, do you think people\'s attitudes towards work-life balance will change? For example, do you think people will prioritize personal life over work, or work over personal life? Explain your thoughts.',
+            audioFile: 'audio/interview/TI-PT1-Q4.mp3',
+            timeLimit: 60
+          }
+        ]
+      },
+      SC1: {
+        label: 'Set 2 — Scholarship Application (Interview)',
+        icon: '🎓',
+        scenario: 'You are applying for a university scholarship. You will have a short interview with a member of the scholarship committee. The interviewer will ask you questions about your academic goals and experiences.',
+        interviewerName: 'Professor Adams',
+        interviewerRole: 'Scholarship Committee',
+        questions: [
+          {
+            type: 'Personal / Factual',
+            text: 'Welcome, and thank you for applying for this scholarship. To start, could you tell me a little about your academic background and what you are currently studying?',
+            audioFile: 'audio/interview/TI-SC1-Q1.mp3',
+            timeLimit: 60
+          },
+          {
+            type: 'Personal + Opinion',
+            text: 'That\'s great. What made you choose this particular field of study, and what do you hope to achieve with your degree in the future?',
+            audioFile: 'audio/interview/TI-SC1-Q2.mp3',
+            timeLimit: 60
+          },
+          {
+            type: 'Opinion + Argument',
+            text: 'I see. Some people believe that financial support, like scholarships, should be based purely on academic performance, while others think it should also consider factors like community involvement and leadership. What is your view on this?',
+            audioFile: 'audio/interview/TI-SC1-Q3.mp3',
+            timeLimit: 60
+          },
+          {
+            type: 'Opinion + Prediction',
+            text: 'That\'s an interesting perspective. Finally, how do you think higher education will change in the next ten years? For example, do you think online learning will become more common than traditional classroom learning? Why or why not?',
+            audioFile: 'audio/interview/TI-SC1-Q4.mp3',
+            timeLimit: 60
+          }
+        ]
+      },
+      OA1: {
+        label: 'Set 3 — Outdoor Activities (Research Study)',
+        icon: '🏃',
+        scenario: 'You have volunteered for a research study about outdoor recreational activities. You will have a short online interview with a researcher. The researcher will ask you about your experiences and opinions.',
+        interviewerName: 'Dr. Chen',
+        interviewerRole: 'Researcher',
+        questions: [
+          {
+            type: 'Personal / Factual',
+            text: 'Thanks for joining us today. I\'d like to ask you about outdoor activities. First, what kinds of outdoor recreational activities do you enjoy, and how often do you participate in them?',
+            audioFile: 'audio/interview/TI-OA1-Q1.mp3',
+            timeLimit: 60
+          },
+          {
+            type: 'Personal + Opinion',
+            text: 'That sounds interesting. Some people say outdoor activities are important for maintaining good physical and mental health. Based on your own experience, would you agree with that? Can you give me an example?',
+            audioFile: 'audio/interview/TI-OA1-Q2.mp3',
+            timeLimit: 60
+          },
+          {
+            type: 'Opinion + Argument',
+            text: 'I see. In many cities, local governments are investing money in building parks, hiking trails, and sports facilities. However, some people argue that this money would be better spent on other public services, like healthcare or education. What do you think about this?',
+            audioFile: 'audio/interview/TI-OA1-Q3.mp3',
+            timeLimit: 60
+          },
+          {
+            type: 'Opinion + Prediction',
+            text: 'That\'s a thoughtful answer. Looking ahead, do you think technology — for example, virtual reality or fitness apps — will change the way people engage in outdoor activities? Will people spend more or less time outdoors in the future? Explain your reasoning.',
+            audioFile: 'audio/interview/TI-OA1-Q4.mp3',
+            timeLimit: 60
+          }
+        ]
+      },
+      CL1: {
+        label: 'Set 4 — Campus Life (Student Survey)',
+        icon: '🏫',
+        scenario: 'You are taking part in a student survey about campus life and student services. A university researcher will ask you about your experiences and opinions regarding campus resources.',
+        interviewerName: 'Ms. Thompson',
+        interviewerRole: 'Student Services Researcher',
+        questions: [
+          {
+            type: 'Personal / Factual',
+            text: 'Thank you for taking the time to participate in this survey. First, can you describe a typical day for you on campus? For example, what activities do you usually do between classes?',
+            audioFile: 'audio/interview/TI-CL1-Q1.mp3',
+            timeLimit: 60
+          },
+          {
+            type: 'Personal + Opinion',
+            text: 'That\'s helpful. Which campus resource or facility do you find most useful, and why? It could be the library, student center, gym, or anything else.',
+            audioFile: 'audio/interview/TI-CL1-Q2.mp3',
+            timeLimit: 60
+          },
+          {
+            type: 'Opinion + Argument',
+            text: 'Interesting. Some universities are considering reducing the number of in-person student services and moving them online to cut costs. For example, academic advising and counseling sessions would be conducted through video calls instead of face-to-face meetings. Do you think this is a good idea? Why or why not?',
+            audioFile: 'audio/interview/TI-CL1-Q3.mp3',
+            timeLimit: 60
+          },
+          {
+            type: 'Opinion + Prediction',
+            text: 'Good points. Finally, how do you think the university campus experience will change for students in the next five to ten years? Do you think campuses will still play an important role in students\' lives, or will more learning happen remotely? Explain your thoughts.',
+            audioFile: 'audio/interview/TI-CL1-Q4.mp3',
+            timeLimit: 60
+          }
+        ]
+      }
+    };
+
+    // ==================== STATE ====================
+    const STORAGE_KEY = 'toefl-interview-practice-state';
+    let currentSetId = 'PT1';
+    let currentQuestionIndex = 0;
+    let currentPhase = 'intro'; // intro | question | review
+    let recordings = {}; // { setId: { 0: Blob, 1: Blob, ... } }
+    let recordingDurations = {}; // { setId: { 0: seconds, ... } }
+    let timerInterval = null;
+    let timerRemaining = 0;
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let recordingStartTime = 0;
+
+    // ==================== PERSISTENCE ====================
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          setId: currentSetId,
+          questionIndex: currentQuestionIndex,
+          phase: currentPhase
+        }));
+      } catch (e) { /* ignore */ }
+    }
+
+    function restoreState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+        if (!data.setId || !INTERVIEW_SETS[data.setId]) return null;
+        return data;
+      } catch (e) { return null; }
+    }
+
+    // ==================== INIT ====================
+    function init() {
+      // Populate set selector
+      const select = document.getElementById('setSelect');
+      select.innerHTML = '';
+      for (const [id, set] of Object.entries(INTERVIEW_SETS)) {
+        const opt = document.createElement('option');
+        opt.value = id;
+        opt.textContent = set.label;
+        select.appendChild(opt);
+      }
+
+      // Restore state
+      const saved = restoreState();
+      if (saved) {
+        currentSetId = saved.setId;
+        currentQuestionIndex = saved.questionIndex || 0;
+        // Always start at intro on page load
+      }
+      select.value = currentSetId;
+
+      // Create visualizer bars
+      const viz = document.getElementById('visualizer');
+      for (let i = 0; i < 20; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'viz-bar';
+        bar.style.animationDelay = (Math.random() * 0.5) + 's';
+        bar.style.animationDuration = (0.3 + Math.random() * 0.4) + 's';
+        viz.appendChild(bar);
+      }
+
+      showIntro();
+    }
+
+    // ==================== PHASE MANAGEMENT ====================
+    function showPhase(phase) {
+      currentPhase = phase;
+      document.querySelectorAll('.phase').forEach(el => el.classList.remove('active'));
+      document.getElementById('phaseIntro').classList.toggle('active', phase === 'intro');
+      document.getElementById('phaseQuestion').classList.toggle('active', phase === 'question');
+      document.getElementById('phaseReview').classList.toggle('active', phase === 'review');
+      saveState();
+    }
+
+    function showIntro() {
+      const set = INTERVIEW_SETS[currentSetId];
+      document.getElementById('introIcon').textContent = set.icon;
+      document.getElementById('introTitle').textContent = set.label;
+      document.getElementById('introDesc').textContent = set.scenario;
+      showPhase('intro');
+      updateHeaderProgress();
+    }
+
+    function startInterview() {
+      currentQuestionIndex = 0;
+      showPhase('question');
+      updateQuestionUI();
+    }
+
+    // ==================== QUESTION UI ====================
+    function updateQuestionUI() {
+      const set = INTERVIEW_SETS[currentSetId];
+      const q = set.questions[currentQuestionIndex];
+      const total = set.questions.length;
+
+      // Header
+      updateHeaderProgress();
+
+      // Interviewer info
+      document.getElementById('interviewerName').textContent = set.interviewerName;
+      document.getElementById('interviewerRole').textContent = set.interviewerRole;
+      document.getElementById('questionBadge').textContent = 'Q' + (currentQuestionIndex + 1);
+      document.getElementById('questionTypeBadge').textContent = q.type;
+      document.getElementById('questionText').textContent = q.text;
+
+      // Progress bar
+      updateProgressBar();
+
+      // Reset timer
+      resetTimer(q.timeLimit);
+
+      // Reset recording UI
+      document.getElementById('recordingIndicator').classList.remove('active');
+      document.getElementById('visualizer').classList.remove('active');
+      document.getElementById('startSpeakBtn').classList.remove('hidden');
+      document.getElementById('stopSpeakBtn').classList.add('hidden');
+      document.getElementById('reRecordBtn').classList.add('hidden');
+
+      // Prompt audio setup
+      if (promptAudio) { promptAudio.pause(); promptAudio = null; }
+      const q_audioFile = set.questions[currentQuestionIndex].audioFile;
+      const promptSection = document.getElementById('promptAudioSection');
+      if (q_audioFile) {
+        promptSection.classList.remove('hidden');
+        document.getElementById('playPromptBtn').textContent = '🔊 Play Interviewer Audio';
+        document.getElementById('playPromptBtn').disabled = false;
+        document.getElementById('promptAudioStatus').textContent = '';
+        // Disable "Start Speaking" until prompt audio has been played at least once
+        document.getElementById('startSpeakBtn').disabled = true;
+        document.getElementById('timerLabel').textContent = 'Listen to the interviewer first';
+        // Auto-play the prompt audio
+        setTimeout(() => autoPlayPrompt(), 300);
+      } else {
+        promptSection.classList.add('hidden');
+        document.getElementById('startSpeakBtn').disabled = false;
+      }
+
+      // Check if already recorded
+      const hasRec = recordings[currentSetId] && recordings[currentSetId][currentQuestionIndex];
+      if (hasRec) {
+        showPlayback(hasRec);
+        document.getElementById('reRecordBtn').classList.remove('hidden');
+        document.getElementById('startSpeakBtn').classList.add('hidden');
+        document.getElementById('startSpeakBtn').disabled = false;
+        // Don't auto-play prompt for already-recorded questions
+        if (promptAudio) { promptAudio.pause(); promptAudio = null; }
+        document.getElementById('timerLabel').textContent = 'Response recorded — replay or re-record';
+        if (q_audioFile) {
+          document.getElementById('playPromptBtn').textContent = '🔊 Replay Question';
+          document.getElementById('playPromptBtn').disabled = false;
+          document.getElementById('promptAudioStatus').textContent = '';
+        }
+      } else {
+        document.getElementById('playbackSection').classList.add('hidden');
+      }
+
+      // Nav buttons
+      document.getElementById('prevQBtn').disabled = currentQuestionIndex === 0;
+      document.getElementById('nextQBtn').textContent =
+        currentQuestionIndex === total - 1 ? 'Finish →' : 'Next →';
+
+      saveState();
+    }
+
+    function updateHeaderProgress() {
+      const set = INTERVIEW_SETS[currentSetId];
+      const total = set.questions.length;
+      document.getElementById('headerProgress').textContent =
+        currentPhase === 'intro' ? 'Ready to begin' :
+        currentPhase === 'review' ? 'Review' :
+        `Question ${currentQuestionIndex + 1} of ${total}`;
+    }
+
+    function updateProgressBar() {
+      const container = document.getElementById('progressBar');
+      container.innerHTML = '';
+      const set = INTERVIEW_SETS[currentSetId];
+      const total = set.questions.length;
+
+      for (let i = 0; i < total; i++) {
+        const step = document.createElement('div');
+        step.className = 'progress-step';
+        step.onclick = () => goToQuestion(i);
+
+        const dot = document.createElement('div');
+        dot.className = 'progress-dot';
+        dot.textContent = i + 1;
+
+        const hasRec = recordings[currentSetId] && recordings[currentSetId][i];
+        if (i === currentQuestionIndex) {
+          dot.classList.add('active');
+        } else if (hasRec) {
+          dot.classList.add('recorded');
+        }
+
+        const label = document.createElement('div');
+        label.className = 'progress-label';
+        label.textContent = 'Q' + (i + 1);
+
+        step.appendChild(dot);
+        step.appendChild(label);
+        container.appendChild(step);
+
+        if (i < total - 1) {
+          const conn = document.createElement('div');
+          conn.className = 'progress-connector';
+          if (hasRec) conn.classList.add('completed');
+          container.appendChild(conn);
+        }
+      }
+    }
+
+    function goToQuestion(index) {
+      if (mediaRecorder && mediaRecorder.state === 'recording') return;
+      stopTimer();
+      currentQuestionIndex = index;
+      updateQuestionUI();
+    }
+
+    function prevQuestion() {
+      if (currentQuestionIndex > 0) {
+        if (mediaRecorder && mediaRecorder.state === 'recording') stopRecording();
+        stopTimer();
+        currentQuestionIndex--;
+        updateQuestionUI();
+      }
+    }
+
+    function nextQuestion() {
+      const set = INTERVIEW_SETS[currentSetId];
+      if (mediaRecorder && mediaRecorder.state === 'recording') stopRecording();
+      stopTimer();
+
+      if (currentQuestionIndex < set.questions.length - 1) {
+        currentQuestionIndex++;
+        updateQuestionUI();
+      } else {
+        showReview();
+      }
+    }
+
+    // ==================== TIMER ====================
+    const CIRCUMFERENCE = 2 * Math.PI * 52; // ~326.73
+
+    function resetTimer(seconds) {
+      stopTimer();
+      timerRemaining = seconds;
+      const ring = document.getElementById('timerRingProgress');
+      const text = document.getElementById('timerText');
+      const label = document.getElementById('timerLabel');
+      ring.style.strokeDasharray = CIRCUMFERENCE;
+      ring.style.strokeDashoffset = '0';
+      ring.classList.remove('warning', 'danger');
+      text.classList.remove('warning', 'danger');
+      text.textContent = seconds;
+      label.textContent = 'Press "Start Speaking" when ready';
+    }
+
+    function startTimer(seconds) {
+      const totalTime = seconds;
+      timerRemaining = seconds;
+      const ring = document.getElementById('timerRingProgress');
+      const text = document.getElementById('timerText');
+      const label = document.getElementById('timerLabel');
+      label.textContent = 'Time remaining';
+
+      timerInterval = setInterval(() => {
+        timerRemaining--;
+        if (timerRemaining < 0) timerRemaining = 0;
+
+        text.textContent = timerRemaining;
+        const offset = CIRCUMFERENCE * (1 - timerRemaining / totalTime);
+        ring.style.strokeDashoffset = offset;
+
+        // Color changes
+        ring.classList.remove('warning', 'danger');
+        text.classList.remove('warning', 'danger');
+        if (timerRemaining <= 10) {
+          ring.classList.add('danger');
+          text.classList.add('danger');
+        } else if (timerRemaining <= 20) {
+          ring.classList.add('warning');
+          text.classList.add('warning');
+        }
+
+        if (timerRemaining <= 0) {
+          stopTimer();
+          if (mediaRecorder && mediaRecorder.state === 'recording') {
+            stopRecording();
+          }
+          label.textContent = 'Time\'s up!';
+        }
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    // ==================== PROMPT AUDIO ====================
+    let promptAudio = null;
+
+    function playPromptAudio() {
+      const set = INTERVIEW_SETS[currentSetId];
+      const q = set.questions[currentQuestionIndex];
+      if (!q.audioFile) return;
+
+      if (promptAudio) { promptAudio.pause(); promptAudio = null; }
+
+      promptAudio = new Audio(q.audioFile);
+      const btn = document.getElementById('playPromptBtn');
+      const status = document.getElementById('promptAudioStatus');
+
+      btn.disabled = true;
+      btn.textContent = '🔊 Playing...';
+      status.textContent = '';
+
+      promptAudio.onended = () => {
+        btn.disabled = false;
+        btn.textContent = '🔊 Replay';
+        status.textContent = '✓ Done';
+      };
+      promptAudio.onerror = () => {
+        btn.disabled = false;
+        btn.textContent = '🔊 Play Interviewer Audio';
+        status.textContent = '(audio file not found)';
+      };
+      promptAudio.play().catch(() => {
+        btn.disabled = false;
+        btn.textContent = '🔊 Play Interviewer Audio';
+        status.textContent = '(could not play)';
+      });
+    }
+
+    function autoPlayPrompt() {
+      const set = INTERVIEW_SETS[currentSetId];
+      const q = set.questions[currentQuestionIndex];
+      if (!q.audioFile) return;
+
+      if (promptAudio) { promptAudio.pause(); promptAudio = null; }
+
+      promptAudio = new Audio(q.audioFile);
+      const btn = document.getElementById('playPromptBtn');
+      const status = document.getElementById('promptAudioStatus');
+      const startBtn = document.getElementById('startSpeakBtn');
+
+      btn.disabled = true;
+      btn.textContent = '🔊 Playing...';
+      status.textContent = '';
+      document.getElementById('timerLabel').textContent = 'Listen to the interviewer...';
+
+      promptAudio.onended = () => {
+        btn.disabled = false;
+        btn.textContent = '🔊 Replay';
+        status.textContent = '✓ Done';
+        // Enable recording
+        startBtn.disabled = false;
+        document.getElementById('timerLabel').textContent = 'Ready — press "Start Speaking"';
+      };
+      promptAudio.onerror = () => {
+        btn.disabled = false;
+        btn.textContent = '🔊 Play Interviewer Audio';
+        status.textContent = '(audio file not found)';
+        startBtn.disabled = false;
+        document.getElementById('timerLabel').textContent = 'Press "Start Speaking" when ready';
+      };
+      promptAudio.play().catch(() => {
+        btn.disabled = false;
+        btn.textContent = '🔊 Play Interviewer Audio';
+        status.textContent = '(could not auto-play)';
+        startBtn.disabled = false;
+      });
+    }
+
+    // ==================== RECORDING ====================
+    // Detect best supported MIME type for MediaRecorder
+    function getSupportedMimeType() {
+      const types = [
+        'audio/webm;codecs=opus',
+        'audio/webm',
+        'audio/ogg;codecs=opus',
+        'audio/mp4',
+        'audio/mpeg',
+        ''  // fallback: let browser choose
+      ];
+      for (const t of types) {
+        if (t === '' || (typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported(t))) {
+          return t;
+        }
+      }
+      return '';
+    }
+
+    async function startRecording() {
+      // Check if recording is supported
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert(
+          'Microphone recording is not available.\n\n' +
+          'This is usually because the page is opened as a local file (file://).\n\n' +
+          'To fix this, serve the page via a local server:\n' +
+          '  1. Open Terminal in this folder\n' +
+          '  2. Run: python3 -m http.server 8000\n' +
+          '  3. Open: http://localhost:8000/toefl-take-interview-practice.html'
+        );
+        return;
+      }
+
+      let stream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      } catch (err) {
+        console.error('Microphone access error:', err);
+        if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+          alert('Microphone permission denied. Please allow microphone access in your browser settings and try again.');
+        } else if (err.name === 'NotFoundError') {
+          alert('No microphone found. Please connect a microphone and try again.');
+        } else {
+          alert('Could not access microphone: ' + err.message +
+            '\n\nIf using a local file, try serving via:\n  python3 -m http.server 8000');
+        }
+        return;
+      }
+
+      try {
+        audioChunks = [];
+        const mimeType = getSupportedMimeType();
+        const options = mimeType ? { mimeType } : {};
+        mediaRecorder = new MediaRecorder(stream, options);
+        recordingStartTime = Date.now();
+
+        mediaRecorder.ondataavailable = (e) => {
+          if (e.data.size > 0) audioChunks.push(e.data);
+        };
+
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(audioChunks, mimeType ? { type: mimeType } : {});
+          const duration = Math.round((Date.now() - recordingStartTime) / 1000);
+
+          // Save recording
+          if (!recordings[currentSetId]) recordings[currentSetId] = {};
+          recordings[currentSetId][currentQuestionIndex] = blob;
+          if (!recordingDurations[currentSetId]) recordingDurations[currentSetId] = {};
+          recordingDurations[currentSetId][currentQuestionIndex] = duration;
+
+          // Stop mic tracks
+          stream.getTracks().forEach(t => t.stop());
+
+          // Update UI
+          showPlayback(blob);
+          document.getElementById('recordingIndicator').classList.remove('active');
+          document.getElementById('visualizer').classList.remove('active');
+          document.getElementById('stopSpeakBtn').classList.add('hidden');
+          document.getElementById('reRecordBtn').classList.remove('hidden');
+          document.getElementById('timerLabel').textContent = 'Recording saved (' + duration + 's)';
+          updateProgressBar();
+        };
+
+        // Request data every second for reliable capture
+        mediaRecorder.start(1000);
+
+        // Start timer
+        const set = INTERVIEW_SETS[currentSetId];
+        const q = set.questions[currentQuestionIndex];
+        startTimer(q.timeLimit);
+
+        // Update UI
+        document.getElementById('startSpeakBtn').classList.add('hidden');
+        document.getElementById('stopSpeakBtn').classList.remove('hidden');
+        document.getElementById('playbackSection').classList.add('hidden');
+        document.getElementById('reRecordBtn').classList.add('hidden');
+        document.getElementById('recordingIndicator').classList.add('active');
+        document.getElementById('visualizer').classList.add('active');
+
+      } catch (err) {
+        console.error('MediaRecorder error:', err);
+        stream.getTracks().forEach(t => t.stop());
+        alert('Recording failed: ' + err.message);
+      }
+    }
+
+    function stopRecording() {
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        stopTimer();
+        mediaRecorder.stop();
+      }
+    }
+
+    function reRecord() {
+      document.getElementById('playbackSection').classList.add('hidden');
+      document.getElementById('reRecordBtn').classList.add('hidden');
+      document.getElementById('startSpeakBtn').classList.remove('hidden');
+      document.getElementById('startSpeakBtn').disabled = false;
+
+      const set = INTERVIEW_SETS[currentSetId];
+      const q = set.questions[currentQuestionIndex];
+      resetTimer(q.timeLimit);
+    }
+
+    function showPlayback(blob) {
+      const section = document.getElementById('playbackSection');
+      const audio = document.getElementById('playbackAudio');
+      audio.src = URL.createObjectURL(blob);
+      section.classList.remove('hidden');
+    }
+
+    // ==================== REVIEW ====================
+    function showReview() {
+      showPhase('review');
+
+      const set = INTERVIEW_SETS[currentSetId];
+      const total = set.questions.length;
+
+      // Count answered
+      let answered = 0;
+      let totalDuration = 0;
+      for (let i = 0; i < total; i++) {
+        if (recordings[currentSetId] && recordings[currentSetId][i]) {
+          answered++;
+          totalDuration += (recordingDurations[currentSetId] && recordingDurations[currentSetId][i]) || 0;
+        }
+      }
+      document.getElementById('summaryAnswered').textContent = answered + '/' + total;
+      const mins = Math.floor(totalDuration / 60);
+      const secs = totalDuration % 60;
+      document.getElementById('summaryTime').textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+
+      // Review list
+      const list = document.getElementById('reviewList');
+      list.innerHTML = '';
+      for (let i = 0; i < total; i++) {
+        const q = set.questions[i];
+        const hasRec = recordings[currentSetId] && recordings[currentSetId][i];
+        const dur = (recordingDurations[currentSetId] && recordingDurations[currentSetId][i]) || 0;
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.marginBottom = '12px';
+
+        let playbackHtml = '';
+        if (hasRec) {
+          const url = URL.createObjectURL(hasRec);
+          playbackHtml = `
+            <div class="playback-section" style="margin-top:12px;">
+              <div style="font-size:12px; color:var(--success); font-weight:600;">✓ Recorded (${dur}s)</div>
+              <audio controls src="${url}" style="width:100%; max-width:400px; margin-top:8px;"></audio>
+            </div>`;
+        } else {
+          playbackHtml = '<div style="margin-top:12px; font-size:13px; color:var(--error);">✗ Not recorded</div>';
+        }
+
+        card.innerHTML = `
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+            <span class="question-badge">Q${i + 1}</span>
+            <span class="question-type-badge">${q.type}</span>
+          </div>
+          <div style="font-size:14px; line-height:1.6; color:var(--text);">${q.text}</div>
+          ${playbackHtml}
+        `;
+        list.appendChild(card);
+      }
+    }
+
+    function backToQuestions() {
+      showPhase('question');
+      updateQuestionUI();
+    }
+
+    function restartInterview() {
+      // Clear recordings for this set
+      delete recordings[currentSetId];
+      delete recordingDurations[currentSetId];
+      currentQuestionIndex = 0;
+      showIntro();
+    }
+
+    function finishAndNext() {
+      // Move to next set
+      const keys = Object.keys(INTERVIEW_SETS);
+      const idx = keys.indexOf(currentSetId);
+      if (idx < keys.length - 1) {
+        currentSetId = keys[idx + 1];
+      } else {
+        currentSetId = keys[0];
+      }
+      document.getElementById('setSelect').value = currentSetId;
+      currentQuestionIndex = 0;
+      showIntro();
+    }
+
+    // ==================== SET SWITCHING ====================
+    function switchSet() {
+      const select = document.getElementById('setSelect');
+      if (!INTERVIEW_SETS[select.value]) return;
+      if (mediaRecorder && mediaRecorder.state === 'recording') stopRecording();
+      stopTimer();
+      currentSetId = select.value;
+      currentQuestionIndex = 0;
+      showIntro();
+    }
+
+    // ==================== INIT ====================
+    init();
+  </script>
+</body>
+</html>

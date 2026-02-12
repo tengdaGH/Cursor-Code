@@ -1,1 +1,4 @@
 .DS_Store
+.venv
+.env
+docs/.maintenance-last-run.txt

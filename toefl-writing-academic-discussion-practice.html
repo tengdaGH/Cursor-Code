@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOEFL Writing Practice — Write for Academic Discussion</title>
+  <style>
+    :root {
+      --ets-blue: #0066b3;
+      --ets-blue-dark: #004c87;
+      --ets-blue-light: #e6f2fa;
+      --bg: #f0f2f5;
+      --card: #ffffff;
+      --border: #d1d5db;
+      --text: #1a1a1a;
+      --muted: #6b7280;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --header-height: 48px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 24px;
+    }
+    .header {
+      height: var(--header-height);
+      background: var(--ets-blue);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    }
+    .header-home {
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background 0.2s;
+      margin-right: 12px;
+    }
+    .header-home:hover { background: rgba(255,255,255,.15); }
+    .header-left { display: flex; align-items: center; }
+    .header-select {
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 6px 12px;
+      cursor: pointer;
+      min-width: 200px;
+    }
+    .header-select:hover { background: rgba(255,255,255,.25); }
+    .header-select option { color: var(--text); background: var(--card); }
+    .header-right { display: flex; align-items: center; gap: 12px; }
+    .header-timer { font-variant-numeric: tabular-nums; font-size: 14px; }
+    .header-timer.warning { color: #fcd34d; }
+    .header-timer.danger { color: #fca5a5; }
+    .main { max-width: 720px; margin: 0 auto; padding: 20px 16px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    .card h2 { font-size: 20px; margin-bottom: 16px; color: var(--ets-blue-dark); }
+    .instructions {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .discussion-box {
+      background: var(--ets-blue-light);
+      border: 1px solid var(--ets-blue);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .professor-question {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ets-blue-dark);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .professor-question::before { content: 'Professor: '; }
+    .student-post {
+      margin-top: 12px;
+      padding: 10px 12px;
+      background: var(--card);
+      border-radius: 6px;
+      border-left: 3px solid var(--ets-blue);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .student-post .author { font-weight: 600; color: var(--ets-blue-dark); margin-bottom: 4px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .form-group textarea {
+      width: 100%;
+      min-height: 180px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 15px;
+      font-family: inherit;
+      resize: vertical;
+    }
+    .word-count { font-size: 13px; color: var(--muted); margin-top: 6px; }
+    .word-count.at-target { color: var(--success); }
+    .rubric-section {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .rubric-section h3 { font-size: 16px; margin-bottom: 12px; color: var(--ets-blue-dark); }
+    .rubric-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .rubric-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .rubric-list input[type="checkbox"] { margin-top: 3px; flex-shrink: 0; }
+    .loading { text-align: center; padding: 40px; color: var(--muted); }
+    .error-msg { color: var(--error); padding: 12px; background: #fef2f2; border-radius: 6px; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <a href="index.html" class="header-home">← Home</a>
+      <span>Write for Academic Discussion</span>
+      <select id="promptSelect" class="header-select" aria-label="Select prompt"></select>
+    </div>
+    <div class="header-right">
+      <span id="timer" class="header-timer" aria-live="polite"></span>
+    </div>
+  </header>
+
+  <main class="main">
+    <div id="loading" class="card loading">Loading prompts…</div>
+    <div id="error" class="card error-msg" style="display: none;"></div>
+    <div id="content" style="display: none;">
+      <div class="card">
+        <h2>Task</h2>
+        <p class="instructions">
+          Read the professor's question and the two student posts. Write your own post that contributes to the discussion. You have about <strong id="timeLimitLabel">10</strong> minutes. Aim for about <strong id="wordTargetLabel">120</strong> words. State your view and support it with reasons or examples.
+        </p>
+        <div class="discussion-box">
+          <div id="questionText" class="professor-question"></div>
+          <div id="postsContainer"></div>
+        </div>
+        <div class="form-group">
+          <label for="response">Your post</label>
+          <textarea id="response" placeholder="Write your response to the discussion…"></textarea>
+          <div id="responseWordCount" class="word-count">0 words</div>
+        </div>
+        <div class="rubric-section">
+          <h3>Self-review checklist</h3>
+          <ul class="rubric-list">
+            <li><input type="checkbox" id="r1" /><label for="r1">My post is relevant to the professor's question and the discussion.</label></li>
+            <li><input type="checkbox" id="r2" /><label for="r2">I stated my position clearly and supported it with reasons or examples.</label></li>
+            <li><input type="checkbox" id="r3" /><label for="r3">Ideas are organized and easy to follow.</label></li>
+            <li><input type="checkbox" id="r4" /><label for="r4">Grammar and vocabulary are clear and appropriate for academic discussion.</label></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      const promptSelect = document.getElementById('promptSelect');
+      const timerEl = document.getElementById('timer');
+      const loadingEl = document.getElementById('loading');
+      const errorEl = document.getElementById('error');
+      const contentEl = document.getElementById('content');
+      const questionText = document.getElementById('questionText');
+      const postsContainer = document.getElementById('postsContainer');
+      const timeLimitLabel = document.getElementById('timeLimitLabel');
+      const wordTargetLabel = document.getElementById('wordTargetLabel');
+      const responseInput = document.getElementById('response');
+      const responseWordCount = document.getElementById('responseWordCount');
+
+      let prompts = [];
+      let currentIndex = 0;
+      let timerInterval = null;
+      let secondsRemaining = 0;
+
+      function showError(msg) {
+        loadingEl.style.display = 'none';
+        contentEl.style.display = 'none';
+        errorEl.style.display = 'block';
+        errorEl.textContent = msg;
+      }
+
+      function countWords(text) {
+        if (!text || !text.trim()) return 0;
+        return text.trim().split(/\s+/).filter(Boolean).length;
+      }
+
+      function updateWordCount() {
+        const n = countWords(responseInput.value);
+        responseWordCount.textContent = n + ' words';
+        const target = parseInt(wordTargetLabel.textContent, 10) || 120;
+        responseWordCount.classList.toggle('at-target', n >= target);
+      }
+
+      function startTimer(minutes) {
+        if (timerInterval) clearInterval(timerInterval);
+        secondsRemaining = minutes * 60;
+        timerInterval = setInterval(tick, 1000);
+        tick();
+      }
+
+      function tick() {
+        if (secondsRemaining <= 0) {
+          if (timerInterval) clearInterval(timerInterval);
+          timerEl.textContent = '0:00';
+          timerEl.classList.remove('warning', 'danger');
+          return;
+        }
+        const m = Math.floor(secondsRemaining / 60);
+        const s = secondsRemaining % 60;
+        timerEl.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+        timerEl.classList.toggle('warning', secondsRemaining <= 60 && secondsRemaining > 30);
+        timerEl.classList.toggle('danger', secondsRemaining <= 30);
+        secondsRemaining--;
+      }
+
+      function renderPrompt() {
+        const p = prompts[currentIndex];
+        if (!p) return;
+        questionText.textContent = p.question;
+        postsContainer.innerHTML = '';
+        (p.posts || []).forEach(function (post) {
+          const div = document.createElement('div');
+          div.className = 'student-post';
+          const author = document.createElement('div');
+          author.className = 'author';
+          author.textContent = post.author + ':';
+          div.appendChild(author);
+          const text = document.createElement('div');
+          text.textContent = post.text;
+          div.appendChild(text);
+          postsContainer.appendChild(div);
+        });
+        const minutes = p.timeLimitMinutes != null ? p.timeLimitMinutes : 10;
+        const target = p.wordTarget != null ? p.wordTarget : 120;
+        timeLimitLabel.textContent = String(minutes);
+        wordTargetLabel.textContent = String(target);
+        responseInput.value = '';
+        updateWordCount();
+        document.querySelectorAll('.rubric-section input[type="checkbox"]').forEach(function (cb) { cb.checked = false; });
+        startTimer(minutes);
+      }
+
+      function populateSelect() {
+        promptSelect.innerHTML = '';
+        prompts.forEach(function (p, i) {
+          const opt = document.createElement('option');
+          opt.value = i;
+          opt.textContent = 'Question ' + (i + 1) + ' of ' + prompts.length + (p.id ? ' (' + p.id + ')' : '');
+          promptSelect.appendChild(opt);
+        });
+        promptSelect.addEventListener('change', function () {
+          currentIndex = parseInt(promptSelect.value, 10);
+          renderPrompt();
+        });
+      }
+
+      responseInput.addEventListener('input', updateWordCount);
+
+      fetch('data/writing-academic-discussion-prompts.json')
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('Failed to load prompts')); })
+        .then(function (data) {
+          prompts = data.prompts || [];
+          if (prompts.length === 0) {
+            showError('No prompts found in data.');
+            return;
+          }
+          loadingEl.style.display = 'none';
+          errorEl.style.display = 'none';
+          contentEl.style.display = 'block';
+          populateSelect();
+          promptSelect.value = '0';
+          currentIndex = 0;
+          renderPrompt();
+        })
+        .catch(function (err) {
+          showError(err.message || 'Could not load discussion prompts.');
+        });
+    })();
+  </script>
+</body>
+</html>

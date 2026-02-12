@@ -1,0 +1,36 @@
+{
+  "notion": {
+    "database_ids": {
+      "questions": "88218505-963f-4b45-b85a-c57a8356f900",
+      "audio": "ba5655a1-392d-4db4-9d17-9ac7ea46505a",
+      "worklog": "283d8cc3-2f0b-47f8-8b8d-06517d0a9052",
+      "features": "e54189bb-400a-4874-9298-c18682694cec"
+    },
+    "page_id": "3055eb7b-e7e4-80a1-9e19-fd360181d918"
+  },
+  "sync": {
+    "watch_paths": [
+      "toefl-listening-announcement-practice.html",
+      "toefl-listening-choose-response-practice.html",
+      "toefl-listening-conversation-practice.html",
+      "audio/listening/"
+    ],
+    "auto_sync_on_save": true,
+    "auto_log_git_commits": true,
+    "sync_interval_seconds": 300
+  },
+  "parsers": {
+    "announcement": {
+      "file": "toefl-listening-announcement-practice.html",
+      "pattern": "ANNOUNCEMENT_SETS"
+    },
+    "choose_response": {
+      "file": "toefl-listening-choose-response-practice.html",
+      "pattern": "QUESTION_SETS"
+    },
+    "conversation": {
+      "file": "toefl-listening-conversation-practice.html",
+      "pattern": "CONVERSATION_SETS"
+    }
+  }
+}

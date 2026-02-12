@@ -1,0 +1,2512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOEFL Listening — Listen and Choose a Response</title>
+  <style>
+    /* TOEFL/ETS Design System */
+    :root {
+      --ets-blue: #0066b3;
+      --ets-blue-dark: #004c87;
+      --ets-blue-light: #e6f2fa;
+      --bg: #f0f2f5;
+      --card: #ffffff;
+      --border: #d1d5db;
+      --text: #1a1a1a;
+      --muted: #6b7280;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --header-height: 48px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 24px;
+    }
+
+    /* Header */
+    .header {
+      height: var(--header-height);
+      background: var(--ets-blue);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    }
+    .header-home {
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background 0.2s;
+      margin-right: 12px;
+    }
+    .header-home:hover {
+      background: rgba(255,255,255,.15);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+    .header-select {
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 6px 12px;
+      cursor: pointer;
+      min-width: 200px;
+    }
+    .header-select:hover { background: rgba(255,255,255,.25); }
+    .header-select option { color: var(--text); background: var(--card); }
+
+    /* Main Container */
+    .main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px 16px;
+    }
+
+    /* Card Styling */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    .card h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: var(--ets-blue-dark);
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0;
+      margin-bottom: 24px;
+      padding: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      width: 100%;
+    }
+    .progress-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: all .3s;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .progress-dot:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 0 2px var(--ets-blue-light);
+    }
+    .progress-dot.active {
+      background: var(--ets-blue);
+      transform: scale(1.2);
+    }
+    .progress-dot.completed {
+      background: var(--success);
+    }
+    .progress-connector {
+      height: 2px;
+      background: var(--border);
+      flex: 1;
+      min-width: 4px;
+    }
+    .progress-connector.completed {
+      background: var(--success);
+    }
+
+    /* Dialogue Section */
+    .dialogue-section {
+      background: var(--ets-blue-light);
+      border: 2px solid var(--ets-blue);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .dialogue-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .dialogue-icon {
+      font-size: 32px;
+    }
+    .dialogue-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ets-blue-dark);
+    }
+    .dialogue-info {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+    .audio-player-wrapper {
+      margin-top: 16px;
+    }
+    .audio-player-wrapper audio {
+      width: 100%;
+      max-width: 500px;
+    }
+    .dialogue-preview {
+      margin-top: 16px;
+      padding: 16px;
+      background: #fff;
+      border-radius: 6px;
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* Question Section */
+    .question-section {
+      margin-top: 32px;
+    }
+    .question-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .question-number {
+      display: inline-block;
+      background: var(--ets-blue);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+    .question-text {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text);
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+    .options-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .option-item {
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--card);
+    }
+    .option-item:hover:not(.disabled) {
+      border-color: var(--ets-blue);
+      background: var(--ets-blue-light);
+    }
+    .option-item.selected {
+      border-color: var(--ets-blue);
+      background: var(--ets-blue-light);
+    }
+    .option-item.correct {
+      border-color: var(--success);
+      background: #d1fae5;
+    }
+    .option-item.incorrect {
+      border-color: var(--error);
+      background: #fee2e2;
+    }
+    .option-item.disabled {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+    .option-label {
+      font-weight: 600;
+      color: var(--ets-blue-dark);
+      margin-right: 8px;
+    }
+    .option-text {
+      color: var(--text);
+    }
+    .feedback {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      display: none;
+    }
+    .feedback.show {
+      display: block;
+    }
+    .feedback.correct {
+      background: #d1fae5;
+      color: #065f46;
+      border-left: 4px solid var(--success);
+    }
+    .feedback.incorrect {
+      background: #fee2e2;
+      color: #991b1b;
+      border-left: 4px solid var(--error);
+    }
+    .feedback-explanation {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Section title */
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      background: var(--ets-blue);
+      color: #fff;
+    }
+    .btn:hover:not(:disabled) { 
+      background: var(--ets-blue-dark); 
+    }
+    .btn:disabled { 
+      opacity: .5; 
+      cursor: not-allowed; 
+    }
+    .btn-secondary {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover:not(:disabled) {
+      background: #f3f4f6;
+      border-color: var(--ets-blue);
+      color: var(--ets-blue);
+    }
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    /* Results Summary */
+    .results-summary {
+      background: var(--card);
+      border: 2px solid var(--success);
+      border-radius: 8px;
+      padding: 24px;
+      text-align: center;
+      margin-top: 24px;
+    }
+    .results-score {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--ets-blue-dark);
+      margin: 12px 0;
+    }
+    .results-text {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    /* Instructions */
+    .instructions {
+      background: #fefce8;
+      border: 1px solid #fde68a;
+      border-radius: 6px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+    .instructions h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #92400e;
+      margin-bottom: 8px;
+    }
+    .instructions ul {
+      font-size: 13px;
+      color: #78350f;
+      line-height: 1.8;
+      padding-left: 20px;
+    }
+
+    .hidden { display: none !important; }
+    .text-center { text-align: center; }
+  </style>
+</head>
+<body>
+  <!--
+  REVIEW LOG (for maintainers; not shown to users)
+  Scripts + MC items: this file (QUESTION_SETS[*].questions[].dialogue, .options[], .correct).
+  Detailed item/set edit log: docs/item-review-log.md (Listening: Choose Response section)
+  -->
+  <header class="header">
+    <div class="header-left">
+      <a href="index.html" class="header-home">← Home</a>
+      <div class="title">TOEFL® Listening — Listen and Choose a Response</div>
+    </div>
+    <select class="header-select" id="setSelect" onchange="switchSet()">
+    </select>
+    <div id="headerProgress">Question 1 / 1</div>
+  </header>
+
+  <main class="main">
+    <div class="card">
+      <h2>Listen and Choose a Response</h2>
+
+      <!-- Progress Bar -->
+      <div class="progress-bar" id="progressBar"></div>
+
+      <!-- Instructions -->
+      <div class="instructions">
+        <h3>Instructions</h3>
+        <ul>
+          <li>You will hear a short dialogue between two speakers</li>
+          <li>After listening, choose the most appropriate response</li>
+          <li>You can listen to each dialogue only once</li>
+          <li>Focus on social appropriateness, context, and implied meaning</li>
+          <li>Review explanations after selecting your answer</li>
+        </ul>
+      </div>
+
+      <!-- Dialogue Section -->
+      <div class="dialogue-section" id="dialogueSection">
+        <div class="dialogue-header">
+          <span class="dialogue-icon">💬</span>
+          <div>
+            <div class="dialogue-title" id="dialogueTitle">Loading...</div>
+            <div class="dialogue-info" id="dialogueInfo">Topic: Loading...</div>
+          </div>
+        </div>
+        <div class="audio-player-wrapper">
+          <audio id="dialogueAudio" controls style="width: 100%; max-width: 500px;">
+            <source id="audioSource" src="" type="audio/mpeg">
+            Your browser does not support audio playback.
+          </audio>
+        </div>
+        <div style="margin-top: 16px; text-align: center;">
+          <button class="btn" id="startBtn" onclick="startDialogue()">Start Practice</button>
+          <button class="btn btn-secondary hidden" id="replayBtn" onclick="replayDialogue()">Replay</button>
+        </div>
+      </div>
+
+      <!-- Question Section -->
+      <div class="question-section hidden" id="questionSection">
+        <div class="section-title">Choose the Most Appropriate Response</div>
+        <div class="question-card">
+          <div class="question-number" id="questionNumber">Question 1</div>
+          <div class="question-text" id="questionText">What would be the most appropriate response?</div>
+          <ul class="options-list" id="optionsList">
+          </ul>
+          <div class="feedback" id="feedback">
+            <div class="feedback-explanation"></div>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" disabled>← Previous</button>
+          <button class="btn" id="checkBtn" onclick="checkAnswer()" disabled>Check Answer</button>
+          <button class="btn hidden" id="nextBtn" onclick="nextQuestion()">Next →</button>
+        </div>
+      </div>
+
+      <!-- Results Summary -->
+      <div class="results-summary hidden" id="resultsSummary">
+        <div style="font-size: 18px; font-weight: 700; color: var(--ets-blue-dark);">Practice Complete!</div>
+        <div class="results-score" id="resultsScore">0/0</div>
+        <div class="results-text" id="resultsText">Accuracy: 0%</div>
+        <div class="btn-group" style="margin-top: 20px;">
+          <button class="btn btn-secondary" onclick="restartPractice()">Restart</button>
+          <button class="btn" onclick="reviewAnswers()">Review Answers</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // ==================== QUESTION SETS ====================
+    const QUESTION_SETS = {
+      R01: {
+        label: 'Set 1 — Everyday Situations',
+        questions: [
+          {
+            id: 'R01-01',
+            topic: 'Social',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Excuse me, do you know what time it is?',
+              speaker2: 'Sorry, I don\'t have my watch with me.'
+            },
+            audioFile: 'audio/listening/LCR-R01-01.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'That\'s okay, I\'ll check my phone.' },
+              { label: 'B', text: 'You should always wear a watch.' },
+              { label: 'C', text: 'I don\'t know either.' },
+              { label: 'D', text: 'Why don\'t you have your watch?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most socially appropriate response. It acknowledges the speaker\'s apology politely and offers an alternative solution. Options B, C, and D are either too critical, unhelpful, or inappropriate for the context.'
+          },
+          {
+            id: 'R01-02',
+            topic: 'Service',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Hi, I\'d like to return this shirt. I bought it yesterday, but it doesn\'t fit.',
+              speaker2: 'Do you have the receipt?'
+            },
+            audioFile: 'audio/listening/LCR-R01-02.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Yes, here it is.' },
+              { label: 'B', text: 'I don\'t think I need a receipt.' },
+              { label: 'C', text: 'Why do you need to see it?' },
+              { label: 'D', text: 'I bought it online, not here.' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It directly answers the question and provides the requested information. Options B, C, and D are either uncooperative, defensive, or irrelevant to the service interaction.'
+          },
+          {
+            id: 'R01-03',
+            topic: 'Academic',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'m having trouble understanding this assignment. Could you explain it again?',
+              speaker2: 'Of course. What part would you like me to clarify?'
+            },
+            audioFile: 'audio/listening/LCR-R01-03.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I\'m confused about the research requirements.' },
+              { label: 'B', text: 'I think the assignment is too difficult.' },
+              { label: 'C', text: 'Maybe you should make it clearer next time.' },
+              { label: 'D', text: 'I haven\'t started working on it yet.' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It directly answers the question by specifying which part needs clarification. Options B, C, and D either avoid the question, criticize the instructor, or provide irrelevant information.'
+          },
+          {
+            id: 'R01-04',
+            topic: 'Social',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Thank you so much for helping me with my project.',
+              speaker2: 'You\'re welcome. I\'m glad I could help.'
+            },
+            audioFile: 'audio/listening/LCR-R01-04.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I really appreciate it.' },
+              { label: 'B', text: 'You should help others more often.' },
+              { label: 'C', text: 'I was busy yesterday.' },
+              { label: 'D', text: 'What project are you working on?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It expresses continued gratitude appropriately. Option B is critical and inappropriate. Option C changes the topic. Option D asks an irrelevant question.'
+          },
+          {
+            id: 'R01-05',
+            topic: 'Service',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Excuse me, where is the restroom?',
+              speaker2: 'It\'s down the hall, second door on your right.'
+            },
+            audioFile: 'audio/listening/LCR-R01-05.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Thank you very much.' },
+              { label: 'B', text: 'I don\'t need directions.' },
+              { label: 'C', text: 'How long does it take to get there?' },
+              { label: 'D', text: 'Are you sure about that?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It politely acknowledges the help received. Options B, C, and D are either uncooperative, overly detailed, or questioning the helpful response.'
+          },
+          {
+            id: 'R01-06',
+            topic: 'Campus',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'m looking for the library. Can you point me in the right direction?',
+              speaker2: 'Sure. Go straight ahead, and you\'ll see it on your left.'
+            },
+            audioFile: 'audio/listening/LCR-R01-06.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Thanks, I appreciate it.' },
+              { label: 'B', text: 'I already know where it is.' },
+              { label: 'C', text: 'How many books does the library have?' },
+              { label: 'D', text: 'You should have better signs around here.' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It acknowledges the help politely. Option B contradicts the initial request. Option C asks an irrelevant question. Option D is critical and inappropriate.'
+          },
+          {
+            id: 'R01-07',
+            topic: 'Social',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'I\'m sorry I couldn\'t make it to your party last weekend.',
+              speaker2: 'That\'s okay. We missed you, though.'
+            },
+            audioFile: 'audio/listening/LCR-R01-07.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I\'ll try to come next time.' },
+              { label: 'B', text: 'You should have invited me earlier.' },
+              { label: 'C', text: 'I don\'t like parties anyway.' },
+              { label: 'D', text: 'What did you serve at the party?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It acknowledges the apology and shows future consideration. Options B, C, and D are either critical, dismissive, or change the topic inappropriately.'
+          },
+          {
+            id: 'R01-08',
+            topic: 'Service',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'d like to make a reservation for dinner tonight.',
+              speaker2: 'For how many people?'
+            },
+            audioFile: 'audio/listening/LCR-R01-08.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'For two people, please.' },
+              { label: 'B', text: 'I don\'t know yet.' },
+              { label: 'C', text: 'What time do you close?' },
+              { label: 'D', text: 'I prefer Italian food.' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It directly answers the question asked. Option B is uncooperative. Options C and D change the topic without answering the question.'
+          },
+          {
+            id: 'R01-09',
+            topic: 'Academic',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I missed class yesterday. Did I miss anything important?',
+              speaker2: 'We went over the midterm review. You should check with a classmate for the notes.'
+            },
+            audioFile: 'audio/listening/LCR-R01-09.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Why didn\'t you tell me earlier?' },
+              { label: 'B', text: 'Thanks, I\'ll do that.' },
+              { label: 'C', text: 'I don\'t know any classmates.' },
+              { label: 'D', text: 'When is the midterm exam?' }
+            ],
+            correct: 'B',
+            explanation: 'Option A is the most appropriate response. It acknowledges the advice and shows willingness to follow it. Options B, C, and D are either critical, unhelpful, or change the topic.'
+          },
+          {
+            id: 'R01-10',
+            topic: 'Campus',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Do you know if the student center is open on weekends?',
+              speaker2: 'Yes, it\'s open from 9 AM to 5 PM on Saturdays and Sundays.'
+            },
+            audioFile: 'audio/listening/LCR-R01-10.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'That\'s not very convenient.' },
+              { label: 'B', text: 'Great, thanks for letting me know.' },
+              { label: 'C', text: 'I never go there on weekends.' },
+              { label: 'D', text: 'What services does it offer?' }
+            ],
+            correct: 'B',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful information. Options B, C, and D are either critical, irrelevant, or change the topic.'
+          },
+          {
+            id: 'R01-11',
+            topic: 'Social',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'Would you mind if I sat here?',
+              speaker2: 'Not at all. Please, go ahead.'
+            },
+            audioFile: 'audio/listening/LCR-R01-11.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'You should have asked earlier.' },
+              { label: 'B', text: 'Thank you, I appreciate it.' },
+              { label: 'C', text: 'I don\'t like sitting here.' },
+              { label: 'D', text: 'How long have you been here?' }
+            ],
+            correct: 'B',
+            explanation: 'Option A is the most appropriate response. It politely acknowledges the permission granted. Options B, C, and D are either critical, contradictory, or change the topic.'
+          },
+          {
+            id: 'R01-12',
+            topic: 'Service',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'m looking for a book by John Smith. Do you have it?',
+              speaker2: 'Let me check our system. What\'s the title?'
+            },
+            audioFile: 'audio/listening/LCR-R01-12.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t remember the title.' },
+              { label: 'B', text: 'It\'s called "Modern History."' },
+              { label: 'C', text: 'Why do you need the title?' },
+              { label: 'D', text: 'How many books do you have?' }
+            ],
+            correct: 'B',
+            explanation: 'Option A is the most appropriate response. It provides the requested information to help with the search. Options B, C, and D are either uncooperative, defensive, or irrelevant.'
+          },
+          {
+            id: 'R01-13',
+            topic: 'Academic',
+            difficulty: 'H',
+            dialogue: {
+              speaker1: 'I\'m struggling with this course. Do you think I should drop it?',
+              speaker2: 'That\'s a big decision. Have you talked to your professor about it?'
+            },
+            audioFile: 'audio/listening/LCR-R01-13.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t like talking to professors.' },
+              { label: 'B', text: 'No, I haven\'t. That\'s a good idea.' },
+              { label: 'C', text: 'What grade do you have in the course?' },
+              { label: 'D', text: 'You should make the course easier.' }
+            ],
+            correct: 'B',
+            explanation: 'Option A is the most appropriate response. It acknowledges the advice and shows willingness to consider it. Options B, C, and D are either dismissive, irrelevant, or inappropriate.'
+          },
+          {
+            id: 'R01-14',
+            topic: 'Campus',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Excuse me, is there a coffee shop nearby?',
+              speaker2: 'Yes, there\'s one right across the street.'
+            },
+            audioFile: 'audio/listening/LCR-R01-14.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t drink coffee.' },
+              { label: 'B', text: 'Perfect, thank you!' },
+              { label: 'C', text: 'You should have better signs.' },
+              { label: 'D', text: 'What\'s your favorite coffee shop?' }
+            ],
+            correct: 'B',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful information. Options B, C, and D are either irrelevant, critical, or change the topic.'
+          },
+          {
+            id: 'R01-15',
+            topic: 'Social',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I heard you got a new job. Congratulations!',
+              speaker2: 'Thank you! I\'m really excited about it.'
+            },
+            audioFile: 'audio/listening/LCR-R01-15.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'You should have told me earlier.' },
+              { label: 'B', text: 'That\'s wonderful. I\'m happy for you.' },
+              { label: 'C', text: 'I don\'t like my job either.' },
+              { label: 'D', text: 'What job did you have before?' }
+            ],
+            correct: 'B',
+            explanation: 'Option A is the most appropriate response. It continues the positive conversation appropriately. Options B, C, and D are either critical, negative, or change focus inappropriately.'
+          },
+          {
+            id: 'R01-16',
+            topic: 'Service',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'d like to cancel my appointment for tomorrow.',
+              speaker2: 'Sure. Can I have your name, please?'
+            },
+            audioFile: 'audio/listening/LCR-R01-16.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Why do you need my name?' },
+              { label: 'B', text: 'It\'s Sarah Johnson.' },
+              { label: 'C', text: 'I don\'t want to cancel anymore.' },
+              { label: 'D', text: 'What time is my appointment?' }
+            ],
+            correct: 'B',
+            explanation: 'Option A is the most appropriate response. It provides the requested information to help with the cancellation. Options B, C, and D are either defensive, contradictory, or irrelevant.'
+          },
+          {
+            id: 'R01-17',
+            topic: 'Academic',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'m not sure I understand this concept. Could you explain it differently?',
+              speaker2: 'Of course. Let me try another approach.'
+            },
+            audioFile: 'audio/listening/LCR-R01-17.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'You should have explained it better the first time.' },
+              { label: 'B', text: 'I don\'t think I\'ll understand anyway.' },
+              { label: 'C', text: 'Thank you, I appreciate that.' },
+              { label: 'D', text: 'What concept are we discussing?' }
+            ],
+            correct: 'C',
+            explanation: 'Option A is the most appropriate response. It acknowledges the willingness to help. Options B, C, and D are either critical, negative, or show lack of attention.'
+          },
+          {
+            id: 'R01-18',
+            topic: 'Campus',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Do you know where the parking garage is?',
+              speaker2: 'It\'s behind the main building, on the left side.'
+            },
+            audioFile: 'audio/listening/LCR-R01-18.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t have a car.' },
+              { label: 'B', text: 'You need better directions.' },
+              { label: 'C', text: 'Thanks, I\'ll look for it there.' },
+              { label: 'D', text: 'How much does parking cost?' }
+            ],
+            correct: 'C',
+            explanation: 'Option A is the most appropriate response. It acknowledges the directions helpfully. Options B, C, and D are either irrelevant, critical, or change the topic.'
+          },
+          {
+            id: 'R01-19',
+            topic: 'Social',
+            difficulty: 'H',
+            dialogue: {
+              speaker1: 'I\'m really sorry about what happened yesterday. I didn\'t mean to upset you.',
+              speaker2: 'I understand. These things happen sometimes.'
+            },
+            audioFile: 'audio/listening/LCR-R01-19.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'You should have been more careful.' },
+              { label: 'B', text: 'I don\'t remember what happened.' },
+              { label: 'C', text: 'Thank you for understanding. I really appreciate it.' },
+              { label: 'D', text: 'What did you do yesterday?' }
+            ],
+            correct: 'C',
+            explanation: 'Option A is the most appropriate response. It acknowledges the forgiveness and shows gratitude appropriately. Options B, C, and D are either critical, dismissive, or inappropriate for the context.'
+          },
+          {
+            id: 'R01-20',
+            topic: 'Service',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'d like to return this item. It doesn\'t work properly.',
+              speaker2: 'Do you have the original packaging?'
+            },
+            audioFile: 'audio/listening/LCR-R01-20.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Why do you need the packaging?' },
+              { label: 'B', text: 'I don\'t want to return it anymore.' },
+              { label: 'C', text: 'Yes, I brought it with me.' },
+              { label: 'D', text: 'How long is the warranty?' }
+            ],
+            correct: 'C',
+            explanation: 'Option A is the most appropriate response. It answers the question directly and helpfully. Options B, C, and D are either defensive, contradictory, or change the topic.'
+          },
+          {
+            id: 'R01-21',
+            topic: 'Academic',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'m having trouble finding research materials for my paper.',
+              speaker2: 'Have you tried the library\'s online database?'
+            },
+            audioFile: 'audio/listening/LCR-R01-21.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t know how to use databases.' },
+              { label: 'B', text: 'You should have told me earlier.' },
+              { label: 'C', text: 'No, I haven\'t. That\'s a good suggestion.' },
+              { label: 'D', text: 'What topic is your paper about?' }
+            ],
+            correct: 'C',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful suggestion. Options B, C, and D are either dismissive, critical, or change the topic.'
+          },
+          {
+            id: 'R01-22',
+            topic: 'Campus',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Is the gym open late on weekdays?',
+              speaker2: 'Yes, it\'s open until 10 PM Monday through Friday.'
+            },
+            audioFile: 'audio/listening/LCR-R01-22.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t go to the gym.' },
+              { label: 'B', text: 'That\'s not late enough.' },
+              { label: 'C', text: 'Perfect, that works for me. Thanks!' },
+              { label: 'D', text: 'What equipment does the gym have?' }
+            ],
+            correct: 'C',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful information. Options B, C, and D are either irrelevant, critical, or change the topic.'
+          },
+          {
+            id: 'R01-23',
+            topic: 'Social',
+            difficulty: 'H',
+            dialogue: {
+              speaker1: 'Would you like to join us for lunch?',
+              speaker2: 'That sounds great! What time are you going?'
+            },
+            audioFile: 'audio/listening/LCR-R01-23.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'You should have asked me earlier.' },
+              { label: 'B', text: 'I don\'t like eating lunch.' },
+              { label: 'C', text: 'Around 12:30. Does that work for you?' },
+              { label: 'D', text: 'What restaurant are you going to?' }
+            ],
+            correct: 'C',
+            explanation: 'Option A is the most appropriate response. It provides the requested information and shows consideration. Options B, C, and D are either critical, dismissive, or change focus.'
+          },
+          {
+            id: 'R01-24',
+            topic: 'Service',
+            difficulty: 'H',
+            dialogue: {
+              speaker1: 'I\'m not satisfied with the service I received. I\'d like to speak to a manager.',
+              speaker2: 'I understand your concern. Let me get the manager for you.'
+            },
+            audioFile: 'audio/listening/LCR-R01-24.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'You should have gotten the manager immediately.' },
+              { label: 'B', text: 'I don\'t want to talk to anyone.' },
+              { label: 'C', text: 'What\'s the manager\'s name?' },
+              { label: 'D', text: 'Thank you, I appreciate that.' }
+            ],
+            correct: 'D',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful response appropriately, even in a complaint situation. Options B, C, and D are either critical, contradictory, or inappropriate.'
+          },
+          {
+            id: 'R01-25',
+            topic: 'Academic',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I missed the deadline for the assignment. Is there any way I can still submit it?',
+              speaker2: 'The late policy allows submissions up to 48 hours after the deadline with a penalty.'
+            },
+            audioFile: 'audio/listening/LCR-R01-25.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'You should extend the deadline.' },
+              { label: 'B', text: 'I don\'t want to lose points.' },
+              { label: 'C', text: 'What was the original deadline?' },
+              { label: 'D', text: 'Thank you for letting me know. I\'ll submit it right away.' }
+            ],
+            correct: 'D',
+            explanation: 'Option A is the most appropriate response. It acknowledges the information and shows willingness to proceed. Options B, C, and D are either demanding, unhelpful, or show lack of attention.'
+          },
+          {
+            id: 'R01-26',
+            topic: 'Campus',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Do you know if there\'s a printer I can use nearby?',
+              speaker2: 'There\'s one in the computer lab, just down the hall.'
+            },
+            audioFile: 'audio/listening/LCR-R01-26.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t need to print anything.' },
+              { label: 'B', text: 'You should have more printers.' },
+              { label: 'C', text: 'What kind of printer is it?' },
+              { label: 'D', text: 'Thanks, I\'ll check it out.' }
+            ],
+            correct: 'D',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful information. Options B, C, and D are either irrelevant, critical, or change the topic.'
+          },
+          {
+            id: 'R01-27',
+            topic: 'Social',
+            difficulty: 'H',
+            dialogue: {
+              speaker1: 'I wanted to apologize for my behavior at the meeting. I was out of line.',
+              speaker2: 'I appreciate you saying that. We can move forward from here.'
+            },
+            audioFile: 'audio/listening/LCR-R01-27.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'You were wrong too.' },
+              { label: 'B', text: 'I don\'t remember what happened.' },
+              { label: 'C', text: 'What meeting are you talking about?' },
+              { label: 'D', text: 'Thank you. I\'ll make sure it doesn\'t happen again.' }
+            ],
+            correct: 'D',
+            explanation: 'Option A is the most appropriate response. It acknowledges the forgiveness and shows commitment to improvement. Options B, C, and D are either defensive, dismissive, or inappropriate.'
+          },
+          {
+            id: 'R01-28',
+            topic: 'Service',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'d like to change my flight to an earlier time.',
+              speaker2: 'Let me check what\'s available. What time would you prefer?'
+            },
+            audioFile: 'audio/listening/LCR-R01-28.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Why do you need to know that?' },
+              { label: 'B', text: 'I don\'t want to change it anymore.' },
+              { label: 'C', text: 'How much does it cost to change flights?' },
+              { label: 'D', text: 'Something around 10 AM would be ideal.' }
+            ],
+            correct: 'D',
+            explanation: 'Option A is the most appropriate response. It provides the requested information to help with the change. Options B, C, and D are either defensive, contradictory, or change the topic.'
+          },
+          {
+            id: 'R01-29',
+            topic: 'Academic',
+            difficulty: 'H',
+            dialogue: {
+              speaker1: 'I\'m concerned about my grade in this course. I\'ve been working hard, but I\'m not seeing improvement.',
+              speaker2: 'Have you considered meeting with me during office hours to discuss study strategies?'
+            },
+            audioFile: 'audio/listening/LCR-R01-29.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t think that will help.' },
+              { label: 'B', text: 'You should make the course easier.' },
+              { label: 'C', text: 'What grade do other students have?' },
+              { label: 'D', text: 'That\'s a good idea. When are your office hours?' }
+            ],
+            correct: 'D',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful suggestion and shows willingness to follow through. Options B, C, and D are either dismissive, inappropriate, or irrelevant.'
+          },
+          {
+            id: 'R01-30',
+            topic: 'Campus',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'m new here. Can you tell me where the main office is?',
+              speaker2: 'Sure. It\'s on the second floor, room 205.'
+            },
+            audioFile: 'audio/listening/LCR-R01-30.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t need directions.' },
+              { label: 'B', text: 'You should have better signs.' },
+              { label: 'C', text: 'What does the main office do?' },
+              { label: 'D', text: 'Thank you so much for your help.' }
+            ],
+            correct: 'D',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful directions politely. Options B, C, and D are either contradictory, critical, or change the topic.'
+          }
+        ]
+      },
+      R02: {
+        label: 'Set 2 — Campus & Academic',
+        questions: [
+          {
+            id: 'R02-01',
+            topic: 'Campus',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Where can I find the registrar\'s office?',
+              speaker2: 'It\'s on the first floor of the administration building.'
+            },
+            audioFile: 'audio/listening/LCR-R02-01.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Thank you for your help.' },
+              { label: 'B', text: 'I don\'t need to go there.' },
+              { label: 'C', text: 'You should have better signs.' },
+              { label: 'D', text: 'What does the registrar do?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful directions politely. Options B, C, and D are either irrelevant, critical, or change the topic.'
+          },
+          {
+            id: 'R02-02',
+            topic: 'Academic',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'m not sure which textbook I need for this course.',
+              speaker2: 'The required textbook is listed on the course syllabus.'
+            },
+            audioFile: 'audio/listening/LCR-R02-02.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t have the syllabus.' },
+              { label: 'B', text: 'You should tell students directly.' },
+              { label: 'C', text: 'Thanks, I\'ll check the syllabus.' },
+              { label: 'D', text: 'How much do textbooks cost?' }
+            ],
+            correct: 'C',
+            explanation: 'Option B is the most appropriate response. It acknowledges the helpful information and shows willingness to follow the suggestion. Options A, C, and D are either unhelpful, critical, or change the topic.'
+          },
+          {
+            id: 'R02-03',
+            topic: 'Campus',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Is the dining hall open during spring break?',
+              speaker2: 'No, it\'s closed during spring break, but the café in the student center stays open.'
+            },
+            audioFile: 'audio/listening/LCR-R02-03.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'That\'s helpful to know. Thanks!' },
+              { label: 'B', text: 'I don\'t eat at the dining hall.' },
+              { label: 'C', text: 'You should keep it open.' },
+              { label: 'D', text: 'What food does the café serve?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful information. Options B, C, and D are either irrelevant, critical, or change the topic.'
+          },
+          {
+            id: 'R02-04',
+            topic: 'Academic',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'Can I get an extension on this assignment?',
+              speaker2: 'What\'s your reason for needing an extension?'
+            },
+            audioFile: 'audio/listening/LCR-R02-04.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I\'ve been dealing with a family emergency this week.' },
+              { label: 'B', text: 'Why do you need to know?' },
+              { label: 'C', text: 'I don\'t want to do the assignment.' },
+              { label: 'D', text: 'When is the assignment due?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It provides a reasonable explanation for the request. Options B, C, and D are either defensive, inappropriate, or show lack of attention.'
+          },
+          {
+            id: 'R02-05',
+            topic: 'Campus',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'Do you know where I can buy my parking permit?',
+              speaker2: 'You can purchase it online or at the campus security office.'
+            },
+            audioFile: 'audio/listening/LCR-R02-05.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t have a car.' },
+              { label: 'B', text: 'You should make it easier to find.' },
+              { label: 'C', text: 'How much does parking cost?' },
+              { label: 'D', text: 'Perfect, thanks for the information.' }
+            ],
+            correct: 'D',
+            explanation: 'Option B is the most appropriate response. It acknowledges the helpful information. Options A, C, and D are either irrelevant, critical, or change the topic.'
+          },
+          {
+            id: 'R02-06',
+            topic: 'Academic',
+            difficulty: 'H',
+            dialogue: {
+              speaker1: 'I\'m worried that I won\'t be able to keep up with the coursework. Should I drop this class?',
+              speaker2: 'Before making that decision, have you considered using the tutoring center? They offer free help for students.'
+            },
+            audioFile: 'audio/listening/LCR-R02-06.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t think tutoring will help.' },
+              { label: 'B', text: 'You should make the course easier.' },
+              { label: 'C', text: 'That\'s a good suggestion. Where is the tutoring center?' },
+              { label: 'D', text: 'What grade do I need to pass?' }
+            ],
+            correct: 'C',
+            explanation: 'Option B is the most appropriate response. It acknowledges the helpful suggestion and shows willingness to explore the option. Options A, C, and D are either dismissive, inappropriate, or change focus.'
+          },
+          {
+            id: 'R02-07',
+            topic: 'Campus',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Where can I pick up my student ID card?',
+              speaker2: 'The ID office is in the student services building, room 101.'
+            },
+            audioFile: 'audio/listening/LCR-R02-07.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Thanks, I\'ll go there now.' },
+              { label: 'B', text: 'I don\'t need an ID card.' },
+              { label: 'C', text: 'You should have better directions.' },
+              { label: 'D', text: 'What does the ID card look like?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful directions. Options B, C, and D are either irrelevant, critical, or change the topic.'
+          },
+          {
+            id: 'R02-08',
+            topic: 'Academic',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I missed the last lecture. Can I get the notes from someone?',
+              speaker2: 'The lecture slides are posted on the course website, and you can also ask a classmate.'
+            },
+            audioFile: 'audio/listening/LCR-R02-08.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t know how to use the website.' },
+              { label: 'B', text: 'You should email the notes to everyone.' },
+              { label: 'C', text: 'What was the lecture about?' },
+              { label: 'D', text: 'Great, I\'ll check the website. Thanks!' }
+            ],
+            correct: 'D',
+            explanation: 'Option B is the most appropriate response. It acknowledges the helpful information and shows willingness to follow the suggestion. Options A, C, and D are either unhelpful, critical, or change the topic.'
+          },
+          {
+            id: 'R02-09',
+            topic: 'Campus',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Is there a place where I can study quietly?',
+              speaker2: 'The library has quiet study areas on the third and fourth floors.'
+            },
+            audioFile: 'audio/listening/LCR-R02-09.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Perfect, thank you!' },
+              { label: 'B', text: 'I don\'t like studying in libraries.' },
+              { label: 'C', text: 'You should have more quiet spaces.' },
+              { label: 'D', text: 'What time does the library close?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful information. Options B, C, and D are either irrelevant, critical, or change the topic.'
+          },
+          {
+            id: 'R02-10',
+            topic: 'Academic',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'m having trouble accessing the online course materials.',
+              speaker2: 'Have you tried logging in with your student email and password?'
+            },
+            audioFile: 'audio/listening/LCR-R02-10.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Yes, I tried that, but it\'s still not working.' },
+              { label: 'B', text: 'I don\'t remember my password.' },
+              { label: 'C', text: 'You should make it easier to access.' },
+              { label: 'D', text: 'What course materials are available?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It provides helpful information about what has been tried. Options B, C, and D are either unhelpful, critical, or change the topic.'
+          },
+          {
+            id: 'R02-11',
+            topic: 'Campus',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'Where can I find information about campus clubs and organizations?',
+              speaker2: 'There\'s a student activities fair next week, or you can check the website.'
+            },
+            audioFile: 'audio/listening/LCR-R02-11.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t want to join any clubs.' },
+              { label: 'B', text: 'You should have better information.' },
+              { label: 'C', text: 'That sounds helpful. When is the fair?' },
+              { label: 'D', text: 'What clubs are available?' }
+            ],
+            correct: 'C',
+            explanation: 'Option B is the most appropriate response. It acknowledges the helpful information and asks a relevant follow-up question. Options A, C, and D are either dismissive, critical, or change focus.'
+          },
+          {
+            id: 'R02-12',
+            topic: 'Academic',
+            difficulty: 'H',
+            dialogue: {
+              speaker1: 'I\'m not sure if I should take this advanced course. I\'m worried it might be too difficult.',
+              speaker2: 'Have you completed the prerequisites? That usually helps students prepare for the advanced level.'
+            },
+            audioFile: 'audio/listening/LCR-R02-12.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Yes, I have. That\'s reassuring to hear.' },
+              { label: 'B', text: 'I don\'t think prerequisites matter.' },
+              { label: 'C', text: 'You should make the course easier.' },
+              { label: 'D', text: 'What are the prerequisites?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful reassurance appropriately. Options B, C, and D are either dismissive, inappropriate, or show lack of preparation.'
+          },
+          {
+            id: 'R02-13',
+            topic: 'Campus',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Do you know if the bookstore is open today?',
+              speaker2: 'Yes, it\'s open from 9 AM to 6 PM on weekdays.'
+            },
+            audioFile: 'audio/listening/LCR-R02-13.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Great, thanks!' },
+              { label: 'B', text: 'I don\'t need to go to the bookstore.' },
+              { label: 'C', text: 'That\'s not convenient for me.' },
+              { label: 'D', text: 'What does the bookstore sell?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful information. Options B, C, and D are either irrelevant, critical, or change the topic.'
+          },
+          {
+            id: 'R02-14',
+            topic: 'Academic',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I submitted my paper online, but I\'m not sure if it went through.',
+              speaker2: 'You should receive a confirmation email. Did you check your inbox?'
+            },
+            audioFile: 'audio/listening/LCR-R02-14.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Let me check my email right now.' },
+              { label: 'B', text: 'I don\'t check my email often.' },
+              { label: 'C', text: 'You should send confirmations immediately.' },
+              { label: 'D', text: 'What email address did you use?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It shows willingness to follow the helpful suggestion. Options B, C, and D are either unhelpful, critical, or change the topic.'
+          },
+          {
+            id: 'R02-15',
+            topic: 'Campus',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I need to find a place to print my assignment. Where can I do that?',
+              speaker2: 'There are printers in the computer lab on the second floor, and you can also use the library printers.'
+            },
+            audioFile: 'audio/listening/LCR-R02-15.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t need to print anything.' },
+              { label: 'B', text: 'Perfect, I\'ll check those places. Thank you!' },
+              { label: 'C', text: 'You should have more printers available.' },
+              { label: 'D', text: 'How much does printing cost?' }
+            ],
+            correct: 'B',
+            explanation: 'Option B is the most appropriate response. It acknowledges the helpful information and shows appreciation. Options A, C, and D are either irrelevant, critical, or change the topic.'
+          },
+          {
+            id: 'R02-16',
+            topic: 'Academic',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'m confused about the grading rubric for this project.',
+              speaker2: 'The rubric is posted on the course website under the assignments section.'
+            },
+            audioFile: 'audio/listening/LCR-R02-16.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I\'ll look for it there. Thanks for letting me know.' },
+              { label: 'B', text: 'I don\'t know how to use the website.' },
+              { label: 'C', text: 'You should explain it in class.' },
+              { label: 'D', text: 'What is a grading rubric?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful information and shows willingness to follow the suggestion. Options B, C, and D are either unhelpful, critical, or show lack of knowledge.'
+          },
+          {
+            id: 'R02-17',
+            topic: 'Campus',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Is there a place where I can store my bike safely?',
+              speaker2: 'There are bike racks near the main entrance of most buildings.'
+            },
+            audioFile: 'audio/listening/LCR-R02-17.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Thanks, that\'s helpful to know.' },
+              { label: 'B', text: 'I don\'t have a bike.' },
+              { label: 'C', text: 'You should have covered bike storage.' },
+              { label: 'D', text: 'How many bikes can fit in the racks?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful information. Options B, C, and D are either irrelevant, critical, or change the topic.'
+          },
+          {
+            id: 'R02-18',
+            topic: 'Academic',
+            difficulty: 'H',
+            dialogue: {
+              speaker1: 'I\'m considering changing my major, but I\'m not sure what to choose.',
+              speaker2: 'The career counseling center offers assessments that can help you explore different options.'
+            },
+            audioFile: 'audio/listening/LCR-R02-18.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'That sounds useful. Where is the career counseling center?' },
+              { label: 'B', text: 'I don\'t think assessments will help.' },
+              { label: 'C', text: 'You should help me decide directly.' },
+              { label: 'D', text: 'What majors are available?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful suggestion and asks a relevant follow-up question. Options B, C, and D are either dismissive, inappropriate, or change focus.'
+          },
+          {
+            id: 'R02-19',
+            topic: 'Campus',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'Where can I find the schedule for campus events?',
+              speaker2: 'You can check the campus calendar online or pick up a printed schedule at the student center.'
+            },
+            audioFile: 'audio/listening/LCR-R02-19.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t go to campus events.' },
+              { label: 'B', text: 'You should email the schedule to everyone.' },
+              { label: 'C', text: 'What events are happening this week?' },
+              { label: 'D', text: 'Great, I\'ll check both options. Thanks!' }
+            ],
+            correct: 'D',
+            explanation: 'Option B is the most appropriate response. It acknowledges the helpful information and shows appreciation. Options A, C, and D are either dismissive, critical, or change the topic.'
+          },
+          {
+            id: 'R02-20',
+            topic: 'Academic',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'m not sure how to cite sources in my research paper.',
+              speaker2: 'The library has citation guides available, and there are also online resources.'
+            },
+            audioFile: 'audio/listening/LCR-R02-20.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I\'ll look into those resources. Thank you!' },
+              { label: 'B', text: 'I don\'t know how to use the library.' },
+              { label: 'C', text: 'You should teach citation in class.' },
+              { label: 'D', text: 'What citation style should I use?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful information and shows willingness to use the resources. Options B, C, and D are either unhelpful, critical, or change the topic.'
+          },
+          {
+            id: 'R02-21',
+            topic: 'Campus',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Is there a lost and found office on campus?',
+              speaker2: 'Yes, it\'s located in the student services building, first floor.'
+            },
+            audioFile: 'audio/listening/LCR-R02-21.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Thank you, I\'ll check there.' },
+              { label: 'B', text: 'I haven\'t lost anything.' },
+              { label: 'C', text: 'You should have better signage.' },
+              { label: 'D', text: 'What items do they have?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful directions. Options B, C, and D are either irrelevant, critical, or change the topic.'
+          },
+          {
+            id: 'R02-22',
+            topic: 'Academic',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I missed the exam review session. Is there another way I can prepare?',
+              speaker2: 'The review materials are posted online, and you can also form a study group with classmates.'
+            },
+            audioFile: 'audio/listening/LCR-R02-22.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t like studying in groups.' },
+              { label: 'B', text: 'You should hold another review session.' },
+              { label: 'C', text: 'Those are good suggestions. I\'ll try both. Thanks!' },
+              { label: 'D', text: 'When is the exam?' }
+            ],
+            correct: 'C',
+            explanation: 'Option B is the most appropriate response. It acknowledges the helpful suggestions and shows willingness to try them. Options A, C, and D are either dismissive, demanding, or change the topic.'
+          },
+          {
+            id: 'R02-23',
+            topic: 'Campus',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'Where can I get help with my resume?',
+              speaker2: 'The career center offers resume review services. You can make an appointment online.'
+            },
+            audioFile: 'audio/listening/LCR-R02-23.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t need help with my resume.' },
+              { label: 'B', text: 'You should offer walk-in hours.' },
+              { label: 'C', text: 'What does the career center do?' },
+              { label: 'D', text: 'Perfect, I\'ll make an appointment. Thank you!' }
+            ],
+            correct: 'D',
+            explanation: 'Option B is the most appropriate response. It acknowledges the helpful information and shows willingness to use the service. Options A, C, and D are either dismissive, critical, or change the topic.'
+          },
+          {
+            id: 'R02-24',
+            topic: 'Academic',
+            difficulty: 'H',
+            dialogue: {
+              speaker1: 'I\'m struggling to balance my coursework with my part-time job. I\'m worried about my grades.',
+              speaker2: 'Have you talked to your academic advisor? They can help you create a schedule that works better.'
+            },
+            audioFile: 'audio/listening/LCR-R02-24.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'That\'s a good idea. How do I schedule a meeting?' },
+              { label: 'B', text: 'I don\'t think advisors can help.' },
+              { label: 'C', text: 'You should reduce the coursework.' },
+              { label: 'D', text: 'What does an academic advisor do?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful suggestion and asks a relevant follow-up question. Options B, C, and D are either dismissive, inappropriate, or show lack of knowledge.'
+          },
+          {
+            id: 'R02-25',
+            topic: 'Campus',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Is there a place where I can get my laptop fixed?',
+              speaker2: 'The IT support center can help with computer repairs. It\'s in the library building.'
+            },
+            audioFile: 'audio/listening/LCR-R02-25.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Thanks, I\'ll check it out.' },
+              { label: 'B', text: 'I don\'t have a laptop.' },
+              { label: 'C', text: 'You should have more repair centers.' },
+              { label: 'D', text: 'How much do repairs cost?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful information. Options B, C, and D are either irrelevant, critical, or change the topic.'
+          },
+          {
+            id: 'R02-26',
+            topic: 'Academic',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'m not sure if I understand the assignment instructions correctly.',
+              speaker2: 'The instructions are detailed in the assignment handout. Have you read through it carefully?'
+            },
+            audioFile: 'audio/listening/LCR-R02-26.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I have, but I\'m still confused about the format requirements.' },
+              { label: 'B', text: 'I don\'t have the handout.' },
+              { label: 'C', text: 'You should explain it better.' },
+              { label: 'D', text: 'What is the assignment about?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It provides helpful context about what has been tried and specifies the confusion. Options B, C, and D are either unhelpful, critical, or show lack of attention.'
+          },
+          {
+            id: 'R02-27',
+            topic: 'Campus',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'Where can I find information about on-campus housing?',
+              speaker2: 'The housing office has all the details, and you can also check their website for availability.'
+            },
+            audioFile: 'audio/listening/LCR-R02-27.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t want to live on campus.' },
+              { label: 'B', text: 'You should make it easier to find.' },
+              { label: 'C', text: 'How much does housing cost?' },
+              { label: 'D', text: 'Great, I\'ll check both. Thanks for the information!' }
+            ],
+            correct: 'D',
+            explanation: 'Option B is the most appropriate response. It acknowledges the helpful information and shows appreciation. Options A, C, and D are either dismissive, critical, or change the topic.'
+          },
+          {
+            id: 'R02-28',
+            topic: 'Academic',
+            difficulty: 'H',
+            dialogue: {
+              speaker1: 'I\'m concerned that I won\'t be able to complete all the required courses before graduation.',
+              speaker2: 'Have you met with your advisor to create a graduation plan? They can help you map out your remaining semesters.'
+            },
+            audioFile: 'audio/listening/LCR-R02-28.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'No, I haven\'t. That\'s a good idea. I\'ll schedule a meeting.' },
+              { label: 'B', text: 'I don\'t think advisors can help with that.' },
+              { label: 'C', text: 'You should reduce the requirements.' },
+              { label: 'D', text: 'How many courses do I need?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful suggestion and shows willingness to follow through. Options B, C, and D are either dismissive, inappropriate, or show lack of preparation.'
+          },
+          {
+            id: 'R02-29',
+            topic: 'Campus',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Is there a place where I can charge my phone?',
+              speaker2: 'There are charging stations in the student center and library.'
+            },
+            audioFile: 'audio/listening/LCR-R02-29.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Perfect, thank you!' },
+              { label: 'B', text: 'I don\'t have a phone.' },
+              { label: 'C', text: 'You should have more charging stations.' },
+              { label: 'D', text: 'How long does charging take?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful information. Options B, C, and D are either irrelevant, critical, or change the topic.'
+          },
+          {
+            id: 'R02-30',
+            topic: 'Academic',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'m not sure how to access the online discussion forum for this course.',
+              speaker2: 'You need to log in through the course website, and there\'s a link to the forum in the navigation menu.'
+            },
+            audioFile: 'audio/listening/LCR-R02-30.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I\'ll try that. Thanks for the help!' },
+              { label: 'B', text: 'I don\'t know how to log in.' },
+              { label: 'C', text: 'You should make it more obvious.' },
+              { label: 'D', text: 'What is the discussion forum for?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful instructions and shows appreciation. Options B, C, and D are either unhelpful, critical, or change the topic.'
+          }
+        ]
+      },
+      R03: {
+        label: 'Set 3 — Service & Social',
+        questions: [
+          {
+            id: 'R03-01',
+            topic: 'Service',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'I\'d like to order a coffee, please.',
+              speaker2: 'What size would you like?'
+            },
+            audioFile: 'audio/listening/LCR-R03-01.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'A medium, please.' },
+              { label: 'B', text: 'I don\'t drink coffee.' },
+              { label: 'C', text: 'Why do you need to know?' },
+              { label: 'D', text: 'How much does coffee cost?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It directly answers the question asked. Options B, C, and D are either irrelevant, defensive, or change the topic.'
+          },
+          {
+            id: 'R03-02',
+            topic: 'Social',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Happy birthday! I hope you have a wonderful day.',
+              speaker2: 'Thank you so much! That\'s very kind of you.'
+            },
+            audioFile: 'audio/listening/LCR-R03-02.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t like birthdays.' },
+              { label: 'B', text: 'You\'re welcome! Enjoy your special day.' },
+              { label: 'C', text: 'You should have told me earlier.' },
+              { label: 'D', text: 'How old are you turning?' }
+            ],
+            correct: 'B',
+            explanation: 'Option A is the most appropriate response. It continues the positive conversation appropriately. Options B, C, and D are either negative, critical, or inappropriate.'
+          },
+          {
+            id: 'R03-03',
+            topic: 'Service',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'d like to book a hotel room for next weekend.',
+              speaker2: 'How many nights will you be staying?'
+            },
+            audioFile: 'audio/listening/LCR-R03-03.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t know yet.' },
+              { label: 'B', text: 'Two nights, please.' },
+              { label: 'C', text: 'Why do you need to know?' },
+              { label: 'D', text: 'How much do rooms cost?' }
+            ],
+            correct: 'B',
+            explanation: 'Option B is the most appropriate response. It directly answers the question asked. Options A, C, and D are either uncooperative, defensive, or change the topic.'
+          },
+          {
+            id: 'R03-04',
+            topic: 'Social',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I really enjoyed the movie we saw together last night.',
+              speaker2: 'I\'m glad you liked it! I thought it was great too.'
+            },
+            audioFile: 'audio/listening/LCR-R03-04.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I didn\'t like it actually.' },
+              { label: 'B', text: 'Thanks for suggesting it. We should do something like that again soon.' },
+              { label: 'C', text: 'You should have picked a better movie.' },
+              { label: 'D', text: 'What movie did we see?' }
+            ],
+            correct: 'B',
+            explanation: 'Option B is the most appropriate response. It acknowledges the positive experience and suggests future plans. Options A, C, and D are either contradictory, critical, or show lack of attention.'
+          },
+          {
+            id: 'R03-05',
+            topic: 'Service',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Excuse me, do you accept credit cards?',
+              speaker2: 'Yes, we accept all major credit cards.'
+            },
+            audioFile: 'audio/listening/LCR-R03-05.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Perfect, thank you!' },
+              { label: 'B', text: 'I don\'t have a credit card.' },
+              { label: 'C', text: 'You should accept cash only.' },
+              { label: 'D', text: 'What credit cards do you accept?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful information. Options B, C, and D are either irrelevant, critical, or ask unnecessary questions.'
+          },
+          {
+            id: 'R03-06',
+            topic: 'Social',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I heard you\'re moving to a new apartment. How exciting!',
+              speaker2: 'Yes, I\'m really looking forward to it. The new place is much closer to campus.'
+            },
+            audioFile: 'audio/listening/LCR-R03-06.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'That sounds convenient. I hope the move goes smoothly!' },
+              { label: 'B', text: 'You should have told me earlier.' },
+              { label: 'C', text: 'I don\'t like moving.' },
+              { label: 'D', text: 'What\'s wrong with your current place?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It continues the positive conversation and shows consideration. Options B, C, and D are either critical, negative, or inappropriate.'
+          },
+          {
+            id: 'R03-07',
+            topic: 'Service',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'d like to return this item. It\'s defective.',
+              speaker2: 'Do you have your receipt with you?'
+            },
+            audioFile: 'audio/listening/LCR-R03-07.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Yes, I have it right here.' },
+              { label: 'B', text: 'Why do you need the receipt?' },
+              { label: 'C', text: 'I don\'t want to return it anymore.' },
+              { label: 'D', text: 'How long is the warranty?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It provides the requested information helpfully. Options B, C, and D are either defensive, contradictory, or change the topic.'
+          },
+          {
+            id: 'R03-08',
+            topic: 'Social',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Congratulations on your graduation!',
+              speaker2: 'Thank you! I can\'t believe it\'s finally here.'
+            },
+            audioFile: 'audio/listening/LCR-R03-08.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'You should have graduated earlier.' },
+              { label: 'B', text: 'That\'s wonderful! What are your plans after graduation?' },
+              { label: 'C', text: 'I don\'t like graduations.' },
+              { label: 'D', text: 'When did you start college?' }
+            ],
+            correct: 'B',
+            explanation: 'Option B is the most appropriate response. It continues the positive conversation and shows interest. Options A, C, and D are either critical, negative, or change focus inappropriately.'
+          },
+          {
+            id: 'R03-09',
+            topic: 'Service',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'d like to schedule a haircut appointment.',
+              speaker2: 'What day works best for you?'
+            },
+            audioFile: 'audio/listening/LCR-R03-09.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t know yet.' },
+              { label: 'B', text: 'How about this Friday afternoon?' },
+              { label: 'C', text: 'Why do you need to know?' },
+              { label: 'D', text: 'How much does a haircut cost?' }
+            ],
+            correct: 'B',
+            explanation: 'Option B is the most appropriate response. It provides a specific answer to help schedule the appointment. Options A, C, and D are either uncooperative, defensive, or change the topic.'
+          },
+          {
+            id: 'R03-10',
+            topic: 'Social',
+            difficulty: 'H',
+            dialogue: {
+              speaker1: 'I wanted to thank you for helping me move last weekend. I really appreciate it.',
+              speaker2: 'You\'re welcome! I was happy to help. How are you settling into the new place?'
+            },
+            audioFile: 'audio/listening/LCR-R03-10.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'You should have helped more.' },
+              { label: 'B', text: 'I don\'t like the new place.' },
+              { label: 'C', text: 'It\'s going well! I\'m still unpacking, but I love the neighborhood.' },
+              { label: 'D', text: 'When did you move?' }
+            ],
+            correct: 'C',
+            explanation: 'Option C is the most appropriate response. It answers the question and continues the positive conversation. Options A, B, and D are either critical, negative, or show lack of attention.'
+          },
+          {
+            id: 'R03-11',
+            topic: 'Service',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Do you have this shirt in a larger size?',
+              speaker2: 'Let me check for you. What size are you looking for?'
+            },
+            audioFile: 'audio/listening/LCR-R03-11.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'A large would be perfect.' },
+              { label: 'B', text: 'I don\'t know my size.' },
+              { label: 'C', text: 'Why do you need to know?' },
+              { label: 'D', text: 'How much does the shirt cost?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It provides the requested information to help with the search. Options B, C, and D are either unhelpful, defensive, or change the topic.'
+          },
+          {
+            id: 'R03-12',
+            topic: 'Social',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'m so sorry I forgot to call you back yesterday.',
+              speaker2: 'That\'s okay. I understand you\'ve been busy.'
+            },
+            audioFile: 'audio/listening/LCR-R03-12.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'You should have reminded me.' },
+              { label: 'B', text: 'I don\'t remember you calling.' },
+              { label: 'C', text: 'Thank you for understanding. I\'ll make sure to call you back today.' },
+              { label: 'D', text: 'What did you want to talk about?' }
+            ],
+            correct: 'C',
+            explanation: 'Option C is the most appropriate response. It acknowledges the forgiveness and shows commitment to follow through. Options A, B, and D are either critical, dismissive, or change focus.'
+          },
+          {
+            id: 'R03-13',
+            topic: 'Service',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'d like to exchange this for a different color.',
+              speaker2: 'Sure. What color would you prefer?'
+            },
+            audioFile: 'audio/listening/LCR-R03-13.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t know what colors you have.' },
+              { label: 'B', text: 'Do you have it in blue?' },
+              { label: 'C', text: 'Why do you need to know?' },
+              { label: 'D', text: 'How much does it cost to exchange?' }
+            ],
+            correct: 'B',
+            explanation: 'Option B is the most appropriate response. It provides a specific answer to help with the exchange. Options A, C, and D are either unhelpful, defensive, or change the topic.'
+          },
+          {
+            id: 'R03-14',
+            topic: 'Social',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'I hope you feel better soon!',
+              speaker2: 'Thank you! I\'m starting to feel a bit better already.'
+            },
+            audioFile: 'audio/listening/LCR-R03-14.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'That\'s great to hear! Take care of yourself.' },
+              { label: 'B', text: 'You should have been more careful.' },
+              { label: 'C', text: 'I don\'t get sick often.' },
+              { label: 'D', text: 'What\'s wrong with you?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It continues the supportive conversation appropriately. Options B, C, and D are either critical, irrelevant, or inappropriate.'
+          },
+          {
+            id: 'R03-15',
+            topic: 'Service',
+            difficulty: 'H',
+            dialogue: {
+              speaker1: 'I\'m not happy with the service I received. The food took over an hour to arrive.',
+              speaker2: 'I sincerely apologize for the delay. Let me speak with the manager about this.'
+            },
+            audioFile: 'audio/listening/LCR-R03-15.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'You should have apologized immediately.' },
+              { label: 'B', text: 'I don\'t want to talk to anyone.' },
+              { label: 'C', text: 'What\'s the manager\'s name?' },
+              { label: 'D', text: 'Thank you. I appreciate you addressing this.' }
+            ],
+            correct: 'D',
+            explanation: 'Option D is the most appropriate response. It acknowledges the apology and shows willingness to resolve the issue appropriately, even in a complaint situation. Options A, B, and C are either critical, contradictory, or inappropriate.'
+          },
+          {
+            id: 'R03-16',
+            topic: 'Social',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I wanted to let you know that I got accepted into graduate school!',
+              speaker2: 'That\'s fantastic news! Congratulations!'
+            },
+            audioFile: 'audio/listening/LCR-R03-16.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Thank you! I\'m really excited about starting in the fall.' },
+              { label: 'B', text: 'You should have told me earlier.' },
+              { label: 'C', text: 'I don\'t think graduate school is worth it.' },
+              { label: 'D', text: 'What school did you apply to?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It acknowledges the congratulations and shares enthusiasm. Options B, C, and D are either critical, negative, or change focus inappropriately.'
+          },
+          {
+            id: 'R03-17',
+            topic: 'Service',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Can I pay with cash?',
+              speaker2: 'Of course. Cash is accepted.'
+            },
+            audioFile: 'audio/listening/LCR-R03-17.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t have cash.' },
+              { label: 'B', text: 'Perfect, thank you!' },
+              { label: 'C', text: 'You should only accept cash.' },
+              { label: 'D', text: 'Do you have change for a large bill?' }
+            ],
+            correct: 'B',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful information. Options B, C, and D are either irrelevant, critical, or change the topic.'
+          },
+          {
+            id: 'R03-18',
+            topic: 'Social',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'m really sorry I couldn\'t attend your presentation yesterday.',
+              speaker2: 'That\'s all right. I understand you had other commitments.'
+            },
+            audioFile: 'audio/listening/LCR-R03-18.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'You should have scheduled it differently.' },
+              { label: 'B', text: 'I don\'t remember you inviting me.' },
+              { label: 'C', text: 'Thank you for understanding. How did it go?' },
+              { label: 'D', text: 'What was your presentation about?' }
+            ],
+            correct: 'C',
+            explanation: 'Option C is the most appropriate response. It acknowledges the forgiveness and shows interest in the other person\'s experience. Options A, B, and D are either critical, dismissive, or change focus.'
+          },
+          {
+            id: 'R03-19',
+            topic: 'Service',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'d like to make a complaint about my recent order.',
+              speaker2: 'I\'m sorry to hear that. Can you tell me what happened?'
+            },
+            audioFile: 'audio/listening/LCR-R03-19.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Why do you need to know?' },
+              { label: 'B', text: 'The item I received was damaged when it arrived.' },
+              { label: 'C', text: 'I don\'t want to complain anymore.' },
+              { label: 'D', text: 'How long does shipping take?' }
+            ],
+            correct: 'B',
+            explanation: 'Option A is the most appropriate response. It provides the requested information to help address the complaint. Options B, C, and D are either defensive, contradictory, or change the topic.'
+          },
+          {
+            id: 'R03-20',
+            topic: 'Social',
+            difficulty: 'H',
+            dialogue: {
+              speaker1: 'I wanted to apologize for my comment at the meeting. It was inappropriate.',
+              speaker2: 'I appreciate you saying that. We can move past this.'
+            },
+            audioFile: 'audio/listening/LCR-R03-20.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'You were wrong too.' },
+              { label: 'B', text: 'I don\'t remember what happened.' },
+              { label: 'C', text: 'Thank you. I\'ll be more careful with my words in the future.' },
+              { label: 'D', text: 'What meeting are you talking about?' }
+            ],
+            correct: 'C',
+            explanation: 'Option C is the most appropriate response. It acknowledges the forgiveness and shows commitment to improvement. Options A, B, and D are either defensive, dismissive, or inappropriate.'
+          },
+          {
+            id: 'R03-21',
+            topic: 'Service',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Is this item on sale?',
+              speaker2: 'Yes, it\'s 30% off this week.'
+            },
+            audioFile: 'audio/listening/LCR-R03-21.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t want to buy anything.' },
+              { label: 'B', text: 'You should have bigger discounts.' },
+              { label: 'C', text: 'How much was it originally?' },
+              { label: 'D', text: 'Great, I\'ll take it!' }
+            ],
+            correct: 'D',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful information and shows interest. Options B, C, and D are either irrelevant, critical, or change the topic.'
+          },
+          {
+            id: 'R03-22',
+            topic: 'Social',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I heard you got promoted! That\'s amazing!',
+              speaker2: 'Thank you! I\'m really excited about the new role.'
+            },
+            audioFile: 'audio/listening/LCR-R03-22.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'You should have told me earlier.' },
+              { label: 'B', text: 'That\'s wonderful! You definitely deserve it.' },
+              { label: 'C', text: 'I don\'t like my job.' },
+              { label: 'D', text: 'What position did you have before?' }
+            ],
+            correct: 'B',
+            explanation: 'Option B is the most appropriate response. It continues the positive conversation and shows support. Options A, C, and D are either critical, negative, or change focus inappropriately.'
+          },
+          {
+            id: 'R03-23',
+            topic: 'Service',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'d like to cancel my subscription.',
+              speaker2: 'I can help with that. Can I have your account number?'
+            },
+            audioFile: 'audio/listening/LCR-R03-23.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Why do you need my account number?' },
+              { label: 'B', text: 'I don\'t want to cancel anymore.' },
+              { label: 'C', text: 'Sure, it\'s 12345678.' },
+              { label: 'D', text: 'How much does the subscription cost?' }
+            ],
+            correct: 'C',
+            explanation: 'Option C is the most appropriate response. It provides the requested information to help with the cancellation. Options A, B, and D are either defensive, contradictory, or change the topic.'
+          },
+          {
+            id: 'R03-24',
+            topic: 'Social',
+            difficulty: 'H',
+            dialogue: {
+              speaker1: 'I wanted to thank you for being so supportive during my job search. Your advice really helped.',
+              speaker2: 'I\'m so glad I could help! How is everything going now?'
+            },
+            audioFile: 'audio/listening/LCR-R03-24.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'You should have helped more.' },
+              { label: 'B', text: 'I don\'t think your advice helped.' },
+              { label: 'C', text: 'Things are going well! I actually got an offer last week.' },
+              { label: 'D', text: 'What advice did you give me?' }
+            ],
+            correct: 'C',
+            explanation: 'Option C is the most appropriate response. It answers the question and shares positive news, continuing the grateful conversation. Options A, B, and D are either critical, dismissive, or show lack of attention.'
+          },
+          {
+            id: 'R03-25',
+            topic: 'Service',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Do you offer delivery?',
+              speaker2: 'Yes, we deliver within a 5-mile radius.'
+            },
+            audioFile: 'audio/listening/LCR-R03-25.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t need delivery.' },
+              { label: 'B', text: 'Perfect, thank you!' },
+              { label: 'C', text: 'You should deliver farther.' },
+              { label: 'D', text: 'How much does delivery cost?' }
+            ],
+            correct: 'B',
+            explanation: 'Option A is the most appropriate response. It acknowledges the helpful information. Options B, C, and D are either irrelevant, critical, or change the topic.'
+          },
+          {
+            id: 'R03-26',
+            topic: 'Social',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'m really sorry I forgot your birthday. I feel terrible about it.',
+              speaker2: 'Don\'t worry about it. I know you\'ve been busy lately.'
+            },
+            audioFile: 'audio/listening/LCR-R03-26.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'You should have reminded me.' },
+              { label: 'B', text: 'I don\'t remember when your birthday is.' },
+              { label: 'C', text: 'Thank you for being so understanding. I\'ll make it up to you!' },
+              { label: 'D', text: 'When was your birthday?' }
+            ],
+            correct: 'C',
+            explanation: 'Option C is the most appropriate response. It acknowledges the forgiveness and shows commitment to make amends. Options A, B, and D are either critical, dismissive, or inappropriate.'
+          },
+          {
+            id: 'R03-27',
+            topic: 'Service',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I\'d like to upgrade my phone plan.',
+              speaker2: 'What features are you looking for in the upgrade?'
+            },
+            audioFile: 'audio/listening/LCR-R03-27.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'I don\'t know what I need.' },
+              { label: 'B', text: 'I need more data and unlimited texting.' },
+              { label: 'C', text: 'Why do you need to know?' },
+              { label: 'D', text: 'How much does the upgrade cost?' }
+            ],
+            correct: 'B',
+            explanation: 'Option A is the most appropriate response. It provides specific information to help with the upgrade. Options B, C, and D are either unhelpful, defensive, or change the topic.'
+          },
+          {
+            id: 'R03-28',
+            topic: 'Social',
+            difficulty: 'H',
+            dialogue: {
+              speaker1: 'I wanted to apologize for not responding to your messages. I\'ve been dealing with some personal issues.',
+              speaker2: 'I understand. Is everything okay now?'
+            },
+            audioFile: 'audio/listening/LCR-R03-28.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'You should have responded anyway.' },
+              { label: 'B', text: 'I don\'t want to talk about it.' },
+              { label: 'C', text: 'Thank you for asking. Things are getting better, and I appreciate your patience.' },
+              { label: 'D', text: 'What messages did you send?' }
+            ],
+            correct: 'C',
+            explanation: 'Option C is the most appropriate response. It acknowledges the concern appropriately while maintaining appropriate boundaries. Options A, B, and D are either critical, dismissive, or inappropriate.'
+          },
+          {
+            id: 'R03-29',
+            topic: 'Service',
+            difficulty: 'E',
+            dialogue: {
+              speaker1: 'Can I get a refund for this purchase?',
+              speaker2: 'Do you have the receipt with you?'
+            },
+            audioFile: 'audio/listening/LCR-R03-29.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'Yes, here it is.' },
+              { label: 'B', text: 'Why do you need the receipt?' },
+              { label: 'C', text: 'I don\'t want a refund anymore.' },
+              { label: 'D', text: 'How long does a refund take?' }
+            ],
+            correct: 'A',
+            explanation: 'Option A is the most appropriate response. It provides the requested information to help process the refund. Options B, C, and D are either defensive, contradictory, or change the topic.'
+          },
+          {
+            id: 'R03-30',
+            topic: 'Social',
+            difficulty: 'M',
+            dialogue: {
+              speaker1: 'I wanted to thank you for helping me prepare for my interview. Your tips were really helpful!',
+              speaker2: 'You\'re welcome! I\'m glad I could help. How did it go?'
+            },
+            audioFile: 'audio/listening/LCR-R03-30.mp3',
+            question: 'What would be the most appropriate response?',
+            options: [
+              { label: 'A', text: 'You should have helped more.' },
+              { label: 'B', text: 'I don\'t think your tips helped.' },
+              { label: 'C', text: 'It went well! I think it went better because of your advice.' },
+              { label: 'D', text: 'What tips did you give me?' }
+            ],
+            correct: 'C',
+            explanation: 'Option C is the most appropriate response. It answers the question and continues the grateful conversation positively. Options A, B, and D are either critical, dismissive, or show lack of attention.'
+          }
+        ]
+      }
+    };
+
+    // ==================== STATE ====================
+    const STORAGE_KEY = 'toefl-listening-choose-response-state';
+    let currentSetId = 'R01';
+    let currentQuestionIndex = 0;
+    let answers = {}; // { questionId: 'A' }
+    let hasStarted = false;
+
+    // ==================== INIT ====================
+    function init() {
+      // Populate set selector
+      const select = document.getElementById('setSelect');
+      select.innerHTML = '';
+      for (const [id, set] of Object.entries(QUESTION_SETS)) {
+        const opt = document.createElement('option');
+        opt.value = id;
+        opt.textContent = set.label;
+        select.appendChild(opt);
+      }
+
+      // Restore state
+      const saved = restoreState();
+      if (saved) {
+        currentSetId = saved.setId;
+        currentQuestionIndex = saved.questionIndex || 0;
+      }
+      select.value = currentSetId;
+
+      updateUI();
+    }
+
+    // ==================== STATE MANAGEMENT ====================
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          setId: currentSetId,
+          questionIndex: currentQuestionIndex
+        }));
+      } catch (e) { /* ignore */ }
+    }
+
+    function restoreState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+        if (!data.setId || !QUESTION_SETS[data.setId]) return null;
+        return data;
+      } catch (e) { return null; }
+    }
+
+    function updateUI() {
+      const set = QUESTION_SETS[currentSetId];
+      const question = set.questions[currentQuestionIndex];
+      const total = set.questions.length;
+
+      // Update header
+      document.getElementById('headerProgress').textContent = `Question ${currentQuestionIndex + 1} / ${total}`;
+
+      // Update progress bar
+      updateProgressBar();
+
+      // Update dialogue info
+      document.getElementById('dialogueTitle').textContent = `Dialogue ${currentQuestionIndex + 1}`;
+      document.getElementById('dialogueInfo').textContent = `Topic: ${question.topic}`;
+      
+      // Reset UI
+      document.getElementById('startBtn').classList.remove('hidden');
+      document.getElementById('replayBtn').classList.add('hidden');
+      document.getElementById('questionSection').classList.add('hidden');
+      document.getElementById('resultsSummary').classList.add('hidden');
+      hasStarted = false;
+
+      // Update navigation buttons
+      document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+      document.getElementById('checkBtn').disabled = true;
+      document.getElementById('nextBtn').classList.add('hidden');
+
+      saveState();
+    }
+
+    function updateProgressBar() {
+      const container = document.getElementById('progressBar');
+      container.innerHTML = '';
+      const set = QUESTION_SETS[currentSetId];
+      const total = set.questions.length;
+
+      for (let i = 0; i < total; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'progress-dot';
+        dot.setAttribute('data-index', i);
+        dot.setAttribute('title', `Question ${i + 1}`);
+        
+        if (i < currentQuestionIndex) {
+          dot.classList.add('completed');
+        } else if (i === currentQuestionIndex) {
+          dot.classList.add('active');
+        }
+        
+        dot.addEventListener('click', () => {
+          if (i !== currentQuestionIndex) {
+            currentQuestionIndex = i;
+            updateUI();
+          }
+        });
+        
+        container.appendChild(dot);
+        
+        if (i < total - 1) {
+          const connector = document.createElement('div');
+          connector.className = 'progress-connector';
+          if (i < currentQuestionIndex) {
+            connector.classList.add('completed');
+          }
+          container.appendChild(connector);
+        }
+      }
+    }
+
+    // ==================== DIALOGUE PLAYBACK ====================
+    function startDialogue() {
+      const set = QUESTION_SETS[currentSetId];
+      const question = set.questions[currentQuestionIndex];
+      
+      hasStarted = true;
+      document.getElementById('startBtn').classList.add('hidden');
+      document.getElementById('replayBtn').classList.remove('hidden');
+      
+      // Load audio if available
+      if (question.audioFile) {
+        document.getElementById('audioSource').src = question.audioFile;
+        document.getElementById('dialogueAudio').load();
+      } else {
+        // Show dialogue preview if no audio
+        showDialoguePreview(question);
+      }
+
+      // Show question after a delay
+      setTimeout(() => {
+        showQuestion(question);
+      }, 1000);
+    }
+
+    function replayDialogue() {
+      const audio = document.getElementById('dialogueAudio');
+      audio.currentTime = 0;
+      audio.play();
+    }
+
+    function showDialoguePreview(question) {
+      const previewHtml = `
+        <div class="dialogue-preview">
+          <div><strong>Speaker 1:</strong> ${question.dialogue.speaker1}</div>
+          <div style="margin-top: 8px;"><strong>Speaker 2:</strong> ${question.dialogue.speaker2}</div>
+        </div>
+      `;
+      const audioWrapper = document.querySelector('.audio-player-wrapper');
+      const existingPreview = audioWrapper.parentElement.querySelector('.dialogue-preview');
+      if (existingPreview) {
+        existingPreview.remove();
+      }
+      audioWrapper.insertAdjacentHTML('afterend', previewHtml);
+    }
+
+    function showQuestion(question) {
+      document.getElementById('questionSection').classList.remove('hidden');
+      document.getElementById('questionNumber').textContent = `Question ${currentQuestionIndex + 1}`;
+      document.getElementById('questionText').textContent = question.question;
+      
+      const optionsList = document.getElementById('optionsList');
+      optionsList.innerHTML = '';
+      
+      question.options.forEach(opt => {
+        const li = document.createElement('li');
+        li.className = 'option-item';
+        li.setAttribute('data-option', opt.label);
+        li.onclick = () => selectOption(question.id, opt.label);
+        li.innerHTML = `
+          <span class="option-label">${opt.label}.</span>
+          <span class="option-text">${opt.text}</span>
+        `;
+        optionsList.appendChild(li);
+      });
+
+      // Check if already answered
+      if (answers[question.id]) {
+        selectOption(question.id, answers[question.id], false);
+        document.getElementById('checkBtn').disabled = false;
+      }
+    }
+
+    function selectOption(questionId, optionLabel, enableCheck = true) {
+      // Store answer
+      answers[questionId] = optionLabel;
+
+      // Update UI
+      const options = document.querySelectorAll('#optionsList .option-item');
+      options.forEach(opt => {
+        opt.classList.remove('selected');
+        if (opt.dataset.option === optionLabel) {
+          opt.classList.add('selected');
+        }
+      });
+
+      // Enable check button
+      if (enableCheck) {
+        document.getElementById('checkBtn').disabled = false;
+      }
+    }
+
+    function checkAnswer() {
+      const set = QUESTION_SETS[currentSetId];
+      const question = set.questions[currentQuestionIndex];
+      const selected = answers[question.id];
+      const isCorrect = selected === question.correct;
+      
+      // Update option styling
+      const options = document.querySelectorAll('#optionsList .option-item');
+      options.forEach(opt => {
+        opt.classList.add('disabled');
+        opt.onclick = null;
+        if (opt.dataset.option === question.correct) {
+          opt.classList.add('correct');
+        }
+        if (opt.dataset.option === selected && !isCorrect) {
+          opt.classList.add('incorrect');
+        }
+      });
+
+      // Show feedback
+      const feedback = document.getElementById('feedback');
+      feedback.classList.add('show', isCorrect ? 'correct' : 'incorrect');
+      feedback.innerHTML = `
+        <div><strong>${isCorrect ? '✓ Correct' : '✗ Incorrect'}</strong></div>
+        <div class="feedback-explanation">${question.explanation}</div>
+      `;
+
+      document.getElementById('checkBtn').classList.add('hidden');
+      document.getElementById('nextBtn').classList.remove('hidden');
+      
+      // Update progress
+      updateProgressBar();
+    }
+
+    // ==================== NAVIGATION ====================
+    function previousQuestion() {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        updateUI();
+      }
+    }
+
+    function nextQuestion() {
+      const set = QUESTION_SETS[currentSetId];
+      if (currentQuestionIndex < set.questions.length - 1) {
+        currentQuestionIndex++;
+        updateUI();
+      } else {
+        showResults();
+      }
+    }
+
+    function switchSet() {
+      const select = document.getElementById('setSelect');
+      if (!QUESTION_SETS[select.value]) return;
+      currentSetId = select.value;
+      currentQuestionIndex = 0;
+      answers = {};
+      updateUI();
+    }
+
+    function showResults() {
+      const set = QUESTION_SETS[currentSetId];
+      let correct = 0;
+      let total = set.questions.length;
+
+      set.questions.forEach(q => {
+        if (answers[q.id] && answers[q.id] === q.correct) {
+          correct++;
+        }
+      });
+
+      document.getElementById('questionSection').classList.add('hidden');
+      document.getElementById('resultsSummary').classList.remove('hidden');
+      document.getElementById('resultsScore').textContent = `${correct}/${total}`;
+      document.getElementById('resultsText').textContent = `Accuracy: ${Math.round(correct / total * 100)}%`;
+    }
+
+    function restartPractice() {
+      currentQuestionIndex = 0;
+      answers = {};
+      updateUI();
+    }
+
+    function reviewAnswers() {
+      currentQuestionIndex = 0;
+      updateUI();
+      // Show all answers as checked
+      setTimeout(() => {
+        const set = QUESTION_SETS[currentSetId];
+        set.questions.forEach((q, idx) => {
+          if (idx === 0) {
+            startDialogue();
+            setTimeout(() => {
+              if (answers[q.id]) {
+                selectOption(q.id, answers[q.id], false);
+                checkAnswer();
+              }
+            }, 500);
+          }
+        });
+      }, 100);
+    }
+
+    // ==================== INIT ====================
+    init();
+  </script>
+</body>
+</html>

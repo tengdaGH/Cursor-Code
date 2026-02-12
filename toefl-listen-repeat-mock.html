@@ -44,6 +44,22 @@
       font-weight: 600;
       box-shadow: 0 1px 4px rgba(0,0,0,.15);
     }
+    .header-home {
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background 0.2s;
+      margin-right: 12px;
+    }
+    .header-home:hover {
+      background: rgba(255,255,255,.15);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
 
     /* Screen Container System */
     .screen {
@@ -545,7 +561,10 @@
 </head>
 <body>
   <header class="header">
-    <div class="title">TOEFL® Speaking Section</div>
+    <div class="header-left">
+      <a href="index.html" class="header-home">← Home</a>
+      <div class="title">TOEFL® Speaking Section</div>
+    </div>
     <div class="progress" id="headerProgress"></div>
   </header>
 

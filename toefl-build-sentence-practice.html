@@ -39,7 +39,30 @@
       font-weight: 600;
       box-shadow: 0 1px 4px rgba(0,0,0,.15);
     }
-    .header-timer { font-variant-numeric: tabular-nums; margin-left: 12px; }
+    .header-home {
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background 0.2s;
+      margin-right: 12px;
+    }
+    .header-home:hover {
+      background: rgba(255,255,255,.15);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .header-timer { font-variant-numeric: tabular-nums; }
     .main { max-width: 720px; margin: 0 auto; padding: 20px 16px; }
     .card {
       background: var(--card);
@@ -163,11 +186,34 @@
     .result-item.incorrect { background: #fef2f2; border-color: var(--error); }
     .hidden { display: none !important; }
     .text-center { text-align: center; }
+    .header-select {
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 6px 12px;
+      cursor: pointer;
+      min-width: 180px;
+      flex-shrink: 0;
+    }
+    .header-select:hover { background: rgba(255,255,255,.25); }
+    .header-select option { color: var(--text); background: var(--card); }
   </style>
 </head>
 <body>
+  <!--
+  REVIEW LOG (for maintainers; not shown to users)
+  Item data: data/build-a-sentence-sets.json
+  Detailed item/set edit log: docs/item-review-log.md (Build a Sentence section)
+  -->
   <header class="header">
-    <div class="title">Build a Sentence Practice</div>
+    <div class="header-left">
+      <a href="index.html" class="header-home">← Home</a>
+      <div class="title">Build a Sentence Practice</div>
+    </div>
+    <select class="header-select" id="setSelect" aria-label="Practice set"></select>
     <div class="header-right">
       <span id="headerProgress">Question 1 / 20</span>
       <span class="header-timer" id="headerTimer">00:00</span>
@@ -212,31 +258,13 @@
     </div>
   </main>
   <script>
-    const questions = [
-      { id: 1, context: "", fragments: ["the", "students", "study", "in", "the", "library"], endPunctuation: "." },
-      { id: 2, context: "", fragments: ["she", "quickly", "finished", "her", "homework", "yesterday"], endPunctuation: "." },
-      { id: 3, context: "", fragments: ["did", "you", "see", "the", "movie", "last", "night"], endPunctuation: "?" },
-      { id: 4, context: "", fragments: ["where", "did", "the", "researchers", "discover", "the", "new", "species"], endPunctuation: "?" },
-      { id: 5, context: "", fragments: ["the", "book", "on", "the", "table", "belongs", "to", "my", "sister"], endPunctuation: "." },
-      { id: 6, context: "", fragments: ["the", "professor", "who", "taught", "the", "course", "retired", "last", "year"], endPunctuation: "." },
-      { id: 7, context: "", fragments: ["the", "experiment", "was", "conducted", "by", "the", "research", "team"], endPunctuation: "." },
-      { id: 8, context: "", fragments: ["she", "decided", "to", "apply", "for", "the", "scholarship"], endPunctuation: "." },
-      { id: 9, context: "", fragments: ["had", "he", "known", "the", "truth", "he", "would", "have", "acted", "differently"], endPunctuation: "." },
-      { id: 10, context: "", fragments: ["although", "the", "weather", "was", "bad", "we", "decided", "to", "go", "hiking"], endPunctuation: "." },
-      { id: 11, context: "", fragments: ["he", "asked", "whether", "she", "could", "help", "with", "the", "project"], endPunctuation: "." },
-      { id: 12, context: "", fragments: ["the", "museum", "opens", "at", "nine", "in", "the", "morning"], endPunctuation: "." },
-      { id: 13, context: "", fragments: ["why", "did", "you", "leave", "the", "meeting", "early"], endPunctuation: "?" },
-      { id: 14, context: "", fragments: ["the", "report", "that", "she", "wrote", "was", "published", "last", "month"], endPunctuation: "." },
-      { id: 15, context: "", fragments: ["we", "need", "to", "finish", "this", "before", "the", "deadline"], endPunctuation: "." },
-      { id: 16, context: "", fragments: ["is", "there", "a", "bus", "that", "goes", "to", "the", "airport"], endPunctuation: "?" },
-      { id: 17, context: "", fragments: ["the", "students", "were", "asked", "to", "read", "three", "chapters"], endPunctuation: "." },
-      { id: 18, context: "", fragments: ["she", "has", "been", "working", "on", "this", "since", "monday"], endPunctuation: "." },
-      { id: 19, context: "", fragments: ["if", "it", "rains", "tomorrow", "we", "will", "stay", "indoors"], endPunctuation: "." },
-      { id: 20, context: "", fragments: ["the", "conference", "will", "take", "place", "in", "march"], endPunctuation: "." }
-    ];
-    const STORAGE_KEY = 'toefl-build-sentence-progress';
+    const STORAGE_KEY = 'toefl-build-sentence-state';
     const urlParams = new URLSearchParams(window.location.search);
     const shouldShuffle = urlParams.get('shuffle') !== 'false';
+    let sets = {};
+    let setIds = [];
+    let currentSetId = '';
+    let questions = [];
     let currentQuestionIndex = 0;
     let wordBankFragments = [];
     let answerFragments = [];
@@ -246,6 +274,51 @@
     let startTime = null;
     let elapsedSeconds = 0;
     let results = [];
+
+    function loadData() {
+      return fetch('data/build-a-sentence-sets.json')
+        .then(r => r.json())
+        .then(data => {
+          sets = data.sets || {};
+          setIds = Object.keys(sets);
+          if (setIds.length === 0) throw new Error('No sets');
+          return data;
+        });
+    }
+
+    function applySet() {
+      const set = sets[currentSetId];
+      if (!set || !set.sentences) return;
+      questions = shouldShuffle ? shuffleArray([...set.sentences]) : [...set.sentences];
+      results = [];
+      questions.forEach((_, i) => { results[i] = undefined; });
+      buildProgressBar();
+    }
+
+    function saveState() {
+      try {
+        const set = sets[currentSetId];
+        const fullLength = set && set.sentences ? set.sentences.length : 0;
+        if (questions.length !== fullLength) return;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          setId: currentSetId,
+          index: currentQuestionIndex,
+          results,
+          elapsedSeconds,
+          date: Date.now()
+        }));
+      } catch (_) {}
+    }
+
+    function restoreState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+        if (!data.setId || !sets[data.setId]) return null;
+        return data;
+      } catch (_) { return null; }
+    }
     function formatTime(s) { const m = Math.floor(s / 60); return String(m).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
     function startTimer() {
       if (timerInterval) return;
@@ -477,6 +550,7 @@
         d.classList.toggle('active', i === index);
         d.classList.toggle('completed', results[i] === true);
       });
+      saveState();
     }
     function checkAnswer() {
       const q = questions[currentQuestionIndex];
@@ -494,6 +568,7 @@
         document.getElementById('resetBtn').style.display = 'none';
         document.getElementById('nextBtn').style.display = '';
         confetti();
+        saveState();
       } else {
         wrongAttempts++;
         document.getElementById('feedback').textContent = 'Incorrect. Try again or reset.';
@@ -568,7 +643,7 @@
       });
       document.getElementById('practiceScreen').classList.add('hidden');
       document.getElementById('resultScreen').classList.add('result-screen', 'visible');
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ results, elapsedSeconds, date: Date.now() })); } catch (_) {}
+      saveState();
     }
     function retryMistakes() {
       const wrongIndices = results.map((r, i) => r ? -1 : i).filter(i => i >= 0);
@@ -589,41 +664,16 @@
       loadQuestion(0);
     }
     function newPractice() {
-      results = [];
-      questions.forEach((_, i) => results[i] = undefined);
       elapsedSeconds = 0;
       startTime = Date.now();
       timerInterval = null;
-      startTimer();
       document.getElementById('resultScreen').classList.remove('visible');
       document.getElementById('practiceScreen').classList.remove('hidden');
-      const orig = [
-        { id: 1, context: "", fragments: ["the", "students", "study", "in", "the", "library"], endPunctuation: "." },
-        { id: 2, context: "", fragments: ["she", "quickly", "finished", "her", "homework", "yesterday"], endPunctuation: "." },
-        { id: 3, context: "", fragments: ["did", "you", "see", "the", "movie", "last", "night"], endPunctuation: "?" },
-        { id: 4, context: "", fragments: ["where", "did", "the", "researchers", "discover", "the", "new", "species"], endPunctuation: "?" },
-        { id: 5, context: "", fragments: ["the", "book", "on", "the", "table", "belongs", "to", "my", "sister"], endPunctuation: "." },
-        { id: 6, context: "", fragments: ["the", "professor", "who", "taught", "the", "course", "retired", "last", "year"], endPunctuation: "." },
-        { id: 7, context: "", fragments: ["the", "experiment", "was", "conducted", "by", "the", "research", "team"], endPunctuation: "." },
-        { id: 8, context: "", fragments: ["she", "decided", "to", "apply", "for", "the", "scholarship"], endPunctuation: "." },
-        { id: 9, context: "", fragments: ["had", "he", "known", "the", "truth", "he", "would", "have", "acted", "differently"], endPunctuation: "." },
-        { id: 10, context: "", fragments: ["although", "the", "weather", "was", "bad", "we", "decided", "to", "go", "hiking"], endPunctuation: "." },
-        { id: 11, context: "", fragments: ["he", "asked", "whether", "she", "could", "help", "with", "the", "project"], endPunctuation: "." },
-        { id: 12, context: "", fragments: ["the", "museum", "opens", "at", "nine", "in", "the", "morning"], endPunctuation: "." },
-        { id: 13, context: "", fragments: ["why", "did", "you", "leave", "the", "meeting", "early"], endPunctuation: "?" },
-        { id: 14, context: "", fragments: ["the", "report", "that", "she", "wrote", "was", "published", "last", "month"], endPunctuation: "." },
-        { id: 15, context: "", fragments: ["we", "need", "to", "finish", "this", "before", "the", "deadline"], endPunctuation: "." },
-        { id: 16, context: "", fragments: ["is", "there", "a", "bus", "that", "goes", "to", "the", "airport"], endPunctuation: "?" },
-        { id: 17, context: "", fragments: ["the", "students", "were", "asked", "to", "read", "three", "chapters"], endPunctuation: "." },
-        { id: 18, context: "", fragments: ["she", "has", "been", "working", "on", "this", "since", "monday"], endPunctuation: "." },
-        { id: 19, context: "", fragments: ["if", "it", "rains", "tomorrow", "we", "will", "stay", "indoors"], endPunctuation: "." },
-        { id: 20, context: "", fragments: ["the", "conference", "will", "take", "place", "in", "march"], endPunctuation: "." }
-      ];
-      questions.length = 0;
-      questions.push(...(shouldShuffle ? shuffleArray([...orig]) : orig));
-      buildProgressBar();
+      applySet();
       currentQuestionIndex = 0;
+      startTimer();
       loadQuestion(0);
+      saveState();
     }
     function buildProgressBar() {
       const bar = document.getElementById('progressBar');
@@ -641,11 +691,55 @@
         bar.appendChild(dot);
       }
     }
-    (function init() {
-      questions.forEach((_, i) => results[i] = undefined);
+    function onSetChange() {
+      const sel = document.getElementById('setSelect');
+      if (!sel || !sets[sel.value]) return;
+      currentSetId = sel.value;
+      applySet();
+      const saved = restoreState();
+      if (saved && saved.setId === currentSetId && saved.index != null) {
+        currentQuestionIndex = Math.min(saved.index, questions.length - 1);
+        const savedRes = (saved.results || []).slice(0, questions.length);
+        for (let i = 0; i < questions.length; i++) results[i] = i < savedRes.length ? savedRes[i] : undefined;
+        if (saved.elapsedSeconds != null) elapsedSeconds = saved.elapsedSeconds;
+      } else {
+        currentQuestionIndex = 0;
+      }
       buildProgressBar();
+      loadQuestion(currentQuestionIndex);
       startTimer();
-      loadQuestion(0);
+      saveState();
+    }
+
+    (function init() {
+      loadData().then(function() {
+        currentSetId = setIds[0];
+        const sel = document.getElementById('setSelect');
+        if (sel) {
+          setIds.forEach(function(id) {
+            const opt = document.createElement('option');
+            opt.value = id;
+            opt.textContent = sets[id].label || id;
+            sel.appendChild(opt);
+          });
+          sel.value = currentSetId;
+          sel.addEventListener('change', onSetChange);
+        }
+        applySet();
+        const saved = restoreState();
+        if (saved && saved.setId === currentSetId && saved.index != null) {
+          currentQuestionIndex = Math.min(saved.index, questions.length - 1);
+          const savedRes = (saved.results || []).slice(0, questions.length);
+          for (let i = 0; i < questions.length; i++) results[i] = i < savedRes.length ? savedRes[i] : undefined;
+          if (saved.elapsedSeconds != null) elapsedSeconds = saved.elapsedSeconds;
+        }
+        buildProgressBar();
+        loadQuestion(currentQuestionIndex);
+        startTimer();
+        saveState();
+      }).catch(function() {
+        document.getElementById('practiceScreen').innerHTML = '<div class="card"><p>Unable to load sets. Serve the page over HTTP (e.g. <code>python3 -m http.server 8000</code>) and ensure <code>data/build-a-sentence-sets.json</code> exists.</p></div>';
+      });
     })();
   </script>
 </body>

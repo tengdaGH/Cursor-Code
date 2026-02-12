@@ -1,0 +1,136 @@
+{
+  "questions": [
+    {
+      "database": "questions",
+      "properties": {
+        "题目ID": "A01-01",
+        "题型": "Listen to an Announcement",
+        "Set编号": "A01",
+        "主题": [
+          "Campus"
+        ],
+        "难度": "Medium",
+        "状态": "已完成",
+        "音频文件": "file://audio/listening/LA-A01-01.mp3"
+      },
+      "content": "## Library Hours Change\n\n**Context**: Campus Library\n\n**Announcement Text**:\n\nGood morning, everyone. This is a message from the campus library. We wanted to inform you that starting next Monday, the library will be extending its weekend hours. The library will now be open from 8 AM to 10 PM on Saturdays and Sundays, instead of the previous 9 AM to 6 PM schedule. This change is being made to better accommodate students who prefer to study on weekends. Additionally, the quiet study areas on the third and fourth floors will now be available 24 hours a day, seven days a week, for students who need a quiet place to work. Please note that you will need your student ID card to access the building after regular hours. If you have any questions, please visit the library information desk or check our website. Thank you.\n\n"
+    },
+    {
+      "database": "questions",
+      "properties": {
+        "题目ID": "A01-02",
+        "题型": "Listen to an Announcement",
+        "Set编号": "A01",
+        "主题": [
+          "Campus"
+        ],
+        "难度": "Medium",
+        "状态": "已完成",
+        "音频文件": "file://audio/listening/LA-A01-02.mp3"
+      },
+      "content": "## Course Registration Reminder\n\n**Context**: Academic Affairs Office\n\n**Announcement Text**:\n\nAttention all students. This is a reminder from the Academic Affairs Office regarding course registration for the upcoming semester. Registration will begin next Monday at 8 AM and will remain open until Friday at 5 PM. Please note that registration is done online through the student portal. You will need your student ID number and password to log in. We strongly recommend that you register as early as possible, as popular courses tend to fill up quickly. If you encounter any technical difficulties during registration, please contact the IT help desk immediately. Additionally, if you need to make changes to your schedule after registration closes, you will need to submit a formal request to your academic advisor. Thank you for your attention.\n\n"
+    },
+    {
+      "database": "questions",
+      "properties": {
+        "题目ID": "A01-03",
+        "题型": "Listen to an Announcement",
+        "Set编号": "A01",
+        "主题": [
+          "Campus"
+        ],
+        "难度": "Medium",
+        "状态": "已完成",
+        "音频文件": "file://audio/listening/LA-A01-03.mp3"
+      },
+      "content": "## Campus Event Cancellation\n\n**Context**: Student Activities Office\n\n**Announcement Text**:\n\nHello, this is a message from the Student Activities Office. We regret to inform you that the outdoor concert scheduled for this Saturday has been cancelled due to severe weather forecasts. The event will be rescheduled for next Saturday at the same time and location. All tickets purchased for this weekend\\\n\n"
+    },
+    {
+      "database": "questions",
+      "properties": {
+        "题目ID": "A01-04",
+        "题型": "Listen to an Announcement",
+        "Set编号": "A01",
+        "主题": [
+          "Campus"
+        ],
+        "难度": "Medium",
+        "状态": "已完成",
+        "音频文件": "file://audio/listening/LA-A01-04.mp3"
+      },
+      "content": "## Parking Policy Update\n\n**Context**: Campus Security\n\n**Announcement Text**:\n\nGood afternoon. This is an important announcement from Campus Security regarding parking regulations. Effective immediately, all vehicles parked on campus must display a valid parking permit. Permits can be purchased online through the campus portal or in person at the security office. The cost is fifty dollars per semester. Please note that vehicles without permits will be subject to fines, and repeated violations may result in your vehicle being towed. Additionally, we have designated new parking areas near the science building and the student center to accommodate increased demand. These areas are clearly marked with blue signs. If you have any questions about parking regulations or need assistance purchasing a permit, please visit the security office or call our help line. Thank you.\n\n"
+    },
+    {
+      "database": "questions",
+      "properties": {
+        "题目ID": "A01-05",
+        "题型": "Listen to an Announcement",
+        "Set编号": "A01",
+        "主题": [
+          "Campus"
+        ],
+        "难度": "Medium",
+        "状态": "已完成",
+        "音频文件": "file://audio/listening/LA-A01-05.mp3"
+      },
+      "content": "## Dining Hall Menu Changes\n\n**Context**: Campus Dining Services\n\n**Announcement Text**:\n\nHello, this is a message from Campus Dining Services. We wanted to let you know about some exciting changes coming to the main dining hall. Starting next week, we will be introducing new vegetarian and vegan options at every meal. These options will be clearly labeled and available at a dedicated station. We have also expanded our salad bar to include more fresh vegetables and fruits. In response to student feedback, we are reducing the use of processed foods and focusing on fresh, locally sourced ingredients whenever possible. Additionally, we will be offering extended hours on weekdays, with the dining hall now open until 9 PM instead of 8 PM. We hope these changes will better serve our diverse student community. If you have any dietary concerns or suggestions, please speak with our dining services manager. Thank you.\n\n"
+    }
+  ],
+  "audio": [
+    {
+      "database": "audio",
+      "properties": {
+        "文件名": "LA-A01-05.mp3",
+        "文件路径": "audio/listening/LA-A01-05.mp3",
+        "关联题目": "A01-05",
+        "题型": "Listen to an Announcement",
+        "文件大小": 569.9,
+        "状态": "已生成"
+      }
+    },
+    {
+      "database": "audio",
+      "properties": {
+        "文件名": "LA-A01-04.mp3",
+        "文件路径": "audio/listening/LA-A01-04.mp3",
+        "关联题目": "A01-04",
+        "题型": "Listen to an Announcement",
+        "文件大小": 534.0,
+        "状态": "已生成"
+      }
+    },
+    {
+      "database": "audio",
+      "properties": {
+        "文件名": "LA-A01-03.mp3",
+        "文件路径": "audio/listening/LA-A01-03.mp3",
+        "关联题目": "A01-03",
+        "题型": "Listen to an Announcement",
+        "文件大小": 464.7,
+        "状态": "已生成"
+      }
+    },
+    {
+      "database": "audio",
+      "properties": {
+        "文件名": "LA-A01-02.mp3",
+        "文件路径": "audio/listening/LA-A01-02.mp3",
+        "关联题目": "A01-02",
+        "题型": "Listen to an Announcement",
+        "文件大小": 481.8,
+        "状态": "已生成"
+      }
+    },
+    {
+      "database": "audio",
+      "properties": {
+        "文件名": "LA-A01-01.mp3",
+        "文件路径": "audio/listening/LA-A01-01.mp3",
+        "关联题目": "A01-01",
+        "题型": "Listen to an Announcement",
+        "文件大小": 511.5,
+        "状态": "已生成"
+      }
+    }
+  ]
+}

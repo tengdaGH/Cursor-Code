@@ -44,6 +44,36 @@
       font-weight: 600;
       box-shadow: 0 1px 4px rgba(0,0,0,.15);
     }
+    .header-home {
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background 0.2s;
+      margin-right: 12px;
+    }
+    .header-home:hover {
+      background: rgba(255,255,255,.15);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+    .header-select {
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 6px 12px;
+      cursor: pointer;
+      min-width: 200px;
+    }
+    .header-select:hover { background: rgba(255,255,255,.25); }
+    .header-select option { color: var(--text); background: var(--card); }
+    .header-select option:disabled { color: var(--muted); }
 
     /* Main Container */
     .main {
@@ -209,7 +239,18 @@
 </head>
 <body>
   <header class="header">
-    <div class="title">TOEFL® Speaking Practice</div>
+    <div class="header-left">
+      <a href="index.html" class="header-home">← Home</a>
+      <div class="title">TOEFL® Speaking Practice</div>
+    </div>
+    <select class="header-select" id="setSelect" onchange="switchSet()">
+      <option value="S01">S01 — Campus Bookstore Tour (A2-B1)</option>
+      <option value="S02">S02 — Museum Tour (B1-B2)</option>
+      <option value="S03">S03 — University Orientation (B2-C1)</option>
+      <option value="S04">S04 — Dining Hall (A2-B1)</option>
+      <option value="S05">S05 — Lab Safety (B1-B2)</option>
+      <option value="S06">S06 — Art History (B2-C1)</option>
+    </select>
     <div class="progress" id="headerProgress">Sentence 1 of 20</div>
   </header>
 
@@ -241,32 +282,8 @@
   </main>
 
   <script>
-    // ==================== SENTENCE DATA (parsed from practice-campus-bookstore.srt) ====================
-    const SENTENCES_DATA = [
-      { text: "Welcome to the campus bookstore.", start: "00:00:00,001", end: "00:00:01,760" },
-      { text: "We sell textbooks and school supplies.", start: "00:00:03,200", end: "00:00:05,600" },
-      { text: "New books are on the first floor.", start: "00:00:07,040", end: "00:00:08,960" },
-      { text: "Used books are cheaper and easier to find.", start: "00:00:10,400", end: "00:00:12,880" },
-      { text: "You can find notebooks and pens over there.", start: "00:00:14,320", end: "00:00:17,120" },
-      { text: "The checkout counter is near the front door.", start: "00:00:18,560", end: "00:00:20,960" },
-      { text: "We accept both cash and credit cards.", start: "00:00:22,080", end: "00:00:24,560" },
-      { text: "Student discounts are available with your ID card.", start: "00:00:26,039", end: "00:00:28,920" },
-      { text: "The return policy allows exchanges within two weeks", start: "00:00:30,279", end: "00:00:33,559" },
-      { text: "Please keep your receipt if you want a refund.", start: "00:00:34,840", end: "00:00:37,400" },
-      { text: "Our store hours are from 9 to 6 on weekdays", start: "00:00:38,920", end: "00:00:41,960" },
-      { text: "We also have a small cafe in the back corner.", start: "00:00:43,239", end: "00:00:45,719" },
-      { text: "You can order coffee and sandwiches while you browse.", start: "00:00:47,000", end: "00:00:49,800" },
-      { text: "The best seller section is right next to the main entrance.", start: "00:00:51,239", end: "00:00:54,199" },
-      { text: "We carry a wide selection of academic journals as well.", start: "00:00:55,700", end: "00:00:58,900" },
-      { text: "If we don't have a book in stock, we can order it for you", start: "00:01:00,100", end: "00:01:03,300" },
-      { text: "Online orders can be picked up at the service desk downstairs.", start: "00:01:04,540", end: "00:01:08,060" },
-      { text: "During finals week, the store stays open until 10 at night.", start: "00:01:09,500", end: "00:01:13,180" },
-      { text: "There's a study lounge upstairs where you can read before buying.", start: "00:01:14,540", end: "00:01:17,980" },
-      { text: "Feel free to ask any of our staff if you need help finding something", start: "00:01:19,340", end: "00:01:22,860" }
-    ];
-
+    // ==================== PRACTICE SETS ====================
     function srtTimeToSeconds(srtTime) {
-      // Format: HH:MM:SS,mmm
       const [time, ms] = srtTime.split(',');
       const [h, m, s] = time.split(':');
       return parseInt(h) * 3600 + parseInt(m) * 60 + parseInt(s) + parseInt(ms) / 1000;
@@ -281,11 +298,207 @@
       }));
     }
 
-    // ==================== DATA ====================
-    const sentences = parseSentences(SENTENCES_DATA);
+    const PRACTICE_SETS = {
+      S01: {
+        label: 'S01 — Campus Bookstore Tour (A2-B1)',
+        audioFile: 'audio/lr/LR-S01-bookstore-tour.mp3',
+        sentences: parseSentences([
+          { text: "Welcome to the campus bookstore.", start: "00:00:02,532", end: "00:00:06,379" },
+          { text: "We sell textbooks and school supplies.", start: "00:00:06,379", end: "00:00:09,728" },
+          { text: "New books are on the first floor.", start: "00:00:09,728", end: "00:00:13,698" },
+          { text: "Used books are cheaper and easier to find.", start: "00:00:13,698", end: "00:00:17,861" },
+          { text: "You can find notebooks and pens over there.", start: "00:00:17,861", end: "00:00:21,503" },
+          { text: "The checkout counter is near the front door.", start: "00:00:21,503", end: "00:00:25,363" },
+          { text: "We accept both cash and credit cards.", start: "00:00:25,363", end: "00:00:29,672" },
+          { text: "Student discounts are available with your ID card.", start: "00:00:29,672", end: "00:00:34,192" },
+          { text: "The return policy allows exchanges within two weeks.", start: "00:00:34,192", end: "00:00:38,191" },
+          { text: "Please keep your receipt if you want a refund.", start: "00:00:38,191", end: "00:00:42,617" },
+          { text: "Our store hours are from nine to six on weekdays.", start: "00:00:42,617", end: "00:00:46,396" },
+          { text: "We also have a small cafe in the back corner.", start: "00:00:46,396", end: "00:00:50,578" },
+          { text: "You can order coffee and sandwiches while you browse.", start: "00:00:50,578", end: "00:00:55,064" },
+          { text: "The bestseller section is right next to the main entrance.", start: "00:00:55,064", end: "00:00:59,508" },
+          { text: "We carry a wide selection of academic journals as well.", start: "00:00:59,508", end: "00:01:03,941" },
+          { text: "If we don't have a book in stock, we can order it for you.", start: "00:01:03,941", end: "00:01:08,859" },
+          { text: "Online orders can be picked up at the service desk downstairs.", start: "00:01:08,859", end: "00:01:13,971" },
+          { text: "During finals week, the store stays open until ten at night.", start: "00:01:13,971", end: "00:01:18,609" },
+          { text: "There's a study lounge upstairs where you can read before buying.", start: "00:01:18,609", end: "00:01:23,400" },
+          { text: "Feel free to ask any of our staff if you need help finding something.", start: "00:01:23,400", end: "00:01:24,286" }
+        ])
+      },
+      S02: {
+        label: 'S02 — Museum Tour (B1-B2)',
+        audioFile: 'audio/lr/LR-S02-museum-tour.mp3',
+        sentences: parseSentences([
+          { text: "Good morning and welcome to the Natural History Museum.", start: "00:00:00,000", end: "00:00:04,172" },
+          { text: "Today's tour will take about an hour and a half.", start: "00:00:04,172", end: "00:00:08,357" },
+          { text: "We'll begin with the geology exhibit on the ground floor.", start: "00:00:08,357", end: "00:00:13,302" },
+          { text: "This collection features rocks and minerals from around the world.", start: "00:00:13,302", end: "00:00:18,176" },
+          { text: "The crystal display in the center was donated by a local university.", start: "00:00:18,176", end: "00:00:23,357" },
+          { text: "Please do not touch any of the items behind the glass.", start: "00:00:23,357", end: "00:00:27,561" },
+          { text: "Photography is allowed, but flash photography is not permitted in this area.", start: "00:00:27,561", end: "00:00:33,332" },
+          { text: "Moving on, we'll visit the marine biology section on the second floor.", start: "00:00:33,332", end: "00:00:38,752" },
+          { text: "You'll notice a full-size model of a blue whale hanging from the ceiling.", start: "00:00:38,752", end: "00:00:44,408" },
+          { text: "This exhibit explains how ocean currents affect the migration patterns of sea creatures.", start: "00:00:44,408", end: "00:00:50,672" },
+          { text: "Researchers have found that rising ocean temperatures are threatening coral reef ecosystems.", start: "00:00:50,672", end: "00:00:56,587" },
+          { text: "The interactive displays allow visitors to explore deep-sea environments through virtual reality.", start: "00:00:56,587", end: "00:01:02,909" },
+          { text: "Next, we'll head to the dinosaur wing, which is our most popular attraction.", start: "00:01:02,909", end: "00:01:09,156" },
+          { text: "The skeleton you see here belongs to a Tyrannosaurus rex discovered in Montana.", start: "00:01:09,156", end: "00:01:15,355" },
+          { text: "Scientists believe this particular specimen lived approximately sixty-five million years ago.", start: "00:01:15,355", end: "00:01:22,255" },
+          { text: "Recent studies suggest that some dinosaurs may have had feathers rather than scales.", start: "00:01:22,255", end: "00:01:28,765" },
+          { text: "The fossil preparation lab is visible through the window at the end of this hallway.", start: "00:01:28,765", end: "00:01:35,112" },
+          { text: "Our paleontologists are currently working on a newly discovered species from South America.", start: "00:01:35,112", end: "00:01:42,476" },
+          { text: "Before we move on, feel free to take a closer look at the exhibits and ask any questions.", start: "00:01:42,476", end: "00:01:48,990" },
+          { text: "The gift shop near the exit carries books, models, and educational kits related to everything you've seen today.", start: "00:01:48,990", end: "00:01:56,388" }
+        ])
+      },
+      S03: {
+        label: 'S03 — University Orientation (B2-C1)',
+        audioFile: 'audio/lr/LR-S03-orientation-academic.mp3',
+        sentences: parseSentences([
+          { text: "Welcome to the Academic Services Orientation for new international students.", start: "00:00:00,790", end: "00:00:06,493" },
+          { text: "My name is Dr. Chen, and I'll be your guide this afternoon.", start: "00:00:06,493", end: "00:00:11,732" },
+          { text: "This session is designed to help you get familiar with the resources available on campus.", start: "00:00:11,732", end: "00:00:17,614" },
+          { text: "The Writing Centre offers free one-on-one tutoring for any course that involves written assignments.", start: "00:00:17,614", end: "00:00:24,196" },
+          { text: "Appointments can be booked online and walk-in sessions are available on Wednesday afternoons.", start: "00:00:24,196", end: "00:00:31,199" },
+          { text: "Our academic advisors are here to help you plan your course schedule each semester.", start: "00:00:31,199", end: "00:00:37,069" },
+          { text: "If you're having difficulty with any of your classes, we strongly encourage you to reach out early.", start: "00:00:37,069", end: "00:00:43,856" },
+          { text: "The library provides access to thousands of academic journals and databases through its online portal.", start: "00:00:43,856", end: "00:00:50,969" },
+          { text: "Research workshops are held every two weeks to help students develop their information literacy skills.", start: "00:00:50,969", end: "00:00:57,978" },
+          { text: "International students who need additional language support can visit the English Language Resource Centre.", start: "00:00:57,978", end: "00:01:05,084" },
+          { text: "The centre provides conversation groups, pronunciation workshops and academic writing seminars throughout the semester.", start: "00:01:05,084", end: "00:01:13,656" },
+          { text: "Students who are struggling with time management or study strategies may benefit from our peer mentoring programme.", start: "00:01:13,656", end: "00:01:21,387" },
+          { text: "Each mentor is a senior student who has been trained to help others develop effective learning habits.", start: "00:01:21,387", end: "00:01:28,562" },
+          { text: "The counselling office on the third floor offers confidential support for students dealing with stress or personal challenges.", start: "00:01:28,562", end: "00:01:36,570" },
+          { text: "We understand that adjusting to a new academic environment in a different country can be overwhelming at times.", start: "00:01:36,570", end: "00:01:43,616" },
+          { text: "That's why we've created a comprehensive support network that addresses both academic and personal well-being.", start: "00:01:43,616", end: "00:01:50,962" },
+          { text: "All registered students are automatically enrolled in the health insurance plan which covers most medical services on campus.", start: "00:01:50,962", end: "00:01:59,205" },
+          { text: "If you experience any issues with your enrolment or financial aid, the Registrar's office can assist you during business hours.", start: "00:01:59,205", end: "00:02:07,097" },
+          { text: "I'd like to remind everyone that maintaining a minimum grade point average is required to keep your scholarship and student visa status.", start: "00:02:07,097", end: "00:02:15,527" },
+          { text: "Please don't hesitate to reach out to any of the offices I've mentioned today, as we are all committed to helping you succeed in your academic journey here.", start: "00:02:15,527", end: "00:02:23,568" }
+        ])
+      },
+      S04: {
+        label: 'S04 — Dining Hall (A2-B1)',
+        audioFile: 'audio/lr/LR-S04-dining-hall.mp3',
+        sentences: parseSentences([
+          { text: "Hi there, welcome to the dining hall.", start: "00:00:01,029", end: "00:00:05,169" },
+          { text: "We serve breakfast, lunch, and dinner.", start: "00:00:05,169", end: "00:00:10,058" },
+          { text: "Breakfast starts at seven thirty every morning.", start: "00:00:10,058", end: "00:00:14,589" },
+          { text: "You can pick up a tray at the entrance.", start: "00:00:14,589", end: "00:00:18,509" },
+          { text: "The salad bar is on your left when you walk in.", start: "00:00:18,509", end: "00:00:22,846" },
+          { text: "Hot meals are served at the counter straight ahead.", start: "00:00:22,846", end: "00:00:27,065" },
+          { text: "Today's special is grilled chicken with roasted vegetables.", start: "00:00:27,065", end: "00:00:32,004" },
+          { text: "All drinks are included with your meal plan.", start: "00:00:32,004", end: "00:00:36,067" },
+          { text: "You can refill your water bottle at the station over there.", start: "00:00:36,067", end: "00:00:40,817" },
+          { text: "Please return your tray to the drop-off area when you're done.", start: "00:00:40,817", end: "00:00:45,640" },
+          { text: "We have a vegetarian section with fresh options every day.", start: "00:00:45,640", end: "00:00:50,577" },
+          { text: "If you have any food allergies, please check the labels on each dish.", start: "00:00:50,577", end: "00:00:55,903" },
+          { text: "The dessert table is next to the beverage station near the window.", start: "00:00:55,903", end: "00:01:01,290" },
+          { text: "We try to use locally grown ingredients whenever they are available.", start: "00:01:01,290", end: "00:01:07,097" },
+          { text: "Students with a meal plan can eat here up to three times a day.", start: "00:01:07,097", end: "00:01:12,908" },
+          { text: "Guest passes can be purchased at the front desk for five dollars each.", start: "00:01:12,908", end: "00:01:19,185" },
+          { text: "The dining hall gets really busy around noon, so you might want to come a little earlier.", start: "00:01:19,185", end: "00:01:26,582" },
+          { text: "On weekends, we offer a special brunch menu from ten in the morning until two in the afternoon.", start: "00:01:26,582", end: "00:01:34,799" },
+          { text: "If you have any suggestions about the menu, there's a feedback box right next to the exit.", start: "00:01:34,799", end: "00:01:41,662" },
+          { text: "We hope you enjoy your meals here, and please don't hesitate to ask the staff if you need anything at all.", start: "00:01:41,662", end: "00:01:48,504" }
+        ])
+      },
+      S05: {
+        label: 'S05 — Lab Safety (B1-B2)',
+        audioFile: 'audio/lr/LR-S05-lab-safety.mp3',
+        sentences: parseSentences([
+          { text: "Good afternoon, and welcome to the biology lab.", start: "00:00:01,005", end: "00:00:05,689" },
+          { text: "Before we begin, I'd like to go over some important safety rules.", start: "00:00:05,689", end: "00:00:11,332" },
+          { text: "Safety goggles must be worn at all times during experiments.", start: "00:00:11,332", end: "00:00:16,137" },
+          { text: "Lab coats are available in the cabinet next to the door.", start: "00:00:16,137", end: "00:00:20,217" },
+          { text: "Never eat or drink anything while you are working in the laboratory.", start: "00:00:20,217", end: "00:00:24,575" },
+          { text: "All chemicals should be handled with gloves to avoid skin contact.", start: "00:00:24,575", end: "00:00:29,406" },
+          { text: "The emergency eyewash station is located right behind the instructor's desk.", start: "00:00:29,406", end: "00:00:34,727" },
+          { text: "If you accidentally spill any chemicals, notify your instructor immediately.", start: "00:00:34,727", end: "00:00:40,264" },
+          { text: "Fire extinguishers are mounted on the wall near both exits of this room.", start: "00:00:40,264", end: "00:00:45,299" },
+          { text: "Make sure you know the location of the nearest emergency exit before starting your work.", start: "00:00:45,299", end: "00:00:51,547" },
+          { text: "Used materials must be disposed of in the designated waste containers, not in the regular trash.", start: "00:00:51,547", end: "00:00:57,996" },
+          { text: "Biological samples should always be stored in sealed containers and clearly labeled with your name.", start: "00:00:57,996", end: "00:01:04,785" },
+          { text: "When using a microscope, make sure the lens is clean before placing your slide on the stage.", start: "00:01:04,785", end: "00:01:11,226" },
+          { text: "Each group is responsible for cleaning their workstation at the end of every lab session.", start: "00:01:11,226", end: "00:01:17,148" },
+          { text: "If the fire alarm goes off during an experiment, turn off all equipment and exit through the nearest door.", start: "00:01:17,148", end: "00:01:24,326" },
+          { text: "You are required to complete the online safety quiz before you will be allowed to participate in any lab activities.", start: "00:01:24,326", end: "00:01:31,545" },
+          { text: "Proper ventilation is essential when working with volatile substances, so always use the fume hood provided.", start: "00:01:31,545", end: "00:01:39,484" },
+          { text: "In the event of a chemical burn, immediately rinse the affected area with cold water for at least fifteen minutes.", start: "00:01:39,484", end: "00:01:47,006" },
+          { text: "All lab reports must follow the standard format outlined in the course syllabus and be submitted by the end of the week.", start: "00:01:47,006", end: "00:01:55,088" },
+          { text: "If you have any questions about today's procedures or the equipment we'll be using, please raise your hand and I'll come over to help.", start: "00:01:55,088", end: "00:02:03,087" }
+        ])
+      },
+      S06: {
+        label: 'S06 — Art History (B2-C1)',
+        audioFile: 'audio/lr/LR-S06-art-history-renaissance.mp3',
+        sentences: parseSentences([
+          { text: "Good morning, everyone, and welcome to Art History 201.", start: "00:00:01,006", end: "00:00:06,494" },
+          { text: "Today we'll be looking at the evolution of painting techniques during the Italian Renaissance.", start: "00:00:06,494", end: "00:00:12,224" },
+          { text: "The Renaissance marked a dramatic shift from the flat, symbolic imagery of the medieval period.", start: "00:00:12,224", end: "00:00:19,002" },
+          { text: "Artists began to experiment with perspective, which allowed them to create a convincing illusion of depth on a flat surface.", start: "00:00:19,002", end: "00:00:26,634" },
+          { text: "One of the earliest examples of linear perspective can be found in Masaccio's fresco, The Holy Trinity.", start: "00:00:26,634", end: "00:00:34,020" },
+          { text: "By using a single vanishing point, Masaccio was able to give the viewer the impression of looking into an actual architectural space.", start: "00:00:34,020", end: "00:00:43,036" },
+          { text: "Another key development was the use of chiaroscuro, a technique that involves strong contrasts between light and dark.", start: "00:00:43,036", end: "00:00:51,422" },
+          { text: "Leonardo da Vinci refined this approach in works like the Mona Lisa, where the soft gradation of tones creates a remarkably lifelike appearance.", start: "00:00:51,422", end: "00:01:01,074" },
+          { text: "It's worth noting that Renaissance painters didn't simply abandon all earlier traditions overnight.", start: "00:01:01,074", end: "00:01:08,171" },
+          { text: "Many continued to work within the framework of religious commissions while gradually incorporating these new naturalistic techniques.", start: "00:01:08,171", end: "00:01:16,213" },
+          { text: "The patronage system played a crucial role in shaping artistic production, as wealthy families like the Medici commissioned works to demonstrate their power and cultural sophistication.", start: "00:01:16,213", end: "00:01:27,770" },
+          { text: "Raphael's School of Athens is often considered one of the finest examples of High Renaissance composition and spatial harmony.", start: "00:01:27,770", end: "00:01:35,941" },
+          { text: "What makes this painting particularly remarkable is the way Raphael arranged dozens of figures within a complex architectural setting without creating a sense of visual clutter.", start: "00:01:35,941", end: "00:01:47,483" },
+          { text: "The introduction of oil paint, which originated in Northern Europe, gave artists far greater control over color blending and surface texture.", start: "00:01:47,483", end: "00:01:57,042" },
+          { text: "Unlike tempera, which dries very quickly, oil paint remains workable for much longer, allowing for subtle adjustments and layered effects.", start: "00:01:57,042", end: "00:02:06,307" },
+          { text: "Titian, one of the leading painters of the Venetian school, exploited this property of oil paint to achieve an extraordinary richness and warmth of color.", start: "00:02:06,307", end: "00:02:16,437" },
+          { text: "It's important to recognize that the technical innovations of the Renaissance did not emerge in isolation but were closely tied to broader intellectual movements, including humanism and the revival of classical learning.", start: "00:02:16,437", end: "00:02:30,102" },
+          { text: "Scholars have argued that the growing emphasis on observation and empirical study in the sciences directly influenced how painters approached the representation of the natural world.", start: "00:02:30,102", end: "00:02:41,821" },
+          { text: "For next week's class, I'd like you to read the chapter on Michelangelo's Sistine Chapel ceiling and think about how it reflects the themes we discussed today.", start: "00:02:41,821", end: "00:02:52,188" },
+          { text: "If anyone would like to explore this topic further, I've placed a list of recommended readings and museum resources on the course website, and I encourage you to take advantage of them before the midterm examination.", start: "00:02:52,188", end: "00:03:03,869" }
+        ])
+      }
+    };
+
+    // ==================== STATE & PERSISTENCE ====================
+    const STORAGE_KEY = 'toefl-lr-practice-state';
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          setId: currentSetId,
+          sentenceIndex: currentSentenceIndex
+        }));
+      } catch (e) { /* ignore */ }
+    }
+
+    function restoreState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+        if (!data.setId || !PRACTICE_SETS[data.setId]) return null;
+        const idx = parseInt(data.sentenceIndex, 10);
+        if (isNaN(idx) || idx < 0) return null;
+        const set = PRACTICE_SETS[data.setId];
+        if (idx >= set.sentences.length) return null;
+        return { setId: data.setId, sentenceIndex: idx };
+      } catch (e) { return null; }
+    }
+
+    let currentSetId = 'S01';
+    let sentences = PRACTICE_SETS.S01.sentences;
     let currentSentenceIndex = 0;
     let isPlaying = false;
     let hasPlayed = false;
+
+    // Restore from localStorage on load
+    (function initFromStorage() {
+      const saved = restoreState();
+      if (saved) {
+        currentSetId = saved.setId;
+        sentences = PRACTICE_SETS[currentSetId].sentences;
+        currentSentenceIndex = saved.sentenceIndex;
+        document.getElementById('setSelect').value = currentSetId;
+      }
+    })();
 
     // ==================== STATE MANAGEMENT ====================
     function updateUI() {
@@ -306,6 +519,8 @@
       document.getElementById('replayBtn').disabled = true;
       document.getElementById('playBtn').disabled = false;
       document.getElementById('audioStatus').textContent = 'Click play to listen';
+
+      saveState();
     }
 
     function updateProgressBar() {
@@ -378,7 +593,8 @@
 
       // Build a fresh Audio element with a media-fragment URL so the
       // browser loads only the segment we need — no stale seek state.
-      const audio = new Audio('practice-campus-bookstore.mp3#t=' + sentence.start.toFixed(3) + ',' + sentence.end.toFixed(3));
+      const audioFile = PRACTICE_SETS[currentSetId].audioFile;
+      const audio = new Audio(audioFile + '#t=' + sentence.start.toFixed(3) + ',' + sentence.end.toFixed(3));
       audio.preload = 'auto';
       currentAudio = audio;
 
@@ -455,6 +671,18 @@
       document.getElementById('audioProgressBar').style.width = '0%';
       document.getElementById('audioIcon').textContent = '🔊';
       document.getElementById('audioStatus').textContent = 'Click play to listen';
+    }
+
+    // ==================== SET SWITCHING ====================
+    function switchSet() {
+      const select = document.getElementById('setSelect');
+      const setId = select.value;
+      if (!PRACTICE_SETS[setId]) return;
+      stopAudioPlayback();
+      currentSetId = setId;
+      sentences = PRACTICE_SETS[setId].sentences;
+      currentSentenceIndex = 0;
+      updateUI();
     }
 
     // ==================== NAVIGATION ====================
