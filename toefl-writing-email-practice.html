@@ -50,39 +50,106 @@
     }
     .header-home:hover { background: rgba(255,255,255,.15); }
     .header-left { display: flex; align-items: center; }
+    .header-center {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 0;
+    }
     .header-select {
       background: rgba(255,255,255,.2);
       border: 1px solid rgba(255,255,255,.2);
       border-radius: 6px;
       color: #fff;
-      font-size: 14px;
-      font-weight: 600;
-      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 10px;
       cursor: pointer;
-      min-width: 200px;
+      max-width: 100%;
+      width: 240px;
     }
     .header-select:hover { background: rgba(255,255,255,.25); }
-    .header-select option { color: var(--text); background: var(--card); }
+    .header-select option { color: var(--text); background: var(--card); font-size: 12px; }
     .header-right { display: flex; align-items: center; gap: 12px; }
-    .header-timer { font-variant-numeric: tabular-nums; font-size: 14px; }
+    .timer-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 24px;
+    }
+    .header-timer {
+      font-variant-numeric: tabular-nums;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+    }
     .header-timer.warning { color: #fcd34d; }
     .header-timer.danger { color: #fca5a5; }
-    .main { max-width: 720px; margin: 0 auto; padding: 20px 16px; }
-    .card {
+    .timer-wrap .header-timer.hidden { display: none; }
+    .header-timer-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: none;
+      color: rgba(255,255,255,.9);
+      font-size: 13px;
+      line-height: 24px;
+      height: 24px;
+      cursor: pointer;
+      padding: 0;
+      white-space: nowrap;
+    }
+    .header-timer-toggle:hover { color: #fff; }
+    .header-timer-toggle .timer-toggle-hide,
+    .header-timer-toggle .timer-toggle-show {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .header-timer-toggle .timer-toggle-icon {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .main { max-width: 1100px; margin: 0 auto; padding: 20px 16px; }
+    .panels {
+      display: flex;
+      gap: 0;
+      margin-bottom: 24px;
+      min-height: 420px;
+    }
+    .panel-left {
+      width: 48%;
+      min-width: 280px;
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 24px;
-      margin-bottom: 16px;
+      overflow-y: auto;
       box-shadow: 0 1px 3px rgba(0,0,0,.06);
     }
-    .card h2 { font-size: 20px; margin-bottom: 16px; color: var(--ets-blue-dark); }
-    .instructions {
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 20px;
-      line-height: 1.5;
+    .panel-right {
+      width: 52%;
+      min-width: 300px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
     }
+    .panel-left h2 { font-size: 20px; margin-bottom: 16px; color: var(--ets-blue-dark); }
+    .instructions { font-size: 14px; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
     .situation-box {
       background: var(--ets-blue-light);
       border: 1px solid var(--ets-blue);
@@ -95,51 +162,60 @@
     .situation-box strong { display: block; margin-bottom: 8px; color: var(--ets-blue-dark); }
     .bullets { margin: 12px 0 0 0; padding-left: 20px; }
     .bullets li { margin-bottom: 6px; }
-    .form-group { margin-bottom: 16px; }
-    .form-group label {
-      display: block;
+
+    .response-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; color: var(--ets-blue-dark); }
+    .email-meta {
       font-size: 14px;
-      font-weight: 600;
       color: var(--text);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
-    .form-group input[type="text"],
+    .email-meta span { color: var(--muted); }
+    .form-group { margin-bottom: 12px; flex: 1; display: flex; flex-direction: column; min-height: 0; }
+    .form-group label { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
     .form-group textarea {
       width: 100%;
+      flex: 1;
+      min-height: 200px;
       padding: 10px 12px;
       border: 1px solid var(--border);
       border-radius: 6px;
       font-size: 15px;
       font-family: inherit;
+      resize: vertical;
     }
-    .form-group textarea { min-height: 200px; resize: vertical; }
-    .word-count {
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 6px;
-    }
+    .word-count { font-size: 13px; color: var(--muted); margin-top: 6px; }
     .word-count.at-target { color: var(--success); }
-    .rubric-section {
-      margin-top: 24px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
+
+    .checklists-wrap { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+    .card h3 { font-size: 16px; margin-bottom: 12px; color: var(--ets-blue-dark); }
+    .rubric-lang-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .rubric-lang-btn {
+      background: var(--ets-blue-light);
+      border: 1px solid var(--ets-blue);
+      color: var(--ets-blue-dark);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
     }
-    .rubric-section h3 { font-size: 16px; margin-bottom: 12px; color: var(--ets-blue-dark); }
-    .rubric-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .rubric-list li {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      margin-bottom: 10px;
-      font-size: 14px;
-    }
+    .rubric-lang-btn:hover { background: var(--ets-blue); color: #fff; }
+    .rubric-lang-btn.active { background: var(--ets-blue); color: #fff; }
+    .rubric-list { list-style: none; padding: 0; margin: 0; }
+    .rubric-list li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 14px; }
     .rubric-list input[type="checkbox"] { margin-top: 3px; flex-shrink: 0; }
+    .rubric-lang-block { display: none; }
+    .rubric-lang-block.active { display: block; }
+    .nyk-checklist .rubric-list li { font-size: 14px; line-height: 1.5; }
+
     .loading { text-align: center; padding: 40px; color: var(--muted); }
     .error-msg { color: var(--error); padding: 12px; background: #fef2f2; border-radius: 6px; margin-bottom: 16px; }
+
+    @media (max-width: 768px) {
+      .panels { flex-direction: column; }
+      .panel-left, .panel-right { width: 100%; }
+    }
   </style>
 </head>
 <body>
@@ -147,43 +223,103 @@
     <div class="header-left">
       <a href="index.html" class="header-home">← Home</a>
       <span>Write an Email</span>
+    </div>
+    <div class="header-center">
       <select id="promptSelect" class="header-select" aria-label="Select prompt"></select>
     </div>
     <div class="header-right">
-      <span id="timer" class="header-timer" aria-live="polite"></span>
+      <div class="timer-wrap">
+        <span id="timer" class="header-timer" aria-live="polite"></span>
+        <button type="button" id="timerToggle" class="header-timer-toggle" aria-label="Hide time" title="Hide time">
+          <span class="timer-toggle-hide">
+            <svg class="timer-toggle-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+              <line x1="1" y1="1" x2="23" y2="23"/>
+            </svg>
+            Hide Time
+          </span>
+          <span class="timer-toggle-show" style="display: none;">
+            <svg class="timer-toggle-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            Show Time
+          </span>
+        </button>
+      </div>
     </div>
   </header>
 
   <main class="main">
     <div id="loading" class="card loading">Loading prompts…</div>
     <div id="error" class="card error-msg" style="display: none;"></div>
+
     <div id="content" style="display: none;">
-      <div class="card">
-        <h2>Task</h2>
-        <p class="instructions">
-          You have about <strong id="timeLimitLabel">7</strong> minutes to write an email. Address all the points below. Include a subject line, greeting, body, and closing. Aim for at least <strong id="wordTargetLabel">130</strong> words.
-        </p>
-        <div class="situation-box">
-          <strong>Situation</strong>
-          <p id="situationText"></p>
-          <ul id="bulletsList" class="bullets"></ul>
+      <div class="panels">
+        <div class="panel-left">
+          <h2>Task</h2>
+          <p class="instructions">
+            You have about <strong id="timeLimitLabel">7</strong> minutes to write an email. Address all the points below. Include a greeting, body, and closing. Aim for at least <strong id="wordTargetLabel">130</strong> words.
+          </p>
+          <div class="situation-box">
+            <strong>Situation</strong>
+            <p id="situationText"></p>
+            <ul id="bulletsList" class="bullets"></ul>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="subject">Subject line</label>
-          <input type="text" id="subject" placeholder="e.g. Request to extend library hours" />
+        <div class="panel-right">
+          <div class="response-title">Your Response</div>
+          <div class="email-meta">To: <strong id="toDisplay"></strong></div>
+          <div class="email-meta">Subject: <strong id="subjectDisplay"></strong></div>
+          <div class="form-group">
+            <label for="body">Email body (greeting, body, closing)</label>
+            <textarea id="body" placeholder="Dear …&#10;&#10;…&#10;&#10;Best regards,&#10;[Your name]"></textarea>
+            <div id="bodyWordCount" class="word-count">0 words</div>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="body">Email body (greeting, body, closing)</label>
-          <textarea id="body" placeholder="Dear …&#10;&#10;…&#10;&#10;Best regards,&#10;[Your name]"></textarea>
-          <div id="bodyWordCount" class="word-count">0 words</div>
+      </div>
+
+      <div class="checklists-wrap">
+        <div class="card">
+          <h3>Self-review checklist (ETS strategies)</h3>
+          <div class="rubric-lang-row">
+            <span style="font-size: 13px; color: var(--muted);">Language / 语言：</span>
+            <div>
+              <button type="button" class="rubric-lang-btn active" id="btnLangEn" aria-pressed="true">EN</button>
+              <button type="button" class="rubric-lang-btn" id="btnLangZh" aria-pressed="false">中文</button>
+            </div>
+          </div>
+          <div id="rubricEn" class="rubric-lang-block active">
+            <ul class="rubric-list">
+              <li><input type="checkbox" id="r1en" /><label for="r1en"><strong>Read the prompt carefully.</strong> I identified all required points and addressed each one.</label></li>
+              <li><input type="checkbox" id="r2en" /><label for="r2en"><strong>Plan before writing.</strong> I outlined main ideas in a logical order with supporting details.</label></li>
+              <li><input type="checkbox" id="r3en" /><label for="r3en"><strong>Organize clearly.</strong> I used a friendly greeting, logical flow, and a closing with my name.</label></li>
+              <li><input type="checkbox" id="r4en" /><label for="r4en"><strong>Use varied language.</strong> I used a mix of sentence types and natural phrases where appropriate.</label></li>
+              <li><input type="checkbox" id="r5en" /><label for="r5en"><strong>Add specific examples.</strong> I supported my ideas with concrete details or examples where relevant.</label></li>
+              <li><input type="checkbox" id="r6en" /><label for="r6en"><strong>Check your work.</strong> I reviewed the email for coverage of all points and basic grammar; meaning is clear.</label></li>
+            </ul>
+          </div>
+          <div id="rubricZh" class="rubric-lang-block">
+            <ul class="rubric-list">
+              <li><input type="checkbox" id="r1zh" /><label for="r1zh"><strong>仔细读题。</strong> 我识别了所有要求要点并逐一完成。</label></li>
+              <li><input type="checkbox" id="r2zh" /><label for="r2zh"><strong>动笔前规划。</strong> 我按逻辑顺序列出要点并配有支撑细节。</label></li>
+              <li><input type="checkbox" id="r3zh" /><label for="r3zh"><strong>结构清晰。</strong> 我使用了礼貌开头、有逻辑的展开以及结尾署名。</label></li>
+              <li><input type="checkbox" id="r4zh" /><label for="r4zh"><strong>语言多样。</strong> 我使用了多种句式和自然表达。</label></li>
+              <li><input type="checkbox" id="r5zh" /><label for="r5zh"><strong>举例具体。</strong> 在合适处用具体细节或例子支撑观点。</label></li>
+              <li><input type="checkbox" id="r6zh" /><label for="r6zh"><strong>检查全文。</strong> 我检查了是否覆盖所有要点、基本语法，且意思清楚。</label></li>
+            </ul>
+          </div>
         </div>
-        <div class="rubric-section">
-          <h3>Self-review checklist</h3>
+
+        <div class="card nyk-checklist">
+          <h3>✅ 英语写作自查表 (Self-review Checklist) — 纽约课</h3>
           <ul class="rubric-list">
-            <li><input type="checkbox" id="r1" /><label for="r1">I stated my purpose and addressed all bullet points.</label></li>
-            <li><input type="checkbox" id="r2" /><label for="r2">My tone is polite and appropriate.</label></li>
-            <li><input type="checkbox" id="r3" /><label for="r3">Ideas are organized and easy to follow.</label></li>
-            <li><input type="checkbox" id="r4" /><label for="r4">Grammar and vocabulary are clear and accurate.</label></li>
+            <li><input type="checkbox" id="nyk1" /><label for="nyk1"><strong>任务完成：</strong> 我是否回答了题目要求的所有要点（那几个小黑点）？</label></li>
+            <li><input type="checkbox" id="nyk2" /><label for="nyk2"><strong>开门见山：</strong> 我是否在第一段就清楚说明了写信的目的？</label></li>
+            <li><input type="checkbox" id="nyk3" /><label for="nyk3"><strong>语气得体：</strong> 我的语气是否礼貌？（比如用了 Dear, Thank you, Could you please）</label></li>
+            <li><input type="checkbox" id="nyk4" /><label for="nyk4"><strong>结构清晰：</strong> 我的信是否有开头（问候）、中间（正文）和结尾（署名）？</label></li>
+            <li><input type="checkbox" id="nyk5" /><label for="nyk5"><strong>细节丰富：</strong> 我是否加入了一个具体的例子或细节？（比如具体的书名、具体的缺席理由）</label></li>
+            <li><input type="checkbox" id="nyk6" /><label for="nyk6"><strong>基础语法：</strong> 我是否检查并修正了明显的拼写错误和时态错误？</label></li>
           </ul>
         </div>
       </div>
@@ -201,9 +337,15 @@
       const bulletsList = document.getElementById('bulletsList');
       const timeLimitLabel = document.getElementById('timeLimitLabel');
       const wordTargetLabel = document.getElementById('wordTargetLabel');
-      const subjectInput = document.getElementById('subject');
+      const toDisplay = document.getElementById('toDisplay');
+      const subjectDisplay = document.getElementById('subjectDisplay');
       const bodyInput = document.getElementById('body');
       const bodyWordCount = document.getElementById('bodyWordCount');
+      const rubricEn = document.getElementById('rubricEn');
+      const rubricZh = document.getElementById('rubricZh');
+      const btnLangEn = document.getElementById('btnLangEn');
+      const btnLangZh = document.getElementById('btnLangZh');
+      const timerToggle = document.getElementById('timerToggle');
 
       let prompts = [];
       let currentIndex = 0;
@@ -239,17 +381,63 @@
       function tick() {
         if (secondsRemaining <= 0) {
           if (timerInterval) clearInterval(timerInterval);
-          timerEl.textContent = '0:00';
+          timerEl.textContent = '00:00:00';
           timerEl.classList.remove('warning', 'danger');
           return;
         }
-        const m = Math.floor(secondsRemaining / 60);
-        const s = secondsRemaining % 60;
-        timerEl.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+        var h = Math.floor(secondsRemaining / 3600);
+        var m = Math.floor((secondsRemaining % 3600) / 60);
+        var s = secondsRemaining % 60;
+        var pad = function (n) { return n < 10 ? '0' + n : String(n); };
+        timerEl.textContent = pad(h) + ':' + pad(m) + ':' + pad(s);
         timerEl.classList.toggle('warning', secondsRemaining <= 60 && secondsRemaining > 30);
         timerEl.classList.toggle('danger', secondsRemaining <= 30);
         secondsRemaining--;
       }
+
+      function setRubricLang(lang) {
+        if (lang === 'zh') {
+          rubricEn.classList.remove('active');
+          rubricZh.classList.add('active');
+          btnLangEn.classList.remove('active');
+          btnLangZh.classList.add('active');
+          btnLangEn.setAttribute('aria-pressed', 'false');
+          btnLangZh.setAttribute('aria-pressed', 'true');
+        } else {
+          rubricZh.classList.remove('active');
+          rubricEn.classList.add('active');
+          btnLangZh.classList.remove('active');
+          btnLangEn.classList.add('active');
+          btnLangZh.setAttribute('aria-pressed', 'false');
+          btnLangEn.setAttribute('aria-pressed', 'true');
+        }
+      }
+      btnLangEn.addEventListener('click', function () { setRubricLang('en'); });
+      btnLangZh.addEventListener('click', function () { setRubricLang('zh'); });
+
+      (function initTimerVisibility() {
+        var key = 'toefl-email-timer-visible';
+        var visible = true;
+        try {
+          var stored = localStorage.getItem(key);
+          if (stored !== null) visible = stored === '1';
+        } catch (e) {}
+        var hideSpan = timerToggle.querySelector('.timer-toggle-hide');
+        var showSpan = timerToggle.querySelector('.timer-toggle-show');
+        function apply() {
+          timerEl.classList.toggle('hidden', !visible);
+          if (hideSpan) hideSpan.style.display = visible ? '' : 'none';
+          if (showSpan) showSpan.style.display = visible ? 'none' : '';
+          timerToggle.setAttribute('aria-label', visible ? 'Hide time' : 'Show time');
+          timerToggle.setAttribute('title', visible ? 'Hide time' : 'Show time');
+          try { localStorage.setItem(key, visible ? '1' : '0'); } catch (e) {}
+        }
+        apply();
+        timerToggle.addEventListener('click', function () {
+          visible = !visible;
+          apply();
+        });
+      })();
 
       function renderPrompt() {
         const p = prompts[currentIndex];
@@ -261,15 +449,23 @@
           li.textContent = b;
           bulletsList.appendChild(li);
         });
+        toDisplay.textContent = p.recipient || '—';
+        subjectDisplay.textContent = p.subject || '—';
         const minutes = p.timeLimitMinutes != null ? p.timeLimitMinutes : 7;
         const target = p.wordTarget != null ? p.wordTarget : 130;
         timeLimitLabel.textContent = String(minutes);
         wordTargetLabel.textContent = String(target);
-        subjectInput.value = '';
         bodyInput.value = '';
         updateWordCount();
-        document.querySelectorAll('.rubric-section input[type="checkbox"]').forEach(function (cb) { cb.checked = false; });
+        document.querySelectorAll('.card input[type="checkbox"]').forEach(function (cb) { cb.checked = false; });
         startTimer(minutes);
+      }
+
+      function getOptionLabel(p, i) {
+        var id = p.id || ('Q' + (i + 1));
+        var og = p.og ? ' OG — ' : ' — ';
+        var desc = p.shortDescEn || p.shortDesc || p.subject || id;
+        return id + og + desc;
       }
 
       function populateSelect() {
@@ -277,7 +473,7 @@
         prompts.forEach(function (p, i) {
           const opt = document.createElement('option');
           opt.value = i;
-          opt.textContent = 'Question ' + (i + 1) + ' of ' + prompts.length + (p.id ? ' (' + p.id + ')' : '');
+          opt.textContent = getOptionLabel(p, i);
           promptSelect.appendChild(opt);
         });
         promptSelect.addEventListener('change', function () {

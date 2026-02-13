@@ -5,7 +5,9 @@ Each question is a separate MP3 file.
 
 Usage:
   export INWORLD_API_KEY=your_key_here
-  python3 scripts/generate-interview-audio.py
+  python3 scripts/generate-interview-audio.py [--set SET_ID]
+
+  If --set SET_ID is given, only that set is generated (e.g. --set ZJ1).
 """
 
 import base64
@@ -14,8 +16,20 @@ import subprocess
 import sys
 import time
 import wave
+from pathlib import Path
 
 import requests
+
+
+def load_env():
+    """Load INWORLD_API_KEY from project root .env if present."""
+    env_path = Path(__file__).resolve().parent.parent / ".env"
+    if env_path.exists():
+        with open(env_path, "r") as f:
+            for line in f:
+                if line.startswith("INWORLD_API_KEY="):
+                    return line.split("=", 1)[1].strip()
+    return None
 
 # Import voice configuration
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -69,6 +83,15 @@ INTERVIEW_SETS = {
             "Interesting. Some universities are considering reducing the number of in-person student services and moving them online to cut costs. For example, academic advising and counseling sessions would be conducted through video calls instead of face-to-face meetings. Do you think this is a good idea? Why or why not?",
             "Good points. Finally, how do you think the university campus experience will change for students in the next five to ten years? Do you think campuses will still play an important role in students' lives, or will more learning happen remotely? Explain your thoughts.",
         ]
+    },
+    "ZJ1": {
+        "label": "真题 — 2026年1月21日 考试 (Health and Habits)",
+        "questions": [
+            "First, do you have any specific routines or practices you use to maintain your physical health? If so, what are they?",
+            "Can you describe any eating choices or habits that you follow to stay healthy? Give details to explain it.",
+            "If you could make one important change to your diet or exercise habits to stay healthy, what would it be? Why would you make that choice?",
+            "Some people believe that mental health is just as equally important as physical health. Do you agree or disagree with this viewpoint? Why?",
+        ]
     }
 }
 
@@ -117,17 +140,25 @@ def wav_to_mp3(wav_path, mp3_path):
 
 
 def main():
-    api_key = os.getenv("INWORLD_API_KEY")
+    api_key = load_env() or os.getenv("INWORLD_API_KEY")
     if not api_key:
-        print("Error: Set INWORLD_API_KEY environment variable", file=sys.stderr)
+        print("Error: Set INWORLD_API_KEY environment variable or add it to .env", file=sys.stderr)
         sys.exit(1)
+
+    only_set = None
+    if len(sys.argv) > 1 and sys.argv[1] == "--set" and len(sys.argv) > 2:
+        only_set = sys.argv[2]
+        if only_set not in INTERVIEW_SETS:
+            print(f"Error: Unknown set ID '{only_set}'. Choose from: {list(INTERVIEW_SETS.keys())}", file=sys.stderr)
+            sys.exit(1)
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-    total = sum(len(s["questions"]) for s in INTERVIEW_SETS.values())
+    sets_to_run = {k: v for k, v in INTERVIEW_SETS.items() if only_set is None or k == only_set}
+    total = sum(len(s["questions"]) for s in sets_to_run.values())
     count = 0
 
-    for set_id, set_data in INTERVIEW_SETS.items():
+    for set_id, set_data in sets_to_run.items():
         # Get voice ID for this interview set
         voice_id = get_voice_id_for_interview_set(set_id)
         print(f"\n=== {set_data['label']} ===")

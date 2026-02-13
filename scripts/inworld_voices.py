@@ -46,6 +46,7 @@ INTERVIEW_VOICES = {
     "SC1": "craig",       # Scholarship Application - Professor Adams (British academic)
     "OA1": "edward",      # Outdoor Activities - Research Study interviewer (Dr. Chen)
     "CL1": "sarah",       # Campus Life - Student Survey interviewer (Ms. Thompson)
+    "ZJ1": "sarah",       # 真题 2026-01-21 — Health and Habits (Graduate Researcher)
 }
 
 # Conversation Practice (dialogue between two speakers)

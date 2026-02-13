@@ -182,6 +182,42 @@
       line-height: 1.6;
       text-align: center;
     }
+    .scenario-answer-prompt {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ets-blue-dark);
+      text-align: center;
+      margin-top: 12px;
+      margin-bottom: 0;
+    }
+    .context-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    /* Task context in question phase (always visible) */
+    .question-phase-context {
+      background: var(--ets-blue-light);
+      border: 1px solid var(--ets-blue);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+    }
+    .question-phase-context-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ets-blue-dark);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .question-phase-context-text {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.5;
+      margin: 0;
+    }
 
     /* Instructions */
     .instructions {
@@ -515,10 +551,12 @@
       <div class="card">
         <h2>Take an Interview</h2>
 
+        <p class="context-label">On the official test, you first see the <strong>task context</strong> below (as on test day). Then the interviewer asks 4 questions.</p>
         <div class="scenario-card">
           <div class="scenario-icon" id="introIcon">🎙️</div>
           <div class="scenario-title" id="introTitle">Loading...</div>
           <div class="scenario-desc" id="introDesc">Loading...</div>
+          <p class="scenario-answer-prompt" id="introAnswerPrompt">Please answer the interviewer's questions.</p>
         </div>
 
         <div class="instructions">
@@ -542,6 +580,12 @@
     <div class="phase" id="phaseQuestion">
       <div class="card">
         <h2>Take an Interview</h2>
+
+        <!-- Task context (visible throughout the interview) -->
+        <div class="question-phase-context" id="questionPhaseContext">
+          <span class="question-phase-context-label">📌 Task context</span>
+          <p class="question-phase-context-text" id="questionPhaseScenarioText"></p>
+        </div>
 
         <!-- Progress -->
         <div class="progress-bar" id="progressBar"></div>
@@ -679,7 +723,7 @@
       PT1: {
         label: 'Practice Test 1 — Work-Life Balance (Research Study)',
         icon: '📊',
-        scenario: 'You have volunteered for a research study about work-life balance. You will have a short online interview with a researcher.',
+        scenario: 'You have agreed to take part in a research study about work-life balance. You will have a short online interview with a researcher. The researcher will ask you some questions.',
         interviewerName: 'Dr. Williams',
         interviewerRole: 'Researcher',
         questions: [
@@ -712,7 +756,7 @@
       SC1: {
         label: 'Set 2 — Scholarship Application (Interview)',
         icon: '🎓',
-        scenario: 'You are applying for a university scholarship. You will have a short interview with a member of the scholarship committee. The interviewer will ask you questions about your academic goals and experiences.',
+        scenario: 'You are applying for a university scholarship. You will have a short online interview with a member of the scholarship committee. The interviewer will ask you some questions about your academic goals and experiences.',
         interviewerName: 'Professor Adams',
         interviewerRole: 'Scholarship Committee',
         questions: [
@@ -745,7 +789,7 @@
       OA1: {
         label: 'Set 3 — Outdoor Activities (Research Study)',
         icon: '🏃',
-        scenario: 'You have volunteered for a research study about outdoor recreational activities. You will have a short online interview with a researcher. The researcher will ask you about your experiences and opinions.',
+        scenario: 'You have agreed to take part in a research study about outdoor recreational activities. You will have a short online interview with a researcher. The researcher will ask you some questions.',
         interviewerName: 'Dr. Chen',
         interviewerRole: 'Researcher',
         questions: [
@@ -778,7 +822,7 @@
       CL1: {
         label: 'Set 4 — Campus Life (Student Survey)',
         icon: '🏫',
-        scenario: 'You are taking part in a student survey about campus life and student services. A university researcher will ask you about your experiences and opinions regarding campus resources.',
+        scenario: 'You are taking part in a student survey about campus life and student services. You will have a short online interview with a university researcher. The researcher will ask you some questions about your experiences and opinions regarding campus resources.',
         interviewerName: 'Ms. Thompson',
         interviewerRole: 'Student Services Researcher',
         questions: [
@@ -804,6 +848,39 @@
             type: 'Opinion + Prediction',
             text: 'Good points. Finally, how do you think the university campus experience will change for students in the next five to ten years? Do you think campuses will still play an important role in students\' lives, or will more learning happen remotely? Explain your thoughts.',
             audioFile: 'audio/interview/TI-CL1-Q4.mp3',
+            timeLimit: 60
+          }
+        ]
+      },
+      ZJ1: {
+        label: '真题 — 2026年1月21日 考试',
+        icon: '📋',
+        scenario: 'As part of a university project, you have agreed to take part in a research study about health and habits. You will have a short online interview. A graduate student conducting the research will ask you some questions.',
+        interviewerName: 'Graduate Researcher',
+        interviewerRole: 'Research Assistant',
+        questions: [
+          {
+            type: 'Personal / Factual',
+            text: 'First, do you have any specific routines or practices you use to maintain your physical health? If so, what are they?',
+            audioFile: 'audio/interview/TI-ZJ1-Q1.mp3',
+            timeLimit: 60
+          },
+          {
+            type: 'Personal + Opinion',
+            text: 'Can you describe any eating choices or habits that you follow to stay healthy? Give details to explain it.',
+            audioFile: 'audio/interview/TI-ZJ1-Q2.mp3',
+            timeLimit: 60
+          },
+          {
+            type: 'Opinion + Argument',
+            text: 'If you could make one important change to your diet or exercise habits to stay healthy, what would it be? Why would you make that choice?',
+            audioFile: 'audio/interview/TI-ZJ1-Q3.mp3',
+            timeLimit: 60
+          },
+          {
+            type: 'Opinion + Argument',
+            text: 'Some people believe that mental health is just as equally important as physical health. Do you agree or disagree with this viewpoint? Why?',
+            audioFile: 'audio/interview/TI-ZJ1-Q4.mp3',
             timeLimit: 60
           }
         ]
@@ -911,6 +988,9 @@
 
       // Header
       updateHeaderProgress();
+
+      // Task context (visible at top of question phase)
+      document.getElementById('questionPhaseScenarioText').textContent = set.scenario || '';
 
       // Interviewer info
       document.getElementById('interviewerName').textContent = set.interviewerName;

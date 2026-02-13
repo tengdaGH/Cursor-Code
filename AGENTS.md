@@ -207,6 +207,7 @@ Interview Practice Sets:
 - SC1 (Scholarship Application): Craig — Professor Adams (British academic)
 - OA1 (Outdoor Activities): Edward — Research Study interviewer (Dr. Chen)
 - CL1 (Campus Life): Sarah — Student Survey interviewer (Ms. Thompson)
+- ZJ1 (真题 2026-01-21): Sarah — Graduate Researcher (Health and Habits)
 
 **To verify voice IDs:**
 ```bash
@@ -234,6 +235,10 @@ The practice page saves `currentSetId` and `currentSentenceIndex` to `localStora
 
 `toefl-take-interview-practice.html` simulates a TOEFL Speaking interview. The student listens to an interviewer question (audio auto-plays), then records a 60-second spoken response. After all 4 questions, a review phase shows playback of all recordings with an ETS-style self-evaluation rubric.
 
+### Task context (official format)
+
+On the real TOEFL test, the Interview task **begins with a short context screen** before any question: the test-taker is told they have agreed to take part in a research study (or similar situation), and that they will have a short online interview with a researcher who will ask questions. This matches ETS/TOEFL Essentials style (e.g. *"You have agreed to take part in a research study about urban life. You will have a short online interview with a researcher. The researcher will ask you some questions. Please answer the interviewer's questions."*). In our app, the **intro phase** shows this as the **scenario** (task context) card; each set's `scenario` field should be this kind of context paragraph. See official test demos and the TOEFL 2026 Technical Manual for exact wording.
+
 ### Interview Sets
 
 | Set ID | Slug | Scenario | Interviewer |
@@ -242,6 +247,7 @@ The practice page saves `currentSetId` and `currentSentenceIndex` to `localStora
 | SC1 | Scholarship Application | Interview | Professor Adams |
 | OA1 | Outdoor Activities | Research Study | Dr. Chen |
 | CL1 | Campus Life | Student Survey | Ms. Thompson |
+| ZJ1 | 真题 2026年1月21日 | Health and Habits (Research) | Graduate Researcher |
 
 ### Audio File Naming
 
@@ -251,7 +257,7 @@ audio/interview/TI-{SetID}-Q{N}.mp3
 
 Example: `audio/interview/TI-PT1-Q1.mp3` — Practice Test 1, Question 1
 
-Each set has 4 questions, so 16 audio files total.
+Each set has 4 questions (e.g. 5 sets → 20 audio files). 真题 sets (ZJ*) use exam date in the label (e.g. 2026年1月21日).
 
 ### Generating Interview Audio
 
