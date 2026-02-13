@@ -49,21 +49,57 @@
       margin-right: 12px;
     }
     .header-home:hover { background: rgba(255,255,255,.15); }
-    .header-left { display: flex; align-items: center; }
+    .header-left { display: flex; align-items: center; flex: 1; }
+    .header-center { 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      flex: 1;
+      gap: 12px;
+    }
+    .header-select-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
     .header-select {
       background: rgba(255,255,255,.2);
       border: 1px solid rgba(255,255,255,.2);
       border-radius: 6px;
       color: #fff;
-      font-size: 14px;
-      font-weight: 600;
-      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 10px;
       cursor: pointer;
-      min-width: 200px;
+      min-width: 280px;
+      max-width: 400px;
     }
     .header-select:hover { background: rgba(255,255,255,.25); }
     .header-select option { color: var(--text); background: var(--card); }
-    .header-right { display: flex; align-items: center; gap: 12px; }
+    .header-select optgroup { font-weight: 600; color: var(--ets-blue-dark); }
+    .header-select optgroup option { 
+      padding-left: 20px; 
+      font-weight: normal;
+      font-size: 12px;
+    }
+    .search-box {
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 12px;
+      padding: 6px 10px;
+      width: 180px;
+      transition: all 0.2s;
+    }
+    .search-box::placeholder { color: rgba(255,255,255,.7); }
+    .search-box:focus {
+      background: rgba(255,255,255,.25);
+      outline: none;
+      width: 220px;
+    }
+    .header-right { display: flex; align-items: center; gap: 12px; flex: 1; justify-content: flex-end; }
     .header-timer { font-variant-numeric: tabular-nums; font-size: 14px; }
     .header-timer.warning { color: #fcd34d; }
     .header-timer.danger { color: #fca5a5; }
@@ -149,6 +185,20 @@
     .rubric-list input[type="checkbox"] { margin-top: 3px; flex-shrink: 0; }
     .loading { text-align: center; padding: 40px; color: var(--muted); }
     .error-msg { color: var(--error); padding: 12px; background: #fef2f2; border-radius: 6px; margin-bottom: 16px; }
+    .question-info {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .question-info span {
+      padding: 2px 8px;
+      background: rgba(0,102,179,.1);
+      border-radius: 4px;
+      color: var(--ets-blue-dark);
+    }
   </style>
 </head>
 <body>
@@ -156,7 +206,12 @@
     <div class="header-left">
       <a href="index.html" class="header-home">← Home</a>
       <span>Write for Academic Discussion</span>
-      <select id="promptSelect" class="header-select" aria-label="Select prompt"></select>
+    </div>
+    <div class="header-center">
+      <div class="header-select-wrapper">
+        <input type="text" id="searchBox" class="search-box" placeholder="Search questions..." />
+        <select id="promptSelect" class="header-select" aria-label="Select prompt"></select>
+      </div>
     </div>
     <div class="header-right">
       <span id="timer" class="header-timer" aria-live="polite"></span>
@@ -175,6 +230,7 @@
         <div class="discussion-box">
           <div id="questionText" class="professor-question"></div>
           <div id="postsContainer"></div>
+          <div id="questionInfo" class="question-info"></div>
         </div>
         <div class="form-group">
           <label for="response">Your post</label>
@@ -197,21 +253,35 @@
   <script>
     (function () {
       const promptSelect = document.getElementById('promptSelect');
+      const searchBox = document.getElementById('searchBox');
       const timerEl = document.getElementById('timer');
       const loadingEl = document.getElementById('loading');
       const errorEl = document.getElementById('error');
       const contentEl = document.getElementById('content');
       const questionText = document.getElementById('questionText');
       const postsContainer = document.getElementById('postsContainer');
+      const questionInfo = document.getElementById('questionInfo');
       const timeLimitLabel = document.getElementById('timeLimitLabel');
       const wordTargetLabel = document.getElementById('wordTargetLabel');
       const responseInput = document.getElementById('response');
       const responseWordCount = document.getElementById('responseWordCount');
 
       let prompts = [];
+      let filteredPrompts = [];
       let currentIndex = 0;
       let timerInterval = null;
       let secondsRemaining = 0;
+
+      // Category display names
+      const categoryNames = {
+        'education': 'Education',
+        'economy': 'Economy',
+        'environment': 'Environment',
+        'technology': 'Technology',
+        'society': 'Society',
+        'culture': 'Culture',
+        'other': 'Other'
+      };
 
       function showError(msg) {
         loadingEl.style.display = 'none';
@@ -255,7 +325,7 @@
       }
 
       function renderPrompt() {
-        const p = prompts[currentIndex];
+        const p = filteredPrompts[currentIndex];
         if (!p) return;
         questionText.textContent = p.question;
         postsContainer.innerHTML = '';
@@ -271,6 +341,12 @@
           div.appendChild(text);
           postsContainer.appendChild(div);
         });
+        
+        // Show question info
+        const cat = p.category || 'other';
+        const catName = categoryNames[cat.toLowerCase()] || 'Other';
+        questionInfo.innerHTML = '<span>' + p.id + '</span><span>' + catName + '</span>';
+        
         const minutes = p.timeLimitMinutes != null ? p.timeLimitMinutes : 10;
         const target = p.wordTarget != null ? p.wordTarget : 120;
         timeLimitLabel.textContent = String(minutes);
@@ -281,19 +357,80 @@
         startTimer(minutes);
       }
 
+      function getOptionLabel(p) {
+        var id = p.id || '';
+        var desc = p.shortDescEn || p.shortDesc || p.question.substring(0, 45) + '...';
+        return id + ' — ' + desc;
+      }
+
+      function filterPrompts(searchTerm) {
+        if (!searchTerm || searchTerm.trim() === '') {
+          filteredPrompts = prompts;
+        } else {
+          const term = searchTerm.toLowerCase();
+          filteredPrompts = prompts.filter(function(p) {
+            return (
+              p.id.toLowerCase().includes(term) ||
+              (p.question && p.question.toLowerCase().includes(term)) ||
+              (p.shortDescEn && p.shortDescEn.toLowerCase().includes(term)) ||
+              (p.shortDesc && p.shortDesc.toLowerCase().includes(term)) ||
+              (p.category && p.category.toLowerCase().includes(term))
+            );
+          });
+        }
+        populateSelect();
+        if (filteredPrompts.length > 0) {
+          promptSelect.value = '0';
+          currentIndex = 0;
+          renderPrompt();
+        }
+      }
+
       function populateSelect() {
         promptSelect.innerHTML = '';
-        prompts.forEach(function (p, i) {
-          const opt = document.createElement('option');
-          opt.value = i;
-          opt.textContent = 'Question ' + (i + 1) + ' of ' + prompts.length + (p.id ? ' (' + p.id + ')' : '');
-          promptSelect.appendChild(opt);
+        
+        // Group by category
+        const byCategory = {};
+        filteredPrompts.forEach(function(p) {
+          const cat = (p.category || 'other').toLowerCase();
+          if (!byCategory[cat]) {
+            byCategory[cat] = [];
+          }
+          byCategory[cat].push(p);
         });
-        promptSelect.addEventListener('change', function () {
-          currentIndex = parseInt(promptSelect.value, 10);
-          renderPrompt();
+
+        // Sort categories by name
+        const sortedCategories = Object.keys(byCategory).sort(function(a, b) {
+          const nameA = categoryNames[a] || a;
+          const nameB = categoryNames[b] || b;
+          return nameA.localeCompare(nameB);
+        });
+
+        // Create optgroups
+        sortedCategories.forEach(function(cat) {
+          const catName = categoryNames[cat] || cat.charAt(0).toUpperCase() + cat.slice(1);
+          const optgroup = document.createElement('optgroup');
+          optgroup.label = catName + ' (' + byCategory[cat].length + ')';
+          
+          byCategory[cat].forEach(function(p, i) {
+            const opt = document.createElement('option');
+            opt.value = filteredPrompts.indexOf(p);
+            opt.textContent = getOptionLabel(p);
+            optgroup.appendChild(opt);
+          });
+          
+          promptSelect.appendChild(optgroup);
         });
       }
+
+      searchBox.addEventListener('input', function() {
+        filterPrompts(searchBox.value);
+      });
+
+      promptSelect.addEventListener('change', function () {
+        currentIndex = parseInt(promptSelect.value, 10);
+        renderPrompt();
+      });
 
       responseInput.addEventListener('input', updateWordCount);
 
@@ -305,6 +442,7 @@
             showError('No prompts found in data.');
             return;
           }
+          filteredPrompts = prompts;
           loadingEl.style.display = 'none';
           errorEl.style.display = 'none';
           contentEl.style.display = 'block';

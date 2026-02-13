@@ -229,6 +229,44 @@ The practice page saves `currentSetId` and `currentSentenceIndex` to `localStora
 
 ---
 
+## Write for Academic Discussion Practice
+
+### Overview
+
+`toefl-writing-academic-discussion-practice.html` provides practice for the TOEFL Academic Discussion writing task. Students read a professor's question and two student posts, then write their own response.
+
+### Question Bank
+
+- **Source:** `docs/academic-discussion-question-bank.md` (Markdown format, 92 questions)
+- **JSON Data:** `data/writing-academic-discussion-prompts.json` (92 questions)
+- **Images:** `docs/academic-discussion/images/` (86 images)
+
+### Question Processing Status
+
+✅ **Complete:** All 92 questions (D01-D93, D72 missing) have been:
+- Extracted from screenshots using macOS Vision Framework OCR
+- Parsed and entered into the question bank
+- Converted to JSON format
+- Added to the practice page dropdown menu
+
+**Dropdown Format:** `D07 — Automation` or `D08 — Being An Early Adopter`
+
+### Adding New Questions
+
+1. **Add to question bank:** Edit `docs/academic-discussion-question-bank.md`
+2. **Convert to JSON:** Run `python3 scripts/convert-question-bank-to-json.py`
+3. **Test:** Open `toefl-writing-academic-discussion-practice.html` and verify the new question appears
+
+### Processing Scripts
+
+- `scripts/batch_process_questions.py` - Batch create question framework
+- `scripts/extract_with_vision.py` - Vision OCR extraction
+- `scripts/fix_incomplete_extractions.py` - Fix incomplete extractions
+- `scripts/fix_student_posts.py` - Fix student post parsing
+- `scripts/convert-question-bank-to-json.py` - Convert Markdown to JSON
+
+---
+
 ## Take an Interview Practice
 
 ### Overview

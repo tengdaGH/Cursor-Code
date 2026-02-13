@@ -150,6 +150,8 @@
 | Date       | Set/Item | Change type | Details |
 |------------|----------|-------------|---------|
 | 2026-02-13 | E01–E06  | add         | 6 prompts added: library hours (E01), bookstore order (E02), review session (E03), roommate (E04), sponsorship (E05), missed deadline (E06). Each has situation + 3 bullets, 7 min, 130-word target. |
+| 2026-02-13 | E07–E15  | add         | 9 OG prompts added: parking permit renewal (E07), lost-and-found (E08), club fair (E09), study room reservation (E10), volunteer (E11), new dining option (E12), transit pass (E13), housing extension (E14), orientation (E15). Each has situation + 3 bullets, recipient, subject, 7 min, 130-word target. All marked `og: true` with English shortDescEn for dropdown. |
+| 2026-02-13 | E07–E15  | review      | ETS-style review: All 9 prompts have clear campus/social situations; 3 bullets each cover required points; recipient and subject appropriate for context; format consistent (7 min, 130 words); no grammar or clarity issues. Ready for use. |
 
 ---
 

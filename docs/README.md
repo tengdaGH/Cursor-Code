@@ -21,6 +21,7 @@ Quick reference for key docs in this folder. Not shown to end users.
 | **lr-question-bank.md** | Listen & Repeat: all 6 sets, sentences, CEFR levels. |
 | **listen-choose-response-plan.md** | Plan/reference for Listen & Choose Response. |
 | **complete-the-words-end-user-findings.md** | C-test user feedback and findings. |
+| **academic-discussion-question-bank.md** | Academic Discussion: central question bank (source of truth). 92 questions (D01-D93, D72 missing). Add new questions here; convert to JSON with `scripts/convert-question-bank-to-json.py`. See AGENTS.md for processing details. |
 
 ---
 
@@ -41,6 +42,7 @@ Quick reference for key docs in this folder. Not shown to end users.
 - **Complete the Words:** `data/complete-the-words-passages.json`, `data/complete-the-words-cefr-sets.json`
 - **Listening (Announcement, Choose Response, Academic Talk):** scripts and MC items embedded in respective `.html` files.
 - **Reading: Academic Passage:** `data/read-academic-passage-passages.json`
+- **Writing: Academic Discussion:** `data/writing-academic-discussion-prompts.json` (92 questions)
 
 When editing items, update **`docs/item-review-log.md`** (see AGENTS.md). Project skill **`.cursor/skills/toefl-item-review/SKILL.md`** encodes the ETS-style review checklist and logging steps.
 
