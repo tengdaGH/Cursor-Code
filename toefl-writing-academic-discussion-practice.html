@@ -27,6 +27,8 @@
       min-height: 100vh;
       padding-bottom: 24px;
     }
+    
+    /* Top Header Bar */
     .header {
       height: var(--header-height);
       background: var(--ets-blue);
@@ -35,26 +37,34 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 20px;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
       box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
     }
     .header-home {
       color: #fff;
       text-decoration: none;
       font-size: 13px;
-      padding: 6px 12px;
-      border-radius: 6px;
+      padding: 4px 8px;
+      border-radius: 4px;
       transition: background 0.2s;
-      margin-right: 12px;
     }
     .header-home:hover { background: rgba(255,255,255,.15); }
-    .header-left { display: flex; align-items: center; flex: 1; }
-    .header-center { 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
+    .header-section-info {
+      font-size: 13px;
+      color: rgba(255,255,255,.9);
+    }
+    .header-center {
       flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       gap: 12px;
     }
     .header-select-wrapper {
@@ -63,113 +73,393 @@
       align-items: center;
       gap: 8px;
     }
-    .header-select {
-      background: rgba(255,255,255,.2);
-      border: 1px solid rgba(255,255,255,.2);
-      border-radius: 6px;
-      color: #fff;
-      font-size: 13px;
-      font-weight: 500;
-      padding: 6px 10px;
-      cursor: pointer;
-      min-width: 280px;
-      max-width: 400px;
-    }
-    .header-select:hover { background: rgba(255,255,255,.25); }
-    .header-select option { color: var(--text); background: var(--card); }
-    .header-select optgroup { font-weight: 600; color: var(--ets-blue-dark); }
-    .header-select optgroup option { 
-      padding-left: 20px; 
-      font-weight: normal;
-      font-size: 12px;
-    }
     .search-box {
       background: rgba(255,255,255,.15);
       border: 1px solid rgba(255,255,255,.2);
-      border-radius: 6px;
+      border-radius: 4px;
       color: #fff;
       font-size: 12px;
-      padding: 6px 10px;
-      width: 180px;
+      padding: 4px 8px;
+      width: 160px;
       transition: all 0.2s;
     }
     .search-box::placeholder { color: rgba(255,255,255,.7); }
     .search-box:focus {
       background: rgba(255,255,255,.25);
       outline: none;
-      width: 220px;
+      width: 200px;
     }
-    .header-right { display: flex; align-items: center; gap: 12px; flex: 1; justify-content: flex-end; }
-    .header-timer { font-variant-numeric: tabular-nums; font-size: 14px; }
-    .header-timer.warning { color: #fcd34d; }
-    .header-timer.danger { color: #fca5a5; }
-    .main { max-width: 720px; margin: 0 auto; padding: 20px 16px; }
-    .card {
+    .header-select {
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 4px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 8px;
+      cursor: pointer;
+      min-width: 240px;
+      max-width: 400px;
+    }
+    .header-select:hover { background: rgba(255,255,255,.25); }
+    .header-select option { color: var(--text); background: var(--card); }
+    .header-select optgroup { font-weight: 600; color: var(--ets-blue-dark); }
+    .header-select optgroup option {
+      padding-left: 20px;
+      font-weight: normal;
+      font-size: 12px;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+      justify-content: flex-end;
+    }
+    .header-icon-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255,255,255,.9);
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+    }
+    .header-icon-btn:hover {
+      background: rgba(255,255,255,.15);
+      color: #fff;
+    }
+    .header-icon-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+    
+    /* Timer Bar */
+    .timer-bar {
       background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      font-size: 14px;
+    }
+    .timer-display {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .timer-text {
+      font-variant-numeric: tabular-nums;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .timer-text.warning { color: var(--warning); }
+    .timer-text.danger { color: var(--error); }
+    .timer-toggle {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 13px;
+      padding: 2px 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .timer-toggle:hover { color: var(--text); }
+    .timer-toggle-icon {
+      width: 16px;
+      height: 16px;
+      opacity: 0.7;
+    }
+    .timer-hidden .timer-text { display: none; }
+    
+    /* Main Content - Two Column Layout */
+    .main {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .panels {
+      display: flex;
+      gap: 0;
+      margin-bottom: 0;
+      min-height: 650px;
       border: 1px solid var(--border);
       border-radius: 8px;
+      overflow: hidden;
+    }
+    .panel-left {
+      width: 50%;
+      min-width: 450px;
+      background: var(--card);
+      border-right: 1px solid var(--border);
       padding: 24px;
-      margin-bottom: 16px;
-      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+      overflow-y: auto;
     }
-    .card h2 { font-size: 20px; margin-bottom: 16px; color: var(--ets-blue-dark); }
-    .instructions {
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 20px;
-      line-height: 1.5;
+    .panel-right {
+      width: 50%;
+      min-width: 450px;
+      background: var(--card);
+      padding: 0;
+      display: flex;
+      flex-direction: column;
     }
-    .discussion-box {
-      background: var(--ets-blue-light);
-      border: 1px solid var(--ets-blue);
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 16px;
+    .panel-right-top {
+      flex: 0 0 auto;
+      padding: 24px;
+      border-bottom: 1px solid var(--border);
+      max-height: 300px;
+      overflow-y: auto;
     }
-    .professor-question {
-      font-size: 15px;
+    .panel-right-bottom {
+      flex: 1;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      min-height: 350px;
+    }
+    
+    /* Left Panel - Task Instructions */
+    .task-instructions {
+      margin-bottom: 24px;
+    }
+    .task-instructions h3 {
+      font-size: 16px;
       font-weight: 600;
       color: var(--ets-blue-dark);
       margin-bottom: 12px;
-      line-height: 1.5;
     }
-    .professor-question::before { content: 'Professor: '; }
-    .student-post {
-      margin-top: 12px;
-      padding: 10px 12px;
-      background: var(--card);
-      border-radius: 6px;
-      border-left: 3px solid var(--ets-blue);
+    .task-instructions p {
       font-size: 14px;
-      line-height: 1.5;
-    }
-    .student-post .author { font-weight: 600; color: var(--ets-blue-dark); margin-bottom: 4px; }
-    .form-group { margin-bottom: 16px; }
-    .form-group label {
-      display: block;
-      font-size: 14px;
-      font-weight: 600;
       color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .task-instructions ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 12px 0;
+    }
+    .task-instructions li {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.6;
+      padding-left: 20px;
+      position: relative;
       margin-bottom: 6px;
     }
-    .form-group textarea {
+    .task-instructions li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--ets-blue);
+      font-weight: bold;
+    }
+    .task-instructions .word-requirement {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+      font-style: italic;
+    }
+    
+    /* Discussion Section */
+    .discussion-section {
+      margin-top: 24px;
+    }
+    .professor-post {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--border);
+    }
+    .professor-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--ets-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 600;
+      font-size: 20px;
+      flex-shrink: 0;
+      border: 2px solid rgba(255,255,255,.2);
+    }
+    .avatar.professor {
+      background: var(--ets-blue-dark);
+    }
+    .avatar.student {
+      background: var(--ets-blue);
+    }
+    .post-author {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .professor-question {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text);
+      margin-top: 8px;
+    }
+    .student-post {
+      margin-bottom: 20px;
+      display: flex;
+      gap: 12px;
+    }
+    .student-post:last-child {
+      margin-bottom: 0;
+    }
+    .student-post-content {
+      flex: 1;
+    }
+    .student-post-text {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text);
+      margin-top: 4px;
+    }
+    
+    /* Right Panel Top - Student Examples */
+    .examples-section {
+      margin-bottom: 0;
+    }
+    .examples-section h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ets-blue-dark);
+      margin-bottom: 16px;
+    }
+    
+    /* Right Panel - Response Area */
+    .response-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .response-section h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ets-blue-dark);
+      margin-bottom: 12px;
+    }
+    .response-textarea {
+      flex: 1;
       width: 100%;
-      min-height: 180px;
-      padding: 10px 12px;
+      min-height: 300px;
+      padding: 12px;
       border: 1px solid var(--border);
       border-radius: 6px;
       font-size: 15px;
       font-family: inherit;
       resize: vertical;
+      line-height: 1.6;
     }
-    .word-count { font-size: 13px; color: var(--muted); margin-top: 6px; }
-    .word-count.at-target { color: var(--success); }
+    .response-textarea:focus {
+      outline: none;
+      border-color: var(--ets-blue);
+      box-shadow: 0 0 0 3px rgba(0,102,179,.1);
+    }
+    
+    /* Text Editor Tools */
+    .editor-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+    .editor-btn {
+      background: #f3f4f6;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 6px 12px;
+      font-size: 13px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .editor-btn:hover:not(:disabled) {
+      background: #e5e7eb;
+      border-color: var(--border);
+      color: var(--text);
+    }
+    .editor-btn:disabled {
+      background: #f9fafb;
+      color: #d1d5db;
+      cursor: not-allowed;
+    }
+    .editor-btn.active {
+      background: var(--ets-blue);
+      border-color: var(--ets-blue);
+      color: #fff;
+    }
+    
+    /* Word Count */
+    .word-count-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+    .word-count-toggle {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 13px;
+      padding: 2px 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .word-count-toggle:hover { color: var(--text); }
+    .word-count-toggle-icon {
+      width: 16px;
+      height: 16px;
+      opacity: 0.7;
+    }
+    .word-count {
+      font-size: 14px;
+      font-variant-numeric: tabular-nums;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .word-count.at-target {
+      color: var(--success);
+      font-weight: 600;
+    }
+    .word-count-hidden .word-count { display: none; }
+    
+    /* Self-review Checklist */
     .rubric-section {
       margin-top: 24px;
       padding-top: 20px;
       border-top: 1px solid var(--border);
     }
-    .rubric-section h3 { font-size: 16px; margin-bottom: 12px; color: var(--ets-blue-dark); }
+    .rubric-section h3 {
+      font-size: 16px;
+      margin-bottom: 12px;
+      color: var(--ets-blue-dark);
+    }
     .rubric-list {
       list-style: none;
       padding: 0;
@@ -182,30 +472,55 @@
       margin-bottom: 10px;
       font-size: 14px;
     }
-    .rubric-list input[type="checkbox"] { margin-top: 3px; flex-shrink: 0; }
-    .loading { text-align: center; padding: 40px; color: var(--muted); }
-    .error-msg { color: var(--error); padding: 12px; background: #fef2f2; border-radius: 6px; margin-bottom: 16px; }
-    .question-info {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 8px;
-      display: flex;
-      gap: 12px;
-      align-items: center;
+    .rubric-list input[type="checkbox"] {
+      margin-top: 3px;
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
     }
-    .question-info span {
-      padding: 2px 8px;
-      background: rgba(0,102,179,.1);
-      border-radius: 4px;
-      color: var(--ets-blue-dark);
+    
+    /* Loading and Error States */
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+    }
+    .error-msg {
+      color: var(--error);
+      padding: 12px;
+      background: #fef2f2;
+      border-radius: 6px;
+      margin-bottom: 16px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 900px) {
+      .panels {
+        flex-direction: column;
+      }
+      .panel-left,
+      .panel-right {
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        margin-bottom: 16px;
+      }
+      .panel-left {
+        border-radius: 8px 8px 0 0;
+      }
+      .panel-right {
+        border-radius: 0 0 8px 8px;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Top Header Bar -->
   <header class="header">
     <div class="header-left">
       <a href="index.html" class="header-home">← Home</a>
-      <span>Write for Academic Discussion</span>
+      <span class="header-section-info">Writing | Question <span id="questionNumber">1</span> of <span id="totalQuestions">1</span></span>
     </div>
     <div class="header-center">
       <div class="header-select-wrapper">
@@ -214,37 +529,121 @@
       </div>
     </div>
     <div class="header-right">
-      <span id="timer" class="header-timer" aria-live="polite"></span>
+      <button class="header-icon-btn" id="volumeBtn" title="Volume" aria-label="Toggle volume">
+        <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+      </button>
+      <button class="header-icon-btn" id="helpBtn" title="Help" aria-label="Help">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+      </button>
     </div>
   </header>
 
+  <!-- Timer Bar -->
+  <div class="timer-bar">
+    <div class="timer-display">
+      <span id="timer" class="timer-text" aria-live="polite">10:00</span>
+      <button class="timer-toggle" id="timerToggle">
+        <svg class="timer-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        <span class="timer-toggle-text">Hide Time</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
   <main class="main">
     <div id="loading" class="card loading">Loading prompts…</div>
     <div id="error" class="card error-msg" style="display: none;"></div>
     <div id="content" style="display: none;">
-      <div class="card">
-        <h2>Task</h2>
-        <p class="instructions">
-          Read the professor's question and the two student posts. Write your own post that contributes to the discussion. You have about <strong id="timeLimitLabel">10</strong> minutes. Aim for about <strong id="wordTargetLabel">120</strong> words. State your view and support it with reasons or examples.
-        </p>
-        <div class="discussion-box">
-          <div id="questionText" class="professor-question"></div>
-          <div id="postsContainer"></div>
-          <div id="questionInfo" class="question-info"></div>
+      <div class="panels">
+        <!-- Left Panel: Task Instructions and Discussion -->
+        <div class="panel-left">
+          <div class="task-instructions">
+            <h3>Task</h3>
+            <p>Your professor is teaching a class on <span id="categoryName">business</span>. Write a post responding to the professor's question.</p>
+            <ul>
+              <li>Express and support your opinion.</li>
+              <li>Make a contribution to the discussion in your own words.</li>
+            </ul>
+            <p class="word-requirement">An effective response will contain at least <strong id="wordTargetLabel">120</strong> words.</p>
+          </div>
+
+          <div class="discussion-section">
+            <!-- Professor Question -->
+            <div class="professor-post">
+              <div class="professor-header">
+                <div class="avatar professor" id="professorAvatar">DG</div>
+                <div>
+                  <div class="post-author" id="professorName">Dr. Gupta</div>
+                </div>
+              </div>
+              <div class="professor-question" id="questionText"></div>
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="response">Your post</label>
-          <textarea id="response" placeholder="Write your response to the discussion…"></textarea>
-          <div id="responseWordCount" class="word-count">0 words</div>
-        </div>
-        <div class="rubric-section">
-          <h3>Self-review checklist</h3>
-          <ul class="rubric-list">
-            <li><input type="checkbox" id="r1" /><label for="r1">My post is relevant to the professor's question and the discussion.</label></li>
-            <li><input type="checkbox" id="r2" /><label for="r2">I stated my position clearly and supported it with reasons or examples.</label></li>
-            <li><input type="checkbox" id="r3" /><label for="r3">Ideas are organized and easy to follow.</label></li>
-            <li><input type="checkbox" id="r4" /><label for="r4">Grammar and vocabulary are clear and appropriate for academic discussion.</label></li>
-          </ul>
+
+        <!-- Right Panel -->
+        <div class="panel-right">
+          <!-- Top: Student Examples -->
+          <div class="panel-right-top">
+            <div class="examples-section">
+              <h3>Student Responses</h3>
+              <div id="examplesContainer"></div>
+            </div>
+          </div>
+          
+          <!-- Bottom: Response Area -->
+          <div class="panel-right-bottom">
+            <div class="response-section">
+              <h3>Your Response</h3>
+              <textarea id="response" class="response-textarea" placeholder="Write your response to the discussion…"></textarea>
+              
+              <!-- Text Editor Tools -->
+              <div class="editor-tools">
+                <button class="editor-btn" id="cutBtn" title="Cut">Cut</button>
+                <button class="editor-btn" id="pasteBtn" title="Paste">Paste</button>
+                <button class="editor-btn" id="undoBtn" title="Undo">Undo</button>
+                <button class="editor-btn" id="redoBtn" title="Redo">Redo</button>
+              </div>
+
+              <!-- Word Count -->
+              <div class="word-count-section">
+                <button class="word-count-toggle" id="wordCountToggle">
+                  <svg class="word-count-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                  <span class="word-count-toggle-text">Hide Word Count</span>
+                </button>
+                <div class="word-count" id="responseWordCount">0</div>
+              </div>
+            </div>
+
+            <!-- Self-review Checklist -->
+            <div class="rubric-section">
+              <h3>Self-review checklist</h3>
+              <ul class="rubric-list">
+                <li>
+                  <input type="checkbox" id="r1" />
+                  <label for="r1">My post is relevant to the professor's question and the discussion.</label>
+                </li>
+                <li>
+                  <input type="checkbox" id="r2" />
+                  <label for="r2">I stated my position clearly and supported it with reasons or examples.</label>
+                </li>
+                <li>
+                  <input type="checkbox" id="r3" />
+                  <label for="r3">Ideas are organized and easy to follow.</label>
+                </li>
+                <li>
+                  <input type="checkbox" id="r4" />
+                  <label for="r4">Grammar and vocabulary are clear and appropriate for academic discussion.</label>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -255,32 +654,60 @@
       const promptSelect = document.getElementById('promptSelect');
       const searchBox = document.getElementById('searchBox');
       const timerEl = document.getElementById('timer');
+      const timerToggle = document.getElementById('timerToggle');
+      const timerBar = document.querySelector('.timer-bar');
+      const timerDisplay = document.querySelector('.timer-display');
       const loadingEl = document.getElementById('loading');
       const errorEl = document.getElementById('error');
       const contentEl = document.getElementById('content');
       const questionText = document.getElementById('questionText');
-      const postsContainer = document.getElementById('postsContainer');
-      const questionInfo = document.getElementById('questionInfo');
-      const timeLimitLabel = document.getElementById('timeLimitLabel');
+      const professorName = document.getElementById('professorName');
+      const professorAvatar = document.getElementById('professorAvatar');
+      const categoryName = document.getElementById('categoryName');
+      const timeLimitLabel = document.getElementById('wordTargetLabel');
       const wordTargetLabel = document.getElementById('wordTargetLabel');
       const responseInput = document.getElementById('response');
       const responseWordCount = document.getElementById('responseWordCount');
+      const wordCountToggle = document.getElementById('wordCountToggle');
+      const wordCountSection = document.querySelector('.word-count-section');
+      const cutBtn = document.getElementById('cutBtn');
+      const pasteBtn = document.getElementById('pasteBtn');
+      const undoBtn = document.getElementById('undoBtn');
+      const redoBtn = document.getElementById('redoBtn');
+      const questionNumber = document.getElementById('questionNumber');
+      const totalQuestions = document.getElementById('totalQuestions');
+      const examplesContainer = document.getElementById('examplesContainer');
 
       let prompts = [];
       let filteredPrompts = [];
       let currentIndex = 0;
       let timerInterval = null;
       let secondsRemaining = 0;
+      let timerHidden = false;
+      let wordCountHidden = false;
+      let editHistory = [];
+      let editHistoryIndex = -1;
 
       // Category display names
       const categoryNames = {
-        'education': 'Education',
-        'economy': 'Economy',
-        'environment': 'Environment',
-        'technology': 'Technology',
-        'society': 'Society',
-        'culture': 'Culture',
-        'other': 'Other'
+        'education': 'education',
+        'economy': 'business',
+        'environment': 'environmental science',
+        'technology': 'technology',
+        'society': 'sociology',
+        'culture': 'cultural studies',
+        'other': 'general studies'
+      };
+
+      // Professor names by category
+      const professorNames = {
+        'education': 'Dr. Chen',
+        'economy': 'Dr. Gupta',
+        'environment': 'Dr. Martinez',
+        'technology': 'Dr. Kim',
+        'society': 'Dr. Thompson',
+        'culture': 'Dr. Williams',
+        'other': 'Dr. Smith'
       };
 
       function showError(msg) {
@@ -297,9 +724,23 @@
 
       function updateWordCount() {
         const n = countWords(responseInput.value);
-        responseWordCount.textContent = n + ' words';
+        responseWordCount.textContent = n;
         const target = parseInt(wordTargetLabel.textContent, 10) || 120;
         responseWordCount.classList.toggle('at-target', n >= target);
+      }
+
+      function toggleTimer() {
+        timerHidden = !timerHidden;
+        timerDisplay.classList.toggle('timer-hidden', timerHidden);
+        const toggleText = timerToggle.querySelector('.timer-toggle-text');
+        toggleText.textContent = timerHidden ? 'Show Time' : 'Hide Time';
+      }
+
+      function toggleWordCount() {
+        wordCountHidden = !wordCountHidden;
+        wordCountSection.classList.toggle('word-count-hidden', wordCountHidden);
+        const toggleText = wordCountToggle.querySelector('.word-count-toggle-text');
+        toggleText.textContent = wordCountHidden ? 'Show Word Count' : 'Hide Word Count';
       }
 
       function startTimer(minutes) {
@@ -312,47 +753,158 @@
       function tick() {
         if (secondsRemaining <= 0) {
           if (timerInterval) clearInterval(timerInterval);
-          timerEl.textContent = '0:00';
+          timerEl.textContent = '00:00:00';
           timerEl.classList.remove('warning', 'danger');
           return;
         }
-        const m = Math.floor(secondsRemaining / 60);
+        const h = Math.floor(secondsRemaining / 3600);
+        const m = Math.floor((secondsRemaining % 3600) / 60);
         const s = secondsRemaining % 60;
-        timerEl.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+        timerEl.textContent = (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
         timerEl.classList.toggle('warning', secondsRemaining <= 60 && secondsRemaining > 30);
         timerEl.classList.toggle('danger', secondsRemaining <= 30);
         secondsRemaining--;
       }
 
+      function getInitials(name) {
+        return name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+      }
+
+      function saveEditState() {
+        const currentValue = responseInput.value;
+        if (editHistoryIndex < editHistory.length - 1) {
+          editHistory = editHistory.slice(0, editHistoryIndex + 1);
+        }
+        editHistory.push(currentValue);
+        editHistoryIndex = editHistory.length - 1;
+        updateUndoRedoButtons();
+      }
+
+      function updateUndoRedoButtons() {
+        undoBtn.disabled = editHistoryIndex <= 0;
+        redoBtn.disabled = editHistoryIndex >= editHistory.length - 1;
+      }
+
+      function undo() {
+        if (editHistoryIndex > 0) {
+          editHistoryIndex--;
+          responseInput.value = editHistory[editHistoryIndex];
+          updateWordCount();
+          updateUndoRedoButtons();
+        }
+      }
+
+      function redo() {
+        if (editHistoryIndex < editHistory.length - 1) {
+          editHistoryIndex++;
+          responseInput.value = editHistory[editHistoryIndex];
+          updateWordCount();
+          updateUndoRedoButtons();
+        }
+      }
+
+      function cut() {
+        const selectedText = responseInput.value.substring(
+          responseInput.selectionStart,
+          responseInput.selectionEnd
+        );
+        if (selectedText) {
+          navigator.clipboard.writeText(selectedText).then(() => {
+            const start = responseInput.selectionStart;
+            const end = responseInput.selectionEnd;
+            responseInput.value = responseInput.value.substring(0, start) + responseInput.value.substring(end);
+            responseInput.setSelectionRange(start, start);
+            responseInput.focus();
+            saveEditState();
+            updateWordCount();
+            updateCutButtonState();
+          });
+        }
+      }
+      
+      function updateCutButtonState() {
+        const hasSelection = responseInput.selectionStart !== responseInput.selectionEnd;
+        if (hasSelection) {
+          cutBtn.classList.add('active');
+        } else {
+          cutBtn.classList.remove('active');
+        }
+      }
+
+      function paste() {
+        navigator.clipboard.readText().then(text => {
+          const start = responseInput.selectionStart;
+          const end = responseInput.selectionEnd;
+          responseInput.value = responseInput.value.substring(0, start) + text + responseInput.value.substring(end);
+          responseInput.setSelectionRange(start + text.length, start + text.length);
+          saveEditState();
+          updateWordCount();
+        }).catch(() => {
+          // Fallback for browsers that don't support clipboard API
+          document.execCommand('paste');
+          saveEditState();
+          updateWordCount();
+        });
+      }
+
       function renderPrompt() {
         const p = filteredPrompts[currentIndex];
         if (!p) return;
+        
         questionText.textContent = p.question;
-        postsContainer.innerHTML = '';
+        
+        // Update professor info
+        const cat = (p.category || 'other').toLowerCase();
+        const profName = professorNames[cat] || 'Dr. Smith';
+        professorName.textContent = profName;
+        professorAvatar.textContent = getInitials(profName);
+        categoryName.textContent = categoryNames[cat] || 'general studies';
+        
+        // Render student examples in right panel top
+        examplesContainer.innerHTML = '';
         (p.posts || []).forEach(function (post) {
-          const div = document.createElement('div');
-          div.className = 'student-post';
+          const postDiv = document.createElement('div');
+          postDiv.className = 'student-post';
+          
+          const avatar = document.createElement('div');
+          avatar.className = 'avatar student';
+          avatar.textContent = getInitials(post.author);
+          
+          const content = document.createElement('div');
+          content.className = 'student-post-content';
+          
           const author = document.createElement('div');
-          author.className = 'author';
+          author.className = 'post-author';
           author.textContent = post.author + ':';
-          div.appendChild(author);
+          
           const text = document.createElement('div');
+          text.className = 'student-post-text';
           text.textContent = post.text;
-          div.appendChild(text);
-          postsContainer.appendChild(div);
+          
+          content.appendChild(author);
+          content.appendChild(text);
+          postDiv.appendChild(avatar);
+          postDiv.appendChild(content);
+          examplesContainer.appendChild(postDiv);
         });
         
-        // Show question info
-        const cat = p.category || 'other';
-        const catName = categoryNames[cat.toLowerCase()] || 'Other';
-        questionInfo.innerHTML = '<span>' + p.id + '</span><span>' + catName + '</span>';
-        
+        // Update question info
         const minutes = p.timeLimitMinutes != null ? p.timeLimitMinutes : 10;
         const target = p.wordTarget != null ? p.wordTarget : 120;
-        timeLimitLabel.textContent = String(minutes);
+        timeLimitLabel.textContent = String(target);
         wordTargetLabel.textContent = String(target);
+        
+        // Update question number
+        questionNumber.textContent = String(currentIndex + 1);
+        totalQuestions.textContent = String(filteredPrompts.length);
+        
+        // Reset response
         responseInput.value = '';
+        editHistory = [''];
+        editHistoryIndex = 0;
         updateWordCount();
+        updateUndoRedoButtons();
+        updateCutButtonState();
         document.querySelectorAll('.rubric-section input[type="checkbox"]').forEach(function (cb) { cb.checked = false; });
         startTimer(minutes);
       }
@@ -423,6 +975,44 @@
         });
       }
 
+      // Event Listeners
+      timerToggle.addEventListener('click', toggleTimer);
+      wordCountToggle.addEventListener('click', toggleWordCount);
+      
+      cutBtn.addEventListener('click', cut);
+      pasteBtn.addEventListener('click', paste);
+      undoBtn.addEventListener('click', undo);
+      redoBtn.addEventListener('click', redo);
+      
+      responseInput.addEventListener('input', function() {
+        updateWordCount();
+        saveEditState();
+        updateCutButtonState();
+      });
+      
+      responseInput.addEventListener('select', updateCutButtonState);
+      responseInput.addEventListener('click', updateCutButtonState);
+      responseInput.addEventListener('keyup', updateCutButtonState);
+      
+      responseInput.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+          e.preventDefault();
+          undo();
+        } else if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
+          e.preventDefault();
+          redo();
+        } else if ((e.ctrlKey || e.metaKey) && e.key === 'x') {
+          e.preventDefault();
+          cut();
+        } else if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
+          // Allow default paste, but save state after
+          setTimeout(() => {
+            saveEditState();
+            updateWordCount();
+          }, 0);
+        }
+      });
+
       searchBox.addEventListener('input', function() {
         filterPrompts(searchBox.value);
       });
@@ -432,8 +1022,15 @@
         renderPrompt();
       });
 
-      responseInput.addEventListener('input', updateWordCount);
+      // Volume and Help buttons (placeholder)
+      document.getElementById('volumeBtn').addEventListener('click', function() {
+        // Placeholder for volume toggle
+      });
+      document.getElementById('helpBtn').addEventListener('click', function() {
+        alert('Help: Write a response to the professor\'s question. Your response should be at least ' + (wordTargetLabel.textContent || 120) + ' words.');
+      });
 
+      // Load prompts
       fetch('data/writing-academic-discussion-prompts.json')
         .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('Failed to load prompts')); })
         .then(function (data) {
@@ -449,6 +1046,9 @@
           populateSelect();
           promptSelect.value = '0';
           currentIndex = 0;
+          editHistory = [''];
+          editHistoryIndex = 0;
+          updateUndoRedoButtons();
           renderPrompt();
         })
         .catch(function (err) {
